@@ -6,7 +6,7 @@ The main python script for this project:
     -   Reads in and interprets DATA and SYSTYPE files for supplied root
     -   Computes nuclear covariance & correlation matrices for given DATA file (ignoring zero rows)
     -   Outputs heatmaps and diagonal element plots of the covariance & correlation matrices
-    -   Outputs nonzero eigenvalues (both raw data and plot) of the covariance matrix
+    -   Outputs nonzero eigenvalues of the covariance matrix (both raw data and plot)
 _________________________________________________________________________________________________________
 
 """
