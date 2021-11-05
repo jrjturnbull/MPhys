@@ -1,3 +1,18 @@
+"""
+*********************************************************************************************************
+generate_combined.py
+
+Combines data from different experiments into a single file (in a form compatible with covariance.py)
+    -   Reads in the supplied list of DATA and SYSTYPE files
+    -   Determines the experiment with the fewest nuclear replicas
+    -   Selects this number of replicas from each experiment
+    -   Writes DATA and SYSTYPE files to the datafiles folder 
+
+NOTE: NOT FULLY COMMENTED
+_________________________________________________________________________________________________________
+
+"""
+
 import sys
 import os.path
 import random
@@ -8,14 +23,16 @@ output_syst_path = "datafiles/SYSTYPE_CombinedData_DEFAULT.dat"
 print()
 print("Generating combined data file")
 
+# CHECKS THAT ARGUMENTS HAVE BEEN SUPPLIED
 if (len(sys.argv) < 2):
     print("ERROR: no arguments supplied...")
     quit()
-
 root_list = sys.argv[1:]
+
+
+# DETERMINES THE NUMBER OF REPLICAS AND DATAPOINTS FOR EACH EXPERIMENT
 n_nuis_list = []
 n_dat_list = []
-
 for root in root_list:
     path_data = "datafiles/DATA_" + root + ".dat"
     path_syst = "datafiles/SYSTYPE_" + root + "_DEFAULT.dat"
@@ -39,7 +56,7 @@ for root in root_list:
         nuclear_end = len(lines) - 1 # assumes that final uncertainty is always nuclear
     n_nuis_list.append(nuclear_end - nuclear_start)
 
-    row_start = 1 # ignore first line
+    row_start = 1 # ignore first line of DATA file
     row_end = 0
     with open(path_data) as file:
         linecount = len(file.readlines())
@@ -49,13 +66,13 @@ for root in root_list:
 n_nuis_min = min(n_nuis_list)
 print("Selecting {0} uncertainties from each data file".format(n_nuis_min))
 
-# GENERATE SYSTYPE
+# GENERATE SYSTYPE FILE
 with open(output_syst_path, 'w') as syst:
     syst.write(str(n_nuis_min) + '\n')
     for i in range(0, n_nuis_min):
         syst.write("{0}    ADD    NUCLEAR{1}\n".format(i+1, i))
 
-# GENERATE DATA
+# GENERATE DATA FILE
 with open(output_data_path, 'w') as data:
     data.write("CombinedDatafile\t{0}\t{1}\n".format(n_nuis_min, sum(n_dat_list)))
 
@@ -66,6 +83,7 @@ with open(output_data_path, 'w') as data:
         path_data = "datafiles/DATA_" + root + ".dat"
         path_syst = "datafiles/SYSTYPE_" + root + "_DEFAULT.dat"
         
+        #NOTE DUPLICATED CODE BY ACCIDENT - FIX NOT NEEDED THOUGH
         nuclear_start = 0
         nuclear_end = 0
         with open(path_syst) as file:

@@ -1,3 +1,16 @@
+"""
+*********************************************************************************************************
+covariance.py
+
+The main python script for this project:
+    -   Reads in and interprets DATA and SYSTYPE files for supplied root
+    -   Computes nuclear covariance & correlation matrices for given DATA file (ignoring zero rows)
+    -   Outputs heatmaps and diagonal element plots of the covariance & correlation matrices
+    -   Outputs nonzero eigenvalues (both raw data and plot) of the covariance matrix
+_________________________________________________________________________________________________________
+
+"""
+
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 import numpy as np
@@ -199,7 +212,5 @@ ax.set_yscale('log')
 im = ax.scatter(x, y, marker='x')
 plt.title("Eigenvalues for " + root + "\n(cutoff = 1e-4)")
 plt.savefig(eigen_plot_path)
-
-print(covariance_matrix[0,0])
 
 print()
