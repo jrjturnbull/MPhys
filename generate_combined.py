@@ -2,7 +2,7 @@
 *********************************************************************************************************
 generate_combined.py
 
-Combines data from different experiments into a single file (in a form compatible with covariance.py)
+Combines data from different experiments into a single DATA + SYSTYPE file pair (compatible with covariance.py)
     -   Reads in the supplied list of DATA and SYSTYPE files
     -   Determines the experiment with the fewest nuclear replicas
     -   Selects this number of replicas from each experiment
