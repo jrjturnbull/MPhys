@@ -17,9 +17,6 @@ import sys
 import os.path
 import random
 
-output_data_path = "datafiles/DATA_CombinedData.dat"
-output_syst_path = "datafiles/SYSTYPE_CombinedData_DEFAULT.dat"
-
 print()
 print("Generating combined data file")
 
@@ -27,7 +24,10 @@ print("Generating combined data file")
 if (len(sys.argv) < 2):
     print("ERROR: no arguments supplied...")
     quit()
-root_list = sys.argv[1:]
+root_list = sys.argv[1:-1]
+output_root = sys.argv[-1]
+output_data_path = "datafiles/DATA_" + output_root + ".dat"
+output_syst_path = "datafiles/SYSTYPE_" + output_root + "_DEFAULT.dat"
 
 
 # DETERMINES THE NUMBER OF REPLICAS AND DATAPOINTS FOR EACH EXPERIMENT
