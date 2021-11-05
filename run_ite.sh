@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# RUNS THE ENTIRE PROJECT (SO FAR) FOR THE ITERATED DATA FILES
+
 python3 covariance.py "CHORUSNBPb_dw_ite"
 python3 covariance.py "CHORUSNUPb_dw_ite"
 python3 covariance.py "DYE605_dw_ite"
