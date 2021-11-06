@@ -1,8 +1,8 @@
 ### MPhys Project Repository
 #### Folders
-- **datafiles**: contains DATA and SYSTYPE files for the relevant experiments
-- **dt_comparison**: contains files relating to the validphys data-theory comparisons
-- **output**: contains all output files, computed from the python scripts
+- **datafiles**: contains DATA, SYSTYPE, THEORY files for the relevant experiments
+- **dt_comparison**: contains all files pertaining to the validphys data-theory comparisons
+- **output**: contains all output files computed from covariance.py
     - *correlation_matrix*: heatmap of the theory correlation matrix
     - *covariance_matrix*: heatmap of the theory covariance matrix (not normalised)
     - *diagonal_elements*: plot of the covariance matrix diagonal elements, normalised to the experimental data
