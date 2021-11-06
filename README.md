@@ -12,5 +12,5 @@
 #### Scripts
 - **covariance.py**: the main python script for this project
 - **extract_theory.py**: extracts theory_central values from the various computed validphys tables
-- **generate_combined.py**: combines data from different experiments into a single DATA + SYSTYPE file pair (compatible with covariance.py)
+- **generate_combined.py**: merges data from different experiments (compatible with covariance.py)
 - **run_all.sh**: runs the entire project (so far) for the deweighted (non-iterated) data files
