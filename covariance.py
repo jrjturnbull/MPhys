@@ -3,10 +3,11 @@
 covariance.py
 
 The main python script for this project:
-    -   Reads in and interprets DATA and SYSTYPE files for supplied root
+    -   Reads in and interprets DATA, SYSTYPE and THEORY files for supplied root
     -   Computes nuclear covariance & correlation matrices for given DATA file (ignoring zero rows)
     -   Outputs heatmaps and diagonal element plots of the covariance & correlation matrices
-    -   Outputs nonzero eigenvalues of the covariance matrix (both raw data and plot)
+    -   Normalises the covariance matrix to the theoretical data
+    -   Outputs nonzero eigenvalues of the normalised covariance matrix (both raw data and plot)
 _________________________________________________________________________________________________________
 
 """
@@ -81,6 +82,7 @@ while True:
         root = input("Please enter the datafile root: ")
     path_data = "datafiles/DATA/DATA_" + root + ".dat"
     path_syst = "datafiles/SYSTYPE/SYSTYPE_" + root + "_DEFAULT.dat"
+    path_theo = "datafiles/THEORY/THEORY_" + root + ".dat"
 
     if not os.path.exists(path_data):
         print("ERROR: " + path_data + " does not exist!")
@@ -88,10 +90,22 @@ while True:
     elif not os.path.exists(path_syst):
         print("ERROR: " + path_syst + " does not exist!")
         continue
+    elif not os.path.exists(path_theo):
+        print("ERROR: " + path_theo + " does not exist!")
+        continue
     else:
         break
 print()
 print("Running covariance.py for: " + root)
+
+# READ IN THEORY DATA
+theory_values = []
+with open(path_theo) as theory:
+    for line in theory.readlines():
+        theory_values.append(line)
+theory_values = [float(t) for t in theory_values]
+print(theory_values)
+
 
 # FIND LINES WHICH INCLUDE DATAPOINTS (INCL. ZERO) FROM SYSTYPE FILE
 row_start = 1 # ignore first line
@@ -154,6 +168,14 @@ for i in range(0, n_dat_nz):
 print("Computed all {0} correlation elements                            ".format(n_dat_nz*n_dat_nz))
 print("Sparsity of correlation matrix: " + "{:.2%}".format(compute_sparsity(correlation_matrix)))
 
+# NORMALISE THE COVARIANCE MATRIX
+covariance_matrix_norm = np.zeros_like(covariance_matrix)
+for i in range(0, n_dat_nz):
+    for j in range(0, n_dat_nz):
+        print("Normalising covariance element {0} of {1}...".format(i*n_dat_nz + j + 1, n_dat_nz*n_dat_nz), end='\r')
+        covariance_matrix_norm[i, j] = covariance_matrix_norm[i, j] / (theory_values[i] * theory_values[j])
+print("Computed all {0} correlation elements                            ".format(n_dat_nz*n_dat_nz))
+
 
 """
 *********************************************************************************************************
@@ -191,19 +213,13 @@ plt.savefig("output/diagonal_elements_" + root + ".png")
 # OUTPUT NONZERO EIGENVALUES (CUTOFF = 1e-4)
 eigen_data_path = "output/eigenvalues_data_" + root + ".dat"
 eigen_plot_path = "output/eigenvalues_plot_" + root + ".png"
-print("Computing covariance matrix eigenvalues")
-eigenvalues_cov = compute_nonzero_eigenvalues(covariance_matrix, cutoff=1e-4)
-#print("Computing correlation matrix eigenvalues")
-#eigenvalues_cor = compute_nonzero_eigenvalues(correlation_matrix, cutoff=1e-4)
+print("Computing normalised covariance matrix eigenvalues")
+eigenvalues_cov = compute_nonzero_eigenvalues(covariance_matrix_norm, cutoff=1e-4)
 with open(eigen_data_path, 'w') as eigen:
     eigen.write("Non-zero covariance eigenvalues for {0} (cutoff=1e-4)\n".format(root))
     for e in eigenvalues_cov:
         eigen.write("{:e}".format(e))
         eigen.write("\n")
-    #eigen.write("Non-zero correlation eigenvalues for {0} (cutoff=1e-4)\n".format(root))
-    #for e in eigenvalues_cor:
-    #    eigen.write("{:e}".format(e))
-    #    eigen.write("\n")
 fig.clear(True)
 fix, ax = plt.subplots()
 x = np.arange(len(eigenvalues_cov))

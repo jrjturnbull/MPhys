@@ -28,6 +28,7 @@ root_list = sys.argv[1:-1]
 output_root = sys.argv[-1]
 output_data_path = "datafiles/DATA/DATA_" + output_root + ".dat"
 output_syst_path = "datafiles/SYSTYPE/SYSTYPE_" + output_root + "_DEFAULT.dat"
+output_theo_path = "datafiles/THEORY/THEORY_" + output_root + ".dat"
 
 
 # DETERMINES THE NUMBER OF REPLICAS AND DATAPOINTS FOR EACH EXPERIMENT
@@ -36,12 +37,16 @@ n_dat_list = []
 for root in root_list:
     path_data = "datafiles/DATA/DATA_" + root + ".dat"
     path_syst = "datafiles/SYSTYPE/SYSTYPE_" + root + "_DEFAULT.dat"
+    path_theo = "datafiles/THEORY/THEORY_" + root + ".dat"
 
     if not os.path.exists(path_data):
         print("ERROR: " + path_data + " does not exist!")
         quit()
     if not os.path.exists(path_syst):
         print("ERROR: " + path_syst + " does not exist!")
+        quit()
+    if not os.path.exists(path_theo):
+        print("ERROR: " + path_theo + " does not exist!")
         quit()
 
     nuclear_start = 0
@@ -116,4 +121,14 @@ with open(output_data_path, 'w') as data:
                     data.write(str(v) + '\t')
                 data.write('\n')
                 line_no += 1
+
+# GENERATE THEORY FILE
+with open(output_theo_path, 'w') as theo:
+    for root in root_list:
+        path_theo = "datafiles/THEORY/THEORY_" + root + ".dat"
+        with open(path_theo) as path:
+            for l in path.readlines():
+                theo.write(l)
+
+
 print()

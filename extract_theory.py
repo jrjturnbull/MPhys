@@ -3,7 +3,7 @@
 extract_theory.py
 
 Extracts theory_central values from the various computed validphys tables:
-    -   Reads in group_result_table.csv for supplied validphys folder
+    -   Reads in all group_result_table csv files in dt_comparison
     -   Extracts the theory_central column
     -   Writes to datafiles/THEORY
 _________________________________________________________________________________________________________
@@ -25,7 +25,7 @@ for subdir, dirs, files in os.walk(rootdir):
 for path in table_paths:
     root = ""
     theory_values = []
-    
+
     with open(path) as table:
         data_rows = table.readlines()[1:] # ignore header row
         root = data_rows[0].split('\t')[1] # find root name from table (any row would work)
