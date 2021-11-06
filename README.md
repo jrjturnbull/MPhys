@@ -1,6 +1,7 @@
 ### MPhys Project Repository
 #### Folders
 - **datafiles**: contains DATA and SYSTYPE files for the relevant experiments
+- **dt_comparison**: contains files relating to the validphys data-theory comparisons
 - **output**: contains all output files, computed from the python scripts
 
 #### Scripts

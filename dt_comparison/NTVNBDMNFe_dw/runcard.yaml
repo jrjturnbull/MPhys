@@ -1,0 +1,19 @@
+meta:
+    title: NTVNBDMNFe_dw data/theory comparison
+    author: Jamie Turnbull
+
+pdfs: 
+    - id: NNPDF31_nnlo_as_0118
+      label: NNPDF31_nnlo_as_0118
+
+theoryid: 200
+
+use_cuts: false
+
+dataset_inputs:
+      - { dataset: NTVNBDMNFe_dw}
+
+template: dthcomparison.md
+
+actions_:
+  - report(main=true)
