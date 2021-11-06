@@ -7,7 +7,7 @@ pdfs:
   label: NNPDF40_nnlo_as_01180
 
 theoryid: 200
-use_cuts: internal
+use_cuts: nocuts
 dataset_inputs:
 - {dataset: DYE605_dw}
 

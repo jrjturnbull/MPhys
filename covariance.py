@@ -98,15 +98,6 @@ while True:
 print()
 print("Running covariance.py for: " + root)
 
-# READ IN THEORY DATA
-theory_values = []
-with open(path_theo) as theory:
-    for line in theory.readlines():
-        theory_values.append(line)
-theory_values = [float(t) for t in theory_values]
-print(theory_values)
-
-
 # FIND LINES WHICH INCLUDE DATAPOINTS (INCL. ZERO) FROM SYSTYPE FILE
 row_start = 1 # ignore first line
 row_end = 0
@@ -128,25 +119,30 @@ with open(path_syst) as file:
     nuclear_end = len(lines) - 1 # assumes that final uncertainty is always nuclear
 n_nuis = nuclear_end - nuclear_start
 
-# READ DATA INTO NUCLEAR_UNCERTAINTY_ARRAY & EXPERIMENTAL_DATA, IGNORING ROWS OF ZEROS
+# READ DATA INTO NUCLEAR_UNCERTAINTY_ARRAY & EXPERIMENTAL_DATA & THEORY_VALUES, IGNORING ROWS OF ZEROS
 nuclear_uncertainty_array = np.zeros(shape=(n_dat, n_nuis), dtype=float64)
 experimental_data = np.zeros(shape = n_dat, dtype=float64)
+theory_values = np.zeros(shape = n_dat, dtype=float64)
 zero_lines = 0 # records how many zero lines have been found
-with open(path_data) as file:
-    file_lines = file.readlines()
-    for i in range(row_start, row_end):
-        nuclear_uncertainties = file_lines[i].split("\t")[7:-1:2] # remove exp. values and mult. uncertanties
-        nuclear_uncertainties = nuclear_uncertainties[nuclear_start:] # remove non-nuclear uncertainties
-        nuclear_uncertainties = [float64(i) for i in nuclear_uncertainties] # convert from str to f64
+with open(path_data) as data:
+    with open(path_theo) as theory:
+        data_lines = data.readlines()
+        theory_lines = theory.readlines()
+        for i in range(row_start, row_end):
+            nuclear_uncertainties = data_lines[i].split("\t")[7:-1:2] # remove exp. values and mult. uncertanties
+            nuclear_uncertainties = nuclear_uncertainties[nuclear_start:] # remove non-nuclear uncertainties
+            nuclear_uncertainties = [float64(i) for i in nuclear_uncertainties] # convert from str to f64
 
-        # Remove rows containing all zeros
-        if(all(v == 0 for v in nuclear_uncertainties)):
-            zero_lines += 1 # records that a zero line has been found
-            nuclear_uncertainty_array = nuclear_uncertainty_array[:-1, :] # removes final row
-            experimental_data = experimental_data[:-1] # removes final row
-            continue
-        nuclear_uncertainty_array[(i-1) - zero_lines] = nuclear_uncertainties
-        experimental_data[(i-1) - zero_lines] = file_lines[i].split("\t")[5] # extracts data_value
+            # Remove rows containing all zeros
+            if(all(v == 0 for v in nuclear_uncertainties)):
+                zero_lines += 1 # records that a zero line has been found
+                nuclear_uncertainty_array = nuclear_uncertainty_array[:-1, :] # removes final row
+                experimental_data = experimental_data[:-1] # removes final row
+                theory_values = theory_values[:-1]
+                continue
+            nuclear_uncertainty_array[(i-1) - zero_lines] = nuclear_uncertainties
+            experimental_data[(i-1) - zero_lines] = data_lines[i].split("\t")[5] # extracts data_value
+            theory_values[(i-1) - zero_lines] = theory_lines[i-1]
 
 n_dat_nz = len(nuclear_uncertainty_array) # number of non-zero data points
 
@@ -173,8 +169,8 @@ covariance_matrix_norm = np.zeros_like(covariance_matrix)
 for i in range(0, n_dat_nz):
     for j in range(0, n_dat_nz):
         print("Normalising covariance element {0} of {1}...".format(i*n_dat_nz + j + 1, n_dat_nz*n_dat_nz), end='\r')
-        covariance_matrix_norm[i, j] = covariance_matrix_norm[i, j] / (theory_values[i] * theory_values[j])
-print("Computed all {0} correlation elements                            ".format(n_dat_nz*n_dat_nz))
+        covariance_matrix_norm[i, j] = covariance_matrix[i, j] / (theory_values[i] * theory_values[j])
+print("Normalised all {0} covariance elements                            ".format(n_dat_nz*n_dat_nz))
 
 
 """
@@ -214,9 +210,9 @@ plt.savefig("output/diagonal_elements_" + root + ".png")
 eigen_data_path = "output/eigenvalues_data_" + root + ".dat"
 eigen_plot_path = "output/eigenvalues_plot_" + root + ".png"
 print("Computing normalised covariance matrix eigenvalues")
-eigenvalues_cov = compute_nonzero_eigenvalues(covariance_matrix_norm, cutoff=1e-4)
+eigenvalues_cov = compute_nonzero_eigenvalues(covariance_matrix_norm, cutoff=1e-6)
 with open(eigen_data_path, 'w') as eigen:
-    eigen.write("Non-zero covariance eigenvalues for {0} (cutoff=1e-4)\n".format(root))
+    eigen.write("Non-zero covariance eigenvalues for {0} (cutoff=1e-6)\n".format(root))
     for e in eigenvalues_cov:
         eigen.write("{:e}".format(e))
         eigen.write("\n")
@@ -226,7 +222,7 @@ x = np.arange(len(eigenvalues_cov))
 y = sorted(eigenvalues_cov, reverse=True)
 ax.set_yscale('log')
 im = ax.scatter(x, y, marker='x')
-plt.title("Eigenvalues for " + root + "\n(cutoff = 1e-4)")
+plt.title("Eigenvalues for " + root + "\n(cutoff = 1e-6)")
 plt.savefig(eigen_plot_path)
 
 print()

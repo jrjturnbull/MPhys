@@ -8,7 +8,7 @@ pdfs:
 
 theoryid: 200
 
-use_cuts: internal
+use_cuts: nocuts
 
 dataset_inputs:
       - { dataset: NTVNBDMNFe_dw}
