@@ -79,8 +79,8 @@ while True:
         tried_arg = True
     else:
         root = input("Please enter the datafile root: ")
-    path_data = "datafiles/DATA_" + root + ".dat"
-    path_syst = "datafiles/SYSTYPE_" + root + "_DEFAULT.dat"
+    path_data = "datafiles/DATA/DATA_" + root + ".dat"
+    path_syst = "datafiles/SYSTYPE/SYSTYPE_" + root + "_DEFAULT.dat"
 
     if not os.path.exists(path_data):
         print("ERROR: " + path_data + " does not exist!")

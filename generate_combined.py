@@ -26,16 +26,16 @@ if (len(sys.argv) < 2):
     quit()
 root_list = sys.argv[1:-1]
 output_root = sys.argv[-1]
-output_data_path = "datafiles/DATA_" + output_root + ".dat"
-output_syst_path = "datafiles/SYSTYPE_" + output_root + "_DEFAULT.dat"
+output_data_path = "datafiles/DATA/DATA_" + output_root + ".dat"
+output_syst_path = "datafiles/SYSTYPE/SYSTYPE_" + output_root + "_DEFAULT.dat"
 
 
 # DETERMINES THE NUMBER OF REPLICAS AND DATAPOINTS FOR EACH EXPERIMENT
 n_nuis_list = []
 n_dat_list = []
 for root in root_list:
-    path_data = "datafiles/DATA_" + root + ".dat"
-    path_syst = "datafiles/SYSTYPE_" + root + "_DEFAULT.dat"
+    path_data = "datafiles/DATA/DATA_" + root + ".dat"
+    path_syst = "datafiles/SYSTYPE/SYSTYPE_" + root + "_DEFAULT.dat"
 
     if not os.path.exists(path_data):
         print("ERROR: " + path_data + " does not exist!")
@@ -80,8 +80,8 @@ with open(output_data_path, 'w') as data:
 
     for root in root_list:
         print("Copying data from: " + root)
-        path_data = "datafiles/DATA_" + root + ".dat"
-        path_syst = "datafiles/SYSTYPE_" + root + "_DEFAULT.dat"
+        path_data = "datafiles/DATA/DATA_" + root + ".dat"
+        path_syst = "datafiles/SYSTYPE/SYSTYPE_" + root + "_DEFAULT.dat"
         
         #NOTE DUPLICATED CODE BY ACCIDENT - FIX NOT NEEDED THOUGH
         nuclear_start = 0
