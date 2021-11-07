@@ -1,7 +1,14 @@
 ### MPhys Project Repository
 #### Folders
-- **datafiles**: contains DATA, SYSTYPE, THEORY files for the relevant experiments
+- **datafiles**: contains CENTRAL, DATA, SYSTYPE, THEORY files for the relevant experiments
 - **dt_comparison**: contains all files pertaining to the validphys data-theory comparisons
+- **matrices**: contains all computed matrices from covariance.py (cutoff lines re,pved):
+    - *CR*: the correlation matrix
+    - *CV*: the covariance matrix
+    - *CVN*: the covariance matrix, normalised to the theory
+    - *EXP*: the experimental data
+    - *NUA*: the nuclear uncertainty array
+    - *TH*: the theory_central values
 - **output**: contains all output files computed from covariance.py
     - *correlation_matrix*: heatmap of the theory correlation matrix
     - *covariance_matrix*: heatmap of the theory covariance matrix (not normalised)
