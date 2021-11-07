@@ -8,6 +8,7 @@ The main python script for this project:
     -   Outputs heatmaps and diagonal element plots of the covariance & correlation matrices
     -   Normalises the covariance matrix to the theoretical data
     -   Outputs nonzero eigenvalues of the normalised covariance matrix (both raw data and plot)
+    -   Saves all matrices to file
 _________________________________________________________________________________________________________
 
 """
@@ -224,5 +225,10 @@ ax.set_yscale('log')
 im = ax.scatter(x, y, marker='x')
 plt.title("Eigenvalues for " + root + "\n(cutoff = 1e-6)")
 plt.savefig(eigen_plot_path)
+
+# SAVE ALL COMPUTED MATRICES
+covariance_matrix.dump("MATRICES/CV" + root + ".dat")
+covariance_matrix_norm.dump("MATRICES/CVN" + root + ".dat")
+correlation_matrix.dump("MATRICES/CR" + root + ".dat")
 
 print()
