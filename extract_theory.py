@@ -25,14 +25,20 @@ for subdir, dirs, files in os.walk(rootdir):
 for path in table_paths:
     root = ""
     theory_values = []
+    data_values = []
 
     with open(path) as table:
         data_rows = table.readlines()[1:] # ignore header row
         root = data_rows[0].split('\t')[1] # find root name from table (any row would work)
         for row in data_rows:
+            data_values.append(row.split('\t')[3]) # append data_central value
             theory_values.append(row.split('\t')[4]) # append theory_central value
     
-    output_path = "datafiles/THEORY/THEORY_" + root + ".dat"
-    with open(output_path, 'w') as output:
+    theory_output = "datafiles/THEORY/THEORY_" + root + ".dat"
+    data_output = "datafiles/CENTRAL/CENTRAL_" + root + ".dat"
+    with open(theory_output, 'w') as output:
         for t in theory_values:
             output.write(t + '\n')
+    with open(data_output, 'w') as output:
+        for d in data_values:
+            output.write(d + '\n')

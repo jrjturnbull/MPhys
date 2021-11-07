@@ -227,8 +227,11 @@ plt.title("Eigenvalues for " + root + "\n(cutoff = 1e-6)")
 plt.savefig(eigen_plot_path)
 
 # SAVE ALL COMPUTED MATRICES
-covariance_matrix.dump("MATRICES/CV" + root + ".dat")
-covariance_matrix_norm.dump("MATRICES/CVN" + root + ".dat")
-correlation_matrix.dump("MATRICES/CR" + root + ".dat")
+nuclear_uncertainty_array.dump("matrices/NUA_" + root + ".dat")
+covariance_matrix.dump("matrices/CV_" + root + ".dat")
+covariance_matrix_norm.dump("matrices/CVN_" + root + ".dat")
+correlation_matrix.dump("matrices/CR_" + root + ".dat")
+experimental_data.dump("matrices/EXP_" + root + ".dat")
+theory_values.dump("matrices/TH_" + root +".dat")
 
 print()
