@@ -9,7 +9,7 @@
     - *EXP*: the experimental data
     - *NUA*: the nuclear uncertainty array
     - *TH*: the theory_central values
-- **output**: contains all output files computed from covariance.py
+- **output**: contains all output files computed from output.py
     - *correlation_matrix*: heatmap of the theory correlation matrix
     - *covariance_matrix*: heatmap of the theory covariance matrix (not normalised)
     - *diagonal_elements*: plot of the covariance matrix diagonal elements, normalised to the experimental data
@@ -20,4 +20,5 @@
 - **covariance.py**: the main python script for this project
 - **extract_theory.py**: extracts theory_central values from the various computed validphys tables
 - **generate_combined.py**: merges data from different experiments (compatible with covariance.py)
+- **output.py**: generates graphical output files for the supplied root
 - **run_all.sh**: runs the entire project (so far) for the deweighted (non-iterated) data files
