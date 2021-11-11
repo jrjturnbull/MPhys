@@ -6,9 +6,9 @@
     - *CR*: the correlation matrix
     - *CV*: the covariance matrix
     - *CVN*: the covariance matrix, normalised to the theory
-    - *EXP*: the experimental data
+    - *EXP*: the experimental data, taken from datafiles/DATA
     - *NUA*: the nuclear uncertainty array
-    - *TH*: the theory_central values
+    - *TH*: the theory_central values, taken from datafiles/THEORY
 - **output**: contains all output files computed from output.py
     - *correlation_matrix*: heatmap of the theory correlation matrix
     - *covariance_matrix*: heatmap of the theory covariance matrix (not normalised)
@@ -20,5 +20,7 @@
 - **covariance.py**: the main python script for this project
 - **extract_theory.py**: extracts theory_central values from the various computed validphys tables
 - **generate_combined.py**: merges data from different experiments (compatible with covariance.py)
+- **nuisance.py**: computes the nuisance parameter expectation values for the supplied root (***WORK IN PROGRESS!***)
 - **output.py**: generates graphical output files for the supplied root
-- **run_all.sh**: runs the entire project (so far) for the deweighted (non-iterated) data files
+- **run_dw.sh**: runs the entire project (so far) for the deweighted (non-iterated) data files
+- **run_dw_ite.sh**: runs the entire project (so far) for the deweighted iterated data files
