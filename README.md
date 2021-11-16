@@ -6,7 +6,7 @@
     - *SYSTYPE*: the column headers for the DATA files
     - *THEORY*: the theoretical predictions, taken from validphys
 - **dt_comparison**: contains all files pertaining to the validphys data-theory comparisons
-- **matrices**: contains all computed matrices from covariance.py (cutoff lines re,pved):
+- **matrices**: contains all computed matrices from covariance.py (cutoff lines removed):
     - *CR*: the correlation matrix
     - *CV*: the covariance matrix
     - *CVN*: the covariance matrix, normalised to the theory
