@@ -156,15 +156,6 @@ for i in range(0, n_dat_nz):
 print("Computed all {0} covariance elements                                      ".format(n_dat_nz*n_dat_nz))
 print("Sparsity of covariance matrix: " + "{:.2%}".format(compute_sparsity(covariance_matrix)))
 
-# DETERMINE THE EXPERIMENTAL COVARIANCE MATRIX
-exp_matrix = np.zeros(shape = (n_dat_nz, n_dat_nz))
-for i in range(0, n_dat_nz):
-    for j in range(0, n_dat_nz):
-        print("Computing experimental covariance element {0} of {1}...".format(i*n_dat_nz + j + 1, n_dat_nz*n_dat_nz), end='\r')
-        covariance_matrix[i, j] = experimental_unc[i] * experimental_unc[j]
-print("Computed all {0} experimental covariance elements                                      ".format(n_dat_nz*n_dat_nz))
-print("Sparsity of experimental covariance matrix: " + "{:.2%}".format(compute_sparsity(exp_matrix)))
-
 # DETERMINE THE CORRELATION MATRIX
 correlation_matrix = np.zeros_like(covariance_matrix)
 for i in range(0, n_dat_nz):
@@ -197,6 +188,5 @@ covariance_matrix_norm.dump("matrices/CVN_" + root + ".dat")
 correlation_matrix.dump("matrices/CR_" + root + ".dat")
 experimental_data.dump("matrices/EXP_" + root + ".dat")
 theory_values.dump("matrices/TH_" + root + ".dat")
-exp_matrix.dump("matrices/ECV" + root + ".dat")
 
 print()

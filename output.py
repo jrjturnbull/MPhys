@@ -26,6 +26,7 @@ correlation_matrix = np.load("matrices/CR_" + root + ".dat", allow_pickle=True)
 nuclear_uncertainty_array = np.load("matrices/NUA_" + root + ".dat", allow_pickle=True)
 exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
 theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
+exp_covariance_matrix = np.load("matrices/ECV_" + root + ".dat", allow_pickle=True)
 
 n_dat_nz = np.shape(nuclear_uncertainty_array)[0]
 n_nuis = np.shape(nuclear_uncertainty_array)[1]
@@ -44,6 +45,14 @@ im = ax.imshow(covariance_matrix, cmap='jet', norm=LogNorm())
 plt.title("Covariance matrix for\n" + root)
 plt.colorbar(im)
 plt.savefig("output/covariance_matrix_heatmap_" + root + ".png")
+
+# PLOT HEATMAP OF EXPERIMENTAL MATRIX
+fig.clear(True)
+fig, ax = plt.subplots()
+im = ax.imshow(exp_covariance_matrix, cmap='jet', norm=LogNorm())
+plt.title("Experimental covariance matrix for\n" + root)
+plt.colorbar(im)
+plt.savefig("output/exp_covariance_matrix_heatmap_" + root + ".png")
 
 # PLOT HEATMAP OF CORRELATION MATRIX
 fig.clear(True)
