@@ -49,11 +49,12 @@ for root in root_list:
         linecount = len(file.readlines())
         row_end = linecount
     n_dat_list.append(row_end - row_start)
+
 exp_covariance_matrix_list = []
+exp_correlation_matrix_list = []
 dim = 0
 for r in range(len(root_list)):
     experimental_unc = np.zeros(shape = n_dat_list[r], dtype=float64)
-    print(n_dat_list[r])
     zero_lines = 0 # records how many zero lines have been found
 
     path_data = "datafiles/DATA/DATA_" + root_list[r] + ".dat"
@@ -74,7 +75,6 @@ for r in range(len(root_list)):
             experimental_unc[(i-1) - zero_lines] = data_lines[i].split("\t")[6]
     
     n_dat_nz = len(experimental_unc) # number of non-zero data points
-    print(n_dat_nz)
 
     exp_matrix = np.zeros(shape = (n_dat_nz, n_dat_nz))
     for x in range(n_dat_nz):
@@ -83,22 +83,22 @@ for r in range(len(root_list)):
     exp_covariance_matrix_list.append(exp_matrix)
     dim += n_dat_nz
 
-exp_covariance_matrix = np.zeros(shape=(dim, dim))
+    # DETERMINE THE CORRELATION MATRIX
+    correlation_matrix = np.zeros_like(exp_matrix)
+    for x in range(0, n_dat_nz):
+        for y in range(0, n_dat_nz):
+            norm = math.sqrt(exp_matrix[x,x] * exp_matrix[y,y])
+            correlation_matrix[x, y] = exp_matrix[x,y] / norm
+    exp_correlation_matrix_list.append(correlation_matrix)
+
+exp_covariance_matrix = np.zeros(shape=(dim, dim), dtype=float64)
+exp_correlation_matrix = np.zeros(shape=(dim, dim), dtype=float64)
 dat_count = 0
-for e in exp_covariance_matrix_list:
-    nd = e.shape[0]
-    exp_covariance_matrix[dat_count:(dat_count+nd), dat_count:(dat_count+nd)] = e
+for e in range(len(exp_covariance_matrix_list)):
+    nd = exp_covariance_matrix_list[e].shape[0]
+    exp_covariance_matrix[dat_count:(dat_count+nd), dat_count:(dat_count+nd)] = exp_covariance_matrix_list[e]
+    exp_correlation_matrix[dat_count:(dat_count+nd), dat_count:(dat_count+nd)] = exp_correlation_matrix_list[e]
     dat_count += nd
 
 exp_covariance_matrix.dump("matrices/ECV_" + output_root + ".dat")
-
-print(exp_covariance_matrix)
-
-
-
-
-
-
-
-
-        
+exp_correlation_matrix.dump("matrices/ECR_" + output_root + ".dat")
