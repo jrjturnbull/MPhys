@@ -50,12 +50,6 @@ def compute_sparsity(array):
     sparsity = sparse_elements / array.size
     return sparsity
 
-# RETURNS NONZERO EIGENVALUES OF SUPPLIED ARRAY (DEFAULT CUTOFF = 1e-8)
-def compute_nonzero_eigenvalues(array, cutoff = 1e-8):
-    w, v = eigh(array)
-    nonzero = w[w > cutoff]
-    return nonzero
-
 # RETURNS DIAGONAL ELEMENT DIVIDED BY CORRESPONDING EXPERIMENTAL VALUE
 def compute_diagonal_element(i):
     diag = math.sqrt(covariance_matrix[i,i])
@@ -173,6 +167,20 @@ for i in range(0, n_dat_nz):
         covariance_matrix_norm[i, j] = covariance_matrix[i, j] / (theory_values[i] * theory_values[j])
 print("Normalised all {0} covariance elements                            ".format(n_dat_nz*n_dat_nz))
 
+# EIGENSTUFF
+w, v = eigh(covariance_matrix)
+nz_eigen = [i for i in range(len(w)) if w[i] > 1e-6]
+eigenvalues_cov = [w[i] for i in nz_eigen]
+eigenvectors_cov = [v[i] for i in nz_eigen]
+eval = np.array(eigenvalues_cov)
+evec = np.array(eigenvectors_cov)
+
+w, v = eigh(covariance_matrix_norm)
+nz_eigen = [i for i in range(len(w)) if w[i] > 1e-6]
+eigenvalues_cov = [w[i] for i in nz_eigen]
+eigenvectors_cov = [v[i] for i in nz_eigen]
+eval_norm = np.array(eigenvalues_cov)
+evec_norm = np.array(eigenvectors_cov)
 
 """
 *********************************************************************************************************
@@ -188,5 +196,10 @@ covariance_matrix_norm.dump("matrices/CVN_" + root + ".dat")
 correlation_matrix.dump("matrices/CR_" + root + ".dat")
 experimental_data.dump("matrices/EXP_" + root + ".dat")
 theory_values.dump("matrices/TH_" + root + ".dat")
+
+eval.dump("matrices/EVL_" + root + ".dat")
+eval_norm.dump("matrices/EVLN_" + root + ".dat")
+evec.dump("matrices/EVC_" + root + ".dat")
+evec_norm.dump("matrices/EVCN_" + root + ".dat")
 
 print()

@@ -14,14 +14,17 @@ nuclear_uncertainty_array = np.load("matrices/NUA_" + root + ".dat", allow_pickl
 exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
 exp_covariance_matrix = np.load("matrices/ECV_" + root + ".dat", allow_pickle=True)
 theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
+eigenvectors = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
+eigenvectors_norm = np.load("matrices/EVCN_" + root + ".dat", allow_pickle=True)
 
 n_nuis = shape(nuclear_uncertainty_array)[1]
 
 nuisance_params = np.zeros(shape=n_nuis, dtype=float64)
 
-for alpha in range(0, n_nuis):
+for alpha in range(0, len(eigenvectors)):
     beta = nuclear_uncertainty_array[:, alpha]
-    CS = inv(exp_covariance_matrix + th_covariance_matrix)
+    beta = eigenvectors_norm[alpha]
+    CS = inv(th_covariance_matrix)
     mat = np.matmul(beta, CS)
     TD = theory_data - exp_data
     nuisance_params[alpha] = np.matmul(mat, TD)
