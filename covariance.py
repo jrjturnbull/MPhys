@@ -5,9 +5,8 @@ covariance.py
 The main python script for this project:
     -   Reads in and interprets DATA, SYSTYPE and THEORY files for supplied root
     -   Computes nuclear covariance & correlation matrices for given DATA file (ignoring zero rows)
-    -   Outputs heatmaps and diagonal element plots of the covariance & correlation matrices
     -   Normalises the covariance matrix to the theoretical data
-    -   Outputs nonzero eigenvalues of the normalised covariance matrix (both raw data and plot)
+    -   Outputs nonzero eigenvalues of the covariance matrix
     -   Saves all matrices to file
 _________________________________________________________________________________________________________
 
