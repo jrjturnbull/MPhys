@@ -1,12 +1,14 @@
-Covariance matrices
--------------------
+> Very long [table](tables/CHORUSNBPb_dw_NNPDF40_nnlo_as_01180_groups_covmat.csv)
+> Very long [table](tables/CHORUSNUPb_dw_NNPDF40_nnlo_as_01180_groups_covmat.csv)
+> Very long [table](tables/DYE605_dw_NNPDF40_nnlo_as_01180_groups_covmat.csv)
+> Very long [table](tables/NTVNBDMNFe_dw_NNPDF40_nnlo_as_01180_groups_covmat.csv)
+> Very long [table](tables/NTVNUDMNFe_dw_NNPDF40_nnlo_as_01180_groups_covmat.csv)
+![[.png](figures/CHORUSNBPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png) [.pdf](figures/CHORUSNBPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.pdf) [#](#CHORUSNBPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap)](figures/CHORUSNBPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png){#CHORUSNBPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap} 
 
-   ![[.png](figures/default_theory0_plot_normexpcovmat_heatmap.png) [.pdf](figures/default_theory0_plot_normexpcovmat_heatmap.pdf) [#](#default_theory0_plot_normexpcovmat_heatmap)](figures/default_theory0_plot_normexpcovmat_heatmap.png){#default_theory0_plot_normexpcovmat_heatmap} 
+![[.png](figures/CHORUSNUPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png) [.pdf](figures/CHORUSNUPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.pdf) [#](#CHORUSNUPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap)](figures/CHORUSNUPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png){#CHORUSNUPb_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap} 
 
+![[.png](figures/DYE605_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png) [.pdf](figures/DYE605_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.pdf) [#](#DYE605_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap)](figures/DYE605_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png){#DYE605_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap} 
 
+![[.png](figures/NTVNBDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png) [.pdf](figures/NTVNBDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.pdf) [#](#NTVNBDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap)](figures/NTVNBDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png){#NTVNBDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap} 
 
-Correlation matrices
---------------------
-
-   ![[.png](figures/default_theory0_plot_expcorrmat_heatmap.png) [.pdf](figures/default_theory0_plot_expcorrmat_heatmap.pdf) [#](#default_theory0_plot_expcorrmat_heatmap)](figures/default_theory0_plot_expcorrmat_heatmap.png){#default_theory0_plot_expcorrmat_heatmap} 
-
+![[.png](figures/NTVNUDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png) [.pdf](figures/NTVNUDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.pdf) [#](#NTVNUDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap)](figures/NTVNUDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap.png){#NTVNUDMNFe_dw_NNPDF40_nnlo_as_01180_plot_normexpcovmat_heatmap} 
