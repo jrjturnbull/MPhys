@@ -1,8 +1,10 @@
+from matplotlib.colors import LogNorm
 import numpy as np
 import math
 from numpy import exp, float64
 import sys
 import os
+import matplotlib.pyplot as plt
 
 # CHECKS THAT ARGUMENTS HAVE BEEN SUPPLIED
 if (len(sys.argv) < 2):
@@ -102,3 +104,8 @@ for e in range(len(exp_covariance_matrix_list)):
 
 exp_covariance_matrix.dump("matrices/ECV_" + output_root + ".dat")
 exp_correlation_matrix.dump("matrices/ECR_" + output_root + ".dat")
+
+fig, ax = plt.subplots()
+im = ax.imshow(exp_covariance_matrix, cmap='jet', norm = LogNorm())
+plt.colorbar(im)
+plt.show()

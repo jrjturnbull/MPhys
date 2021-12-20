@@ -1,0 +1,17 @@
+meta:
+      author: Jamie Turnbull
+      title: Experimental covariance matrix for E605 dataset
+
+theoryid: 200
+
+pdf:  NNPDF40_nnlo_as_01180
+
+use_cuts: nocuts
+
+dataset_inputs:
+   -  {  dataset: DYE605_dw      }
+
+template:   template.md
+
+actions_:
+  - report(main=true)
