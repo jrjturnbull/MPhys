@@ -4,12 +4,15 @@ extract_exp.py
 
 Extracts the experimental covariance/correlation matrices from the various computed validphys tables:
     -   Reads in all groups_covmat csv files in ExpCov
+    -   Determines experimental covariance and correlation matrices
+    -   Outputs in pickled format to /matrices
+
+NOTE: CURRENTLY ONLY HARD-CODED FOR NON-ITERATED DATAFILES
 _________________________________________________________________________________________________________
 
 """
 
 import os
-from matplotlib.colors import LogNorm
 import numpy as np
 import math
 
@@ -22,11 +25,10 @@ for subdir, dirs, files in os.walk(rootdir):
         path = os.path.join(subdir, file)
         if "groups_covmat.csv" in path:
             table_paths.append(path)
+table_paths.sort() # correct ordering
 
-table_paths.sort()
-
+# EXTRACTS THE COVARIANCE MATRICES FOR EACH PATH
 cov_matrices = []
-
 for path in table_paths:
     with open(path) as covmat:
         data_rows = covmat.readlines()[4:] # ignore header rows
@@ -40,15 +42,16 @@ for path in table_paths:
     
     cov_matrices.append(cov)
 
+# MERGES THE COVARIANCE MATRICES INTO BLOCK DIAGONAL FORM
 dim = sum([c.shape[0] for c in cov_matrices])
 experimental_covariance = np.zeros(shape=(dim, dim))
-
 count = 0
 for c in cov_matrices:
     experimental_covariance[count:c.shape[0]+count, count:c.shape[0]+count] = c
     count += c.shape[0]
 
-to_cut = []
+# REMOVES ROWS/COLUMNS THAT CORRESPOND TO KINEMATIC CUTS
+to_cut = [] # indices of rows/columns to cut
 data_path = "datafiles/DATA/DATA_CombinedData_dw.dat"
 with open(data_path) as data:
     data_lines = data.readlines()[1:]
@@ -60,7 +63,7 @@ with open(data_path) as data:
 experimental_covariance = np.delete(experimental_covariance, to_cut, 0)
 experimental_covariance = np.delete(experimental_covariance, to_cut, 1)
 
-
+# DETERMINES THE ASSOCIATED CORRELATION MATRIX
 dim_cut = experimental_covariance.shape[0]
 experimental_correlation = np.zeros_like(experimental_covariance)
 for i in range(0, dim_cut):
@@ -69,5 +72,6 @@ for i in range(0, dim_cut):
         if not (norm == 0):
             experimental_correlation[i, j] = experimental_covariance[i,j] / norm
 
+# DUMPS ALL OUTPUT TO /MATRICES
 experimental_covariance.dump("matrices/ECV_" + "CombinedData_dw" + ".dat")
 experimental_correlation.dump("matrices/ECR_" + "CombinedData_dw" + ".dat")

@@ -6,11 +6,18 @@
     - *SYSTYPE*: the column headers for the DATA files
     - *THEORY*: the theoretical predictions, taken from validphys
 - **dt_comparison**: contains all files pertaining to the validphys data-theory comparisons
-- **matrices**: contains all computed matrices from covariance.py (cutoff lines removed):
-    - *CR*: the correlation matrix
-    - *CV*: the covariance matrix
-    - *CVN*: the covariance matrix, normalised to the theory
-    - *EXP*: the experimental data, taken from datafiles/DATA
+- **ExpCov**: contains validphys files for the experimental covariance matrices
+- **matrices**: contains all computed matrices from in pickled format (kinematic cuts applied):
+    - *CR*: the theory correlation matrix
+    - *CV*: the theory covariance matrix
+    - *CVN*: the theory covariance matrix, normalised to the theory
+    - *ECR*: the experimental correlation matrix
+    - *ECV*: the experimental covariance matrix
+    - *EVC*: the theory covariance eigenvectors (for non-zero eigenvalues)
+    - *EVCN*: the theory covariance eigenvectors, normalised to the theory
+    - *EVL*: the non-zero theory covariance eigenvalues
+    - *EVLN*: the theory covariance eigenvalues, normalised to the theory
+    - *EXP*: the raw experimental data, taken from datafiles/DATA
     - *NUA*: the nuclear uncertainty array
     - *TH*: the theory_central values, taken from datafiles/THEORY
 - **output**: contains all output files computed from output.py
@@ -21,7 +28,8 @@
     - *eigenvalues_plot*: plot of the covariance matrix eigenvalues, normalised to the theory
 
 #### Scripts
-- **covariance.py**: the main python script for this project
+- **covariance.py**: computes theory correlation/covariance matrices + eigenstuff for the supplied root
+- **extract_exp.py**: extracts the experimental covariance/correlation matrices from ExpCov
 - **extract_theory.py**: extracts theory_central values from the various computed validphys tables
 - **generate_combined.py**: merges data from different experiments (compatible with covariance.py)
 - **nuisance.py**: computes the nuisance parameter expectation values for the supplied root (***WORK IN PROGRESS!***)

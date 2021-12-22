@@ -7,8 +7,6 @@ Combines data from different experiments into a single DATA + SYSTYPE file pair 
     -   Determines the experiment with the fewest nuclear replicas
     -   Selects this number of replicas from each experiment
     -   Writes DATA and SYSTYPE files to the datafiles folder 
-
-NOTE: NOT FULLY COMMENTED
 _________________________________________________________________________________________________________
 
 """
