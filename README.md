@@ -1,7 +1,6 @@
 ### MPhys Project Repository
 #### Folders
 - **datafiles**: contains datafiles for the relevant experiments, including those from validphys (/dtcomparison):
-    - *CENTRAL*: the data_central values, taken from validphys
     - *DATA*: the raw data, including all nuclear uncertainties
     - *SYSTYPE*: the column headers for the DATA files
     - *THEORY*: the theoretical predictions, taken from validphys
