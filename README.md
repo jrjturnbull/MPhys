@@ -32,8 +32,8 @@
 - **extract_exp.py**: extracts the experimental covariance/correlation matrices from ExpCov
 - **extract_theory.py**: extracts theory_central values from the various computed validphys tables
 - **generate_combined.py**: merges data from different experiments (compatible with covariance.py)
-- **nuisance.py**: computes the nuisance parameter expectation values for the supplied root (***WORK IN PROGRESS!***)
+- **nuisance.py**: computes the nuisance parameter expectation values for the supplied root (***WIP!***)
 - **output.py**: generates graphical output files for the supplied root
 - **pdf_covariance.py**: computes the pdf covariance/correlation X matrices
 - **run_dw.sh**: runs the entire project (so far) for the deweighted (non-iterated) data files
-- **run_dw_ite.sh**: runs the entire project (so far) for the deweighted iterated data files
+- **run_dw_ite.sh**: runs the entire project (so far) for the deweighted iterated data files (unsupported)
