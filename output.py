@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm
+from matplotlib.colors import SymLogNorm
 from scipy.linalg import eigh
 import sys
 import math
-import pickle
+from matplotlib.colors import LinearSegmentedColormap
 
 # RETURNS DIAGONAL ELEMENT DIVIDED BY CORRESPONDING EXPERIMENTAL VALUE
 def compute_diagonal_element(i):
@@ -25,10 +25,17 @@ eigenvalues = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
 eigenvalues_norm = np.load("matrices/EVLN_" + root + ".dat", allow_pickle=True)
 eigenvectors = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
 eigenvectors_norm = np.load("matrices/EVCN_" + root + ".dat", allow_pickle=True)
+experimental_covariance_norm = np.load("matrices/ECVN_" + root + ".dat", allow_pickle=True)
 
 n_dat_nz = np.shape(nuclear_uncertainty_array)[0]
 n_nuis = np.shape(nuclear_uncertainty_array)[1]
 
+
+c = ["firebrick","red","chocolate","orange","sandybrown","peachpuff","lightyellow",
+        "honeydew","palegreen","aquamarine","mediumturquoise", "royalblue","midnightblue"]
+v = [0,.1,.2,.3,.4,.45,.5,.55,.6,.7,.8,.9,1]
+l = list(zip(v,reversed(c)))
+cmap=LinearSegmentedColormap.from_list('rg',l, N=256)
 
 """
 *********************************************************************************************************
@@ -37,17 +44,25 @@ ________________________________________________________________________________
 
 """
 
-# PLOT HEATMAP OF COVARIANCE MATRIX
+# PLOT HEATMAP OF NORMALISED EXPERIMENTAL COVARIANCE MATRIX
 fig, ax = plt.subplots()
-im = ax.imshow(covariance_matrix, cmap='jet', norm=LogNorm())
-plt.title("Covariance matrix for\n" + root)
+im = ax.imshow(covariance_matrix, cmap=cmap, norm=SymLogNorm(1e-5))
+plt.title("Normalised experimental covariance matrix for\n" + root)
 plt.colorbar(im)
-plt.savefig("output/covariance_matrix_heatmap_" + root + ".png")
+plt.savefig("output/experimental_covariance_norm_heatmap_" + root + ".png")
+
+# PLOT HEATMAP OF NORMALISED THEORETICAL COVARIANCE MATRIX
+fig.clear(True)
+fig, ax = plt.subplots()
+im = ax.imshow(covariance_matrix_norm, cmap=cmap, norm=SymLogNorm(1e-5))
+plt.title("Normalised theoretical covariance matrix for\n" + root)
+plt.colorbar(im)
+plt.savefig("output/theoretical_covariance_norm_heatmap_" + root + ".png")
 
 # PLOT HEATMAP OF CORRELATION MATRIX
 fig.clear(True)
 fig, ax = plt.subplots()
-im = ax.imshow(correlation_matrix, cmap='jet', vmin=-1, vmax=1)
+im = ax.imshow(correlation_matrix, cmap=cmap, vmin=-1, vmax=1)
 plt.title("Correlation matrix for\n" + root)
 plt.colorbar(im)
 plt.savefig("output/correlation_matrix_heatmap_" + root + ".png")
