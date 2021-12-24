@@ -15,4 +15,4 @@ dataset_inputs:
 template:   template.md
 
 actions_:
-  - report(main=true)
+  - report(main=false)

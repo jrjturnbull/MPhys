@@ -3,6 +3,30 @@
 # RUNS THE ENTIRE PROJECT (SO FAR) FOR THE DEWEIGHTED (NON-ITERATED) DATA FILES
 # REQUIRES DATA, SYSTYPE, THEORY FILES FOR EACH EXPERIMENT
 
+echo
+echo "Running data-theory comparisons..."
+echo
+
+for dir in dt_comparison/*/
+do
+    dir=${dir%*/}
+    cd $dir
+    validphys runcard.yaml
+    cd ../..
+done
+
+echo
+echo "Computing experimental covariance arrays..."
+echo
+
+for dir in ExpCov/*/
+do
+    dir=${dir%*/}
+    cd $dir
+    validphys runcard.yaml
+    cd ../..
+done
+
 python3 extract_exp.py
 python3 extract_theory.py
 

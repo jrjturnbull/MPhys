@@ -2,7 +2,7 @@
 *********************************************************************************************************
 covariance.py
 
-The main python script for this project:
+Computes theory correlation/covariance matrices + eigenstuff for the supplied root:
     -   Reads in and interprets DATA, SYSTYPE and THEORY files for supplied root
     -   Computes nuclear covariance & correlation matrices for given DATA file (ignoring zero rows)
     -   Normalises the covariance matrix to the theoretical data

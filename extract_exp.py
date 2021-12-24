@@ -16,6 +16,9 @@ import os
 import numpy as np
 import math
 
+print()
+print("Extracting experimental covariance matrices from ExpCov")
+
 rootdir = "ExpCov"
 table_paths = []
 
@@ -30,6 +33,7 @@ table_paths.sort() # correct ordering
 # EXTRACTS THE COVARIANCE MATRICES FOR EACH PATH
 cov_matrices = []
 for path in table_paths:
+    print("Extracting data from: " + path)
     with open(path) as covmat:
         data_rows = covmat.readlines()[4:] # ignore header rows
 
@@ -43,6 +47,7 @@ for path in table_paths:
     cov_matrices.append(cov)
 
 # MERGES THE COVARIANCE MATRICES INTO BLOCK DIAGONAL FORM
+print("Computing experimental covariance matrix")
 dim = sum([c.shape[0] for c in cov_matrices])
 experimental_covariance = np.zeros(shape=(dim, dim))
 count = 0
@@ -64,6 +69,7 @@ experimental_covariance = np.delete(experimental_covariance, to_cut, 0)
 experimental_covariance = np.delete(experimental_covariance, to_cut, 1)
 
 # DETERMINES THE ASSOCIATED CORRELATION MATRIX
+print("Computing experimental correlation matrix")
 dim_cut = experimental_covariance.shape[0]
 experimental_correlation = np.zeros_like(experimental_covariance)
 for i in range(0, dim_cut):

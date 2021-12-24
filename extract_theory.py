@@ -10,6 +10,9 @@ ________________________________________________________________________________
 
 """
 
+print()
+print("Extracting theory data from dt_comparison")
+
 import os
 rootdir = "dt_comparison"
 table_paths = []

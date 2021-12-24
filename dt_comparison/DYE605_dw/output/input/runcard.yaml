@@ -16,4 +16,4 @@ dataset_inputs:
 template: dthcomparison.md
 
 actions_:
-  - report(main=true)
+  - report(main=false)

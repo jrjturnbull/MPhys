@@ -13,6 +13,6 @@ dataset_inputs:
 
 template: dthcomparison.md
 actions_:
-- report(main=true)
+- report(main=false)
 data_grouping_recorded_spec_:
   standard_report: experiment

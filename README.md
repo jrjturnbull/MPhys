@@ -1,6 +1,6 @@
 ### MPhys Project Repository
 #### Folders
-- **datafiles**: contains datafiles for the relevant experiments, including those from validphys (/dtcomparison):
+- **datafiles**: contains datafiles for the relevant experiments, including those from validphys (no cuts applied):
     - *DATA*: the raw data, including all nuclear uncertainties
     - *SYSTYPE*: the column headers for the DATA files
     - *THEORY*: the theoretical predictions, taken from validphys
@@ -17,6 +17,7 @@
     - *EVL*: the non-zero theory covariance eigenvalues
     - *EVLN*: the theory covariance eigenvalues, normalised to the theory
     - *EXP*: the raw experimental data, taken from datafiles/DATA
+    - *NPE*: the nuisance parameter expectation values
     - *NUA*: the nuclear uncertainty array
     - *TH*: the theory_central values, taken from datafiles/THEORY
 - **output**: contains all output files computed from output.py
@@ -33,5 +34,6 @@
 - **generate_combined.py**: merges data from different experiments (compatible with covariance.py)
 - **nuisance.py**: computes the nuisance parameter expectation values for the supplied root (***WORK IN PROGRESS!***)
 - **output.py**: generates graphical output files for the supplied root
+- **pdf_covariance.py**: computes the pdf covariance/correlation X matrices
 - **run_dw.sh**: runs the entire project (so far) for the deweighted (non-iterated) data files
 - **run_dw_ite.sh**: runs the entire project (so far) for the deweighted iterated data files
