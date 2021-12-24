@@ -21,11 +21,6 @@
     - *NUA*: the nuclear uncertainty array
     - *TH*: the theory_central values, taken from datafiles/THEORY
 - **output**: contains all output files computed from output.py
-    - *correlation_matrix*: heatmap of the theory correlation matrix
-    - *covariance_matrix*: heatmap of the theory covariance matrix (not normalised)
-    - *diagonal_elements*: plot of the covariance matrix diagonal elements, normalised to the experimental data
-    - *eigenvalues_data*: raw covariance matrix eigenvalues, normalised to the theory
-    - *eigenvalues_plot*: plot of the covariance matrix eigenvalues, normalised to the theory
 
 #### Scripts
 - **covariance.py**: computes theory correlation/covariance matrices + eigenstuff for the supplied root
