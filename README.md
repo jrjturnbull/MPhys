@@ -21,19 +21,14 @@
     - *NUA*: the nuclear uncertainty array
     - *TH*: the theory_central values, taken from datafiles/THEORY
 - **output**: contains all output files computed from output.py
-    - *correlation_matrix*: heatmap of the theory correlation matrix
-    - *covariance_matrix*: heatmap of the theory covariance matrix (not normalised)
-    - *diagonal_elements*: plot of the covariance matrix diagonal elements, normalised to the experimental data
-    - *eigenvalues_data*: raw covariance matrix eigenvalues, normalised to the theory
-    - *eigenvalues_plot*: plot of the covariance matrix eigenvalues, normalised to the theory
 
 #### Scripts
 - **covariance.py**: computes theory correlation/covariance matrices + eigenstuff for the supplied root
 - **extract_exp.py**: extracts the experimental covariance/correlation matrices from ExpCov
 - **extract_theory.py**: extracts theory_central values from the various computed validphys tables
 - **generate_combined.py**: merges data from different experiments (compatible with covariance.py)
-- **nuisance.py**: computes the nuisance parameter expectation values for the supplied root (***WORK IN PROGRESS!***)
+- **nuisance.py**: computes the nuisance parameter expectation values for the supplied root (***WIP!***)
 - **output.py**: generates graphical output files for the supplied root
 - **pdf_covariance.py**: computes the pdf covariance/correlation X matrices
 - **run_dw.sh**: runs the entire project (so far) for the deweighted (non-iterated) data files
-- **run_dw_ite.sh**: runs the entire project (so far) for the deweighted iterated data files
+- **run_dw_ite.sh**: runs the entire project (so far) for the deweighted iterated data files (unsupported)
