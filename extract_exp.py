@@ -19,8 +19,6 @@ import math
 print()
 print("Extracting experimental covariance matrices from ExpCov")
 
-theory_values = np.load("matrices/TH_CombinedData_dw.dat", allow_pickle=True)
-
 rootdir = "ExpCov"
 table_paths = []
 
@@ -30,7 +28,7 @@ for subdir, dirs, files in os.walk(rootdir):
         path = os.path.join(subdir, file)
         if "groups_covmat.csv" in path:
             table_paths.append(path)
-table_paths.sort() # correct ordering
+table_paths.sort() # ensures correct ordering
 
 # EXTRACTS THE COVARIANCE MATRICES FOR EACH PATH
 cov_matrices = []

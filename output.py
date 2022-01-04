@@ -1,12 +1,12 @@
 """
 --------------------------------------------------------------------------
-TO BE REWRITTEN....
+TO BE ADDED TO....
 --------------------------------------------------------------------------
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.colors import SymLogNorm
+from matplotlib.colors import LogNorm, SymLogNorm
 from scipy.linalg import eigh
 import sys
 import math
@@ -34,7 +34,7 @@ pdf_covariance_matrix = np.load("matrices/XCV_" + root + ".dat", allow_pickle=Tr
 n_dat_nz = np.shape(nuclear_uncertainty_array)[0]
 n_nuis = np.shape(nuclear_uncertainty_array)[1]
 
-
+# ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
 c = ["firebrick","red","chocolate","orange","sandybrown","peachpuff","lightyellow",
         "honeydew","palegreen","aquamarine","mediumturquoise", "royalblue","midnightblue"]
 v = [0,.1,.2,.3,.4,.45,.5,.55,.6,.7,.8,.9,1]
@@ -47,6 +47,18 @@ OUTPUT
 _________________________________________________________________________________________________________
 
 """
+
+# HEATMAP OF EXPERIMENTAL COVARIANCE MATRIX
+experimental_covariance_matrix_norm = np.zeros_like(experimental_covariance_matrix)
+for i in range(len(experimental_covariance_matrix)):
+    for j in range(len(experimental_covariance_matrix)):
+        experimental_covariance_matrix_norm[i,j] = experimental_covariance_matrix[i,j] / (theory_data[i] * theory_data[j])
+plt.imshow(experimental_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-100, vmax=100), cmap=cmap)
+plt.colorbar()
+plt.title("Heatmap of experimental covariance matrix, normalised to the theory")
+plt.show()
+plt.clf()
+
 
 # PLOT OF DIAGONAL ELEMENTS NORMALISED TO THE THEORY
 C_norm = np.zeros(shape = len(experimental_covariance_matrix))
@@ -65,7 +77,20 @@ for i in range(l):
     X_norm[i] = pdf_covariance_matrix[i,i] / (theory_data[i] * theory_data[i])
 
 x = np.arange(len(C_norm))
-#plt.scatter(x, C_norm, c='g')
+plt.scatter(x, C_norm, c='g', s=1.5)
 plt.scatter(x, S_norm, c='b', s=1.5)
 plt.scatter(x, X_norm, c='r', s=1.5)
+plt.title("Diagonal elements of C (green), S (blue), X (red), normalised to the theory")
 plt.show()
+plt.clf()
+
+# NON-ZERO EIGENVALUES
+nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-5]
+eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])[::-1]
+
+x = np.arange(len(eigenvalues_nz))
+plt.scatter(x, eigenvalues_nz, s=1.5)
+plt.title("Non-zero eigenvalues of S")
+plt.yscale('log')
+plt.show()
+plt.clf()
