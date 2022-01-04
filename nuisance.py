@@ -5,6 +5,7 @@ import math
 import sys
 from numpy.core.fromnumeric import shape
 import matplotlib.pyplot as plt
+from numpy.linalg.linalg import eig
 
 print()
 
@@ -20,40 +21,110 @@ nuclear_uncertainty_array = np.load("matrices/NUA_" + root + ".dat", allow_pickl
 exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
 theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
 eigenvectors = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
+eigenvalues = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
 x_matrix = np.load("matrices/XCV_" + root + ".dat", allow_pickle=True)
 
-n_nuis = shape(nuclear_uncertainty_array)[1]
+# EXTRACTS NONZERO EIGENVALUES
+nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-5]
+eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])
+eigenvectors_nz = np.array([eigenvectors[i] for i in nz_eigen])
+
+l = len(eigenvalues_nz)
 
 # COMPUTES THE NUISANCE PARAMETER EXPECTATION VALUES
-print("Computing nuisance parameter expectation values (NPEs)")
-nuisance_params = np.zeros(shape=n_nuis, dtype=float64)
+nuisance_params = np.zeros(shape=l, dtype=float64)
 CS = inv(th_covariance_matrix + exp_covariance_matrix)
-for a in range(0, len(eigenvectors)):
-    beta = nuclear_uncertainty_array[:, a]
-    mat = np.matmul(beta, CS)
+
+for a in range(0, l):
+    print("Computing NPE {0} of {1}...".format(a+1, l), end='\r')
+    beta = eigenvectors_nz[a]
+
+    mat = np.einsum('j,ij',beta,CS)
     TD = theory_data - exp_data
-    nuisance_params[a] = np.matmul(mat, TD)
+    nuisance_params[a] = np.einsum('i,i', mat, TD)
+    
+print("Computed all NPEs                                          ")
+print(eigenvalues_nz)
+
+"""
+*********************************************************************************************************
+UNCERTAINTIES
+_________________________________________________________________________________________________________
+
+"""
+
+def t1(a, b):
+    e = 1 if a == b else 0
+    return e
+
+def t2(a, b):
+    beta_a = eigenvectors_nz[a]
+    beta_b = eigenvectors_nz[b]
+    
+    e = 0
+    for i in range(l):
+        for j in range(l):
+            e += beta_a[i] * CS[i,j] * beta_b[j]
+    return e
+
+def t3(a, b): # manual index sums
+    beta_a = eigenvectors_nz[a]
+    beta_b = eigenvectors_nz[b]
+
+    vec1 = np.zeros(shape=l)
+    for i in range(l):
+        x = 0
+        for j in range(l):
+            x += beta_a[i] * CS[i,j]
+        vec1[i] = x
+    
+    vec2 = np.zeros(shape=l)
+    for i in range(l):
+        x = 0
+        for j in range(l):
+            x += CS[i,j] * beta_b[j]
+        vec2[i] = x
+    
+    e = 0
+    for i in range(l):
+        for j in range(l):
+            e += vec1[i] * x_matrix[i,j] * beta_b[j]
+    return e
 
 # COMPUTES THE NUCLEAR, PDF AND TOTAL UNCERTAINTIES
-print("Computing NPE uncertainties...")
-Z = np.zeros(shape=(len(eigenvectors),len(eigenvectors)))
-Z_bar = np.zeros(shape=(len(eigenvectors),len(eigenvectors)))
-Z_pdf = np.zeros(shape=(len(eigenvectors),len(eigenvectors)))
-for a in range(0, len(eigenvectors)):
-    print("Computing Z-matrix row {0} of {1}...".format(a+1, len(eigenvectors)), end='\r')
-    for b in range(0, len(eigenvectors)):
-        beta_a = nuclear_uncertainty_array[:, a]
-        beta_b = nuclear_uncertainty_array[:, b]
-        t_1 = 1 if a == b else 0
-        t_2 = np.matmul(beta_a, np.matmul(CS, beta_b))
-        t_3 = np.matmul(beta_a, np.matmul(CS, np.matmul(x_matrix, np.matmul(CS, beta_b))))
+Z = np.zeros(shape=(l,l))
+Z_bar = np.zeros(shape=(l,l))
+Z_pdf = np.zeros(shape=(l,l))
+for a in range(l):
+    print("Computing NPE uncertainty {0} of {1}...".format(a+1, l), end='\r')
+    for b in range(l):
+        t_1 = t1(a,b)
+        t_2 = t2(a,b)
+        t_3 = t3(a,b)
+
         Z[a,b] = t_1 - t_2
         Z_pdf[a,b] = -t_3
         Z_bar[a,b] = t_1 - t_2 - t_3
-print("Computed all Z-matrix rows                                        ")
-uncertainties_nuc = [math.sqrt(Z[i,i]) for i in range(len(eigenvectors))]
-uncertainties_pdf = [math.sqrt(Z_pdf[i,i]) for i in range(len(eigenvectors))]
-uncertainties_tot = [math.sqrt(Z_bar[i,i]) for i in range(len(eigenvectors))]
+print("Computed all NPE uncertainties                                        ")
+
+for i in range(l):
+    print(Z[i,i], end='\t')
+    print(Z_pdf[i,i], end='\t')
+    print(Z_bar[i,i])
+
+"""
+
+uncertainties_nuc = np.array([math.sqrt(abs(Z[i,i])) for i in range(l)])
+uncertainties_pdf = [math.sqrt(abs(Z_pdf[i,i])) for i in range(l)]
+uncertainties_tot = [math.sqrt(abs(Z_bar[i,i])) for i in range(l)]
+
+
+x = np.arange(len(nuisance_params))
+y = nuisance_params
+plt.scatter(x,y)
+plt.errorbar(x,y,yerr=uncertainties_nuc, ls='none')
+plt.show()
+
 
 # DUMPS MATRICES TO FILE
 nuisance_params.dump("matrices/NPE_" + root + ".dat")
@@ -63,3 +134,5 @@ Z_bar.dump("matrices/ZN_" + root + ".dat")
 uncertainties_nuc.dump("matrices/ZNE_" + root + ".dat")
 uncertainties_pdf.dump("matrices/ZPE_" + root + ".dat")
 uncertainties_tot.dump("matrices/ZTE_" + root + ".dat")
+
+"""

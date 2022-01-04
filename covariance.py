@@ -158,28 +158,13 @@ for i in range(0, n_dat_nz):
 print("Computed all {0} correlation elements                            ".format(n_dat_nz*n_dat_nz))
 print("Sparsity of correlation matrix: " + "{:.2%}".format(compute_sparsity(correlation_matrix)))
 
-# NORMALISE THE COVARIANCE MATRIX
-covariance_matrix_norm = np.zeros_like(covariance_matrix)
-for i in range(0, n_dat_nz):
-    for j in range(0, n_dat_nz):
-        print("Normalising covariance element {0} of {1}...".format(i*n_dat_nz + j + 1, n_dat_nz*n_dat_nz), end='\r')
-        covariance_matrix_norm[i, j] = covariance_matrix[i, j] / (theory_values[i] * theory_values[j])
-print("Normalised all {0} covariance elements                            ".format(n_dat_nz*n_dat_nz))
-
 # EIGENSTUFF
 w, v = eigh(covariance_matrix)
-nz_eigen = [i for i in range(len(w)) if w[i] > 1e-6]
-eigenvalues_cov = [w[i] for i in nz_eigen]
-eigenvectors_cov = [v[i] for i in nz_eigen]
+#nz_eigen = [i for i in range(len(w)) if w[i] > 1e-3]       non-zero filter moved to nuisance.py
+eigenvalues_cov = w #[w[i] for i in nz_eigen]
+eigenvectors_cov = v #[v[i] for i in nz_eigen]
 eval = np.array(eigenvalues_cov)
 evec = np.array(eigenvectors_cov)
-
-w, v = eigh(covariance_matrix_norm)
-nz_eigen = [i for i in range(len(w)) if w[i] > 1e-6]
-eigenvalues_cov = [w[i] for i in nz_eigen]
-eigenvectors_cov = [v[i] for i in nz_eigen]
-eval_norm = np.array(eigenvalues_cov)
-evec_norm = np.array(eigenvectors_cov)
 
 """
 *********************************************************************************************************
@@ -191,14 +176,11 @@ ________________________________________________________________________________
 # SAVE ALL COMPUTED MATRICES
 nuclear_uncertainty_array.dump("matrices/NUA_" + root + ".dat")
 covariance_matrix.dump("matrices/CV_" + root + ".dat")
-covariance_matrix_norm.dump("matrices/CVN_" + root + ".dat")
 correlation_matrix.dump("matrices/CR_" + root + ".dat")
 experimental_data.dump("matrices/EXP_" + root + ".dat")
 theory_values.dump("matrices/TH_" + root + ".dat")
 
 eval.dump("matrices/EVL_" + root + ".dat")
-eval_norm.dump("matrices/EVLN_" + root + ".dat")
 evec.dump("matrices/EVC_" + root + ".dat")
-evec_norm.dump("matrices/EVCN_" + root + ".dat")
 
 print()

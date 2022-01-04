@@ -70,15 +70,7 @@ with open(data_path) as data:
 experimental_covariance = np.delete(experimental_covariance, to_cut, 0)
 experimental_covariance = np.delete(experimental_covariance, to_cut, 1)
 
-# NORMALISES THE COVARIANCE MATRIX TO THE THEORETICAL PREDICTIONS
-experimental_covariance_norm = np.zeros_like(experimental_covariance)
 dim_cut = experimental_covariance.shape[0]
-for i in range(dim_cut):
-    for j in range(dim_cut):
-        if experimental_covariance[i,j] == 0:
-            experimental_covariance_norm[i,j] = 0
-        else:
-            experimental_covariance_norm[i,j] = experimental_covariance[i,j] / (theory_values[i] * theory_values[j])
 
 # DETERMINES THE ASSOCIATED CORRELATION MATRIX
 print("Computing experimental correlation matrix")
@@ -91,5 +83,4 @@ for i in range(0, dim_cut):
 
 # DUMPS ALL OUTPUT TO /MATRICES
 experimental_covariance.dump("matrices/ECV_" + "CombinedData_dw" + ".dat")
-experimental_covariance_norm.dump("matrices/ECVN_" + "CombinedData_dw" + ".dat")
 experimental_correlation.dump("matrices/ECR_" + "CombinedData_dw" + ".dat")

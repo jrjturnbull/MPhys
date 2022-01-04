@@ -40,6 +40,8 @@ python3 covariance.py "CombinedData_dw"
 
 python3 extract_exp.py
 
-python3 nuisance.py "CombinedData_dw"
+python3 pdf_covariance.py
 
-python3 output.py "CombinedData_dw"
+# python3 nuisance.py "CombinedData_dw"
+# python3 output.py "CombinedData_dw"           STILL WORKING ON THESE
+# python3 autoprediction.py
