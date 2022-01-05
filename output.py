@@ -57,6 +57,7 @@ plt.imshow(experimental_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-100, 
 plt.colorbar()
 plt.title("Heatmap of experimental covariance matrix, normalised to the theory")
 plt.show()
+plt.savefig("output/exp_covariance")
 plt.clf()
 
 
@@ -82,6 +83,7 @@ plt.scatter(x, S_norm, c='b', s=1.5)
 plt.scatter(x, X_norm, c='r', s=1.5)
 plt.title("Diagonal elements of C (green), S (blue), X (red), normalised to the theory")
 plt.show()
+plt.savefig("output/diagonal_elements.png")
 plt.clf()
 
 # NON-ZERO EIGENVALUES
@@ -90,7 +92,8 @@ eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])[::-1]
 
 x = np.arange(len(eigenvalues_nz))
 plt.scatter(x, eigenvalues_nz, s=1.5)
-plt.title("Non-zero eigenvalues of S")
+plt.title("Non-zero eigenvalues of S (cutoff = 1e-5)")
 plt.yscale('log')
 plt.show()
+plt.savefig("output/nz_eigenvalues.png")
 plt.clf()
