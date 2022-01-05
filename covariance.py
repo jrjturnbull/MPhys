@@ -146,8 +146,9 @@ for i in range(0, n_dat_nz):
     for j in range(0, n_dat_nz):
         print("Computing covariance element {0} of {1}...".format(i*n_dat_nz + j + 1, n_dat_nz*n_dat_nz), end='\r')
         covariance_matrix[i, j] = compute_covariance_element(i, j, n_nuis)
+
 print("Computed all {0} covariance elements                                      ".format(n_dat_nz*n_dat_nz))
-print("Sparsity of covariance matrix: " + "{:.2%}".format(compute_sparsity(covariance_matrix)))
+#print("Sparsity of covariance matrix: " + "{:.2%}".format(compute_sparsity(covariance_matrix)))
 
 # DETERMINE THE CORRELATION MATRIX
 correlation_matrix = np.zeros_like(covariance_matrix)
@@ -156,7 +157,7 @@ for i in range(0, n_dat_nz):
         print("Computing correlation element {0} of {1}...".format(i*n_dat_nz + j + 1, n_dat_nz*n_dat_nz), end='\r')
         correlation_matrix[i, j] = compute_correlation_element(i, j)
 print("Computed all {0} correlation elements                            ".format(n_dat_nz*n_dat_nz))
-print("Sparsity of correlation matrix: " + "{:.2%}".format(compute_sparsity(correlation_matrix)))
+#print("Sparsity of correlation matrix: " + "{:.2%}".format(compute_sparsity(correlation_matrix)))
 
 # EIGENSTUFF
 w, v = eigh(covariance_matrix)

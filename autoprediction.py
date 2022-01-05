@@ -24,18 +24,12 @@ TD_diff = -np.divide(TD, theory_data) # the differences between theory and data 
 
 
 
-# DETERMINE AUTOPREDICTION COVARIANCE AND CORRELATION MATRICES
+# DETERMINE AUTOPREDICTION COVARIANCE MATRIX
 term_1 = np.einsum('ij,jk,kl,lm,mn->in', exp_covariance_matrix, CS, x_matrix, CS, exp_covariance_matrix, optimize='optimal')
 term_2 = th_covariance_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix, CS, th_covariance_matrix, optimize='optimal')
 autoprediction = term_1 + term_2
 
-autoprediction_corr = np.zeros_like(autoprediction)
-for i in range(len(autoprediction)):
-    for j in range(len(autoprediction)):
-            autoprediction_corr[i,j] = autoprediction[i,j] / sqrt(autoprediction[i,i] * autoprediction[j,j])
-
-autoprediction_cons = x_matrix + th_covariance_matrix
-
+# autoprediction.dump("matrices/AP_CombinedData_dw.dat")
 
 
 # DETERMINE CONTRIBUTIONS TO THE DIAGONAL ELEMENTS OF THE CORRELATED THEORY & PDF UNCERTAINTIES
@@ -44,3 +38,8 @@ th_contribution_2 = th_contribution_1 + np.einsum('ij,jk,kl,lm,mn->in', th_covar
 
 x_contribution_1 = np.einsum('ij,jk,kl,lm,mn->in', exp_covariance_matrix, CS, x_matrix, CS, exp_covariance_matrix)
 x_contribution_2 = x_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix,CS,x_matrix) - np.einsum('ij,jk,kl->il', x_matrix,CS, th_covariance_matrix)
+
+# th_contribution_1.dump("matrices/TH1_CombinedData_dw.dat")
+# th_contribution_2.dump("matrices/TH2_CombinedData_dw.dat")
+# x_contribution_1.dump("matrices/X1_CombinedData_dw.dat")
+# x_contribution_2.dump("matrices/X2_CombinedData_dw.dat")
