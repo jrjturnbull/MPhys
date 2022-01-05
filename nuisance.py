@@ -17,7 +17,6 @@ else:
 # LOADS ALL REQUIRED MATRICES
 th_covariance_matrix = np.load("matrices/CV_" + root + ".dat", allow_pickle=True)
 exp_covariance_matrix = np.load("matrices/ECV_" + root + ".dat", allow_pickle=True)
-nuclear_uncertainty_array = np.load("matrices/NUA_" + root + ".dat", allow_pickle=True)
 exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
 theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
 eigenvectors = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
@@ -39,7 +38,7 @@ for a in range(0, l):
     print("Computing NPE {0} of {1}...".format(a+1, l), end='\r')
     beta = eigenvectors_nz[a]
 
-    mat = np.einsum('j,ij',beta,CS)
+    mat = np.einsum('i,ij',beta,CS)
     TD = theory_data - exp_data
     nuisance_params[a] = np.einsum('i,i', mat, TD)
     
@@ -53,6 +52,8 @@ ________________________________________________________________________________
 
 """
 
+# FUNCTIONS TO RETURN THE THREE TERMS USED FOR THE UNCERTAINTIES
+
 def t1(a, b):
     e = 1 if a == b else 0
     return e
@@ -61,34 +62,16 @@ def t2(a, b):
     beta_a = eigenvectors_nz[a]
     beta_b = eigenvectors_nz[b]
     
-    e = 0
-    for i in range(l):
-        for j in range(l):
-            e += beta_a[i] * CS[i,j] * beta_b[j]
+    e = np.einsum('i,ij,j', beta_a, CS, beta_b)
+
     return e
 
-def t3(a, b): # manual index sums
+def t3(a, b):
     beta_a = eigenvectors_nz[a]
     beta_b = eigenvectors_nz[b]
 
-    vec1 = np.zeros(shape=l)
-    for i in range(l):
-        x = 0
-        for j in range(l):
-            x += beta_a[i] * CS[i,j]
-        vec1[i] = x
-    
-    vec2 = np.zeros(shape=l)
-    for i in range(l):
-        x = 0
-        for j in range(l):
-            x += CS[i,j] * beta_b[j]
-        vec2[i] = x
-    
-    e = 0
-    for i in range(l):
-        for j in range(l):
-            e += vec1[i] * x_matrix[i,j] * beta_b[j]
+    e = np.einsum('i,ij,jk,kl,l', beta_a, CS, x_matrix, CS, beta_b)
+
     return e
 
 # COMPUTES THE NUCLEAR, PDF AND TOTAL UNCERTAINTIES
@@ -112,11 +95,12 @@ for i in range(l):
     print(Z_pdf[i,i], end='\t')
     print(Z_bar[i,i])
 
-"""
 
-uncertainties_nuc = np.array([math.sqrt(abs(Z[i,i])) for i in range(l)])
-uncertainties_pdf = [math.sqrt(abs(Z_pdf[i,i])) for i in range(l)]
-uncertainties_tot = [math.sqrt(abs(Z_bar[i,i])) for i in range(l)]
+""" CURRENTLY DOESN'T WORK AS Z IS SOMETIMES LESS THAN ONE (WHICH IT SHOULDN'T BE...)
+
+uncertainties_nuc = np.array([math.sqrt(Z[i,i]) for i in range(l)])
+uncertainties_pdf = [math.sqrt(Z_pdf[i,i]) for i in range(l)]
+uncertainties_tot = [math.sqrt(Z_bar[i,i]) for i in range(l)]
 
 
 x = np.arange(len(nuisance_params))

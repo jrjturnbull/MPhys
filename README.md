@@ -13,22 +13,23 @@
     - *ECR*: the experimental correlation matrix
     - *ECV*: the experimental covariance matrix
     - *EVC*: the theory covariance eigenvectors (for non-zero eigenvalues)
-    - *EVCN*: the theory covariance eigenvectors, normalised to the theory
     - *EVL*: the non-zero theory covariance eigenvalues
-    - *EVLN*: the theory covariance eigenvalues, normalised to the theory
     - *EXP*: the raw experimental data, taken from datafiles/DATA
     - *NPE*: the nuisance parameter expectation values
     - *NUA*: the nuclear uncertainty array
     - *TH*: the theory_central values, taken from datafiles/THEORY
+    - *XCR*: the pdf correlation 'X' matrix
+    - *XCV*: the pdf covariance 'X' matrix
 - **output**: contains all output files computed from output.py
 
 #### Scripts
+- **autoprediction.py**: computes the autoprediction shifts and matrices (***WIP!***)
 - **covariance.py**: computes theory correlation/covariance matrices + eigenstuff for the supplied root
 - **extract_exp.py**: extracts the experimental covariance/correlation matrices from ExpCov
 - **extract_theory.py**: extracts theory_central values from the various computed validphys tables
 - **generate_combined.py**: merges data from different experiments (compatible with covariance.py)
 - **nuisance.py**: computes the nuisance parameter expectation values for the supplied root (***WIP!***)
-- **output.py**: generates graphical output files for the supplied root
+- **output.py**: generates graphical output files for the supplied root (***WIP!***)
 - **pdf_covariance.py**: computes the pdf covariance/correlation X matrices
 - **run_dw.sh**: runs the entire project (so far) for the deweighted (non-iterated) data files
 - **run_dw_ite.sh**: runs the entire project (so far) for the deweighted iterated data files (unsupported)

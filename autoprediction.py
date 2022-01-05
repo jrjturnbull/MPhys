@@ -7,11 +7,8 @@ root = "CombinedData_dw"
 
 th_covariance_matrix = np.load("matrices/CV_" + root + ".dat", allow_pickle=True)
 exp_covariance_matrix = np.load("matrices/ECV_" + root + ".dat", allow_pickle=True)
-nuclear_uncertainty_array = np.load("matrices/NUA_" + root + ".dat", allow_pickle=True)
 exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
 theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
-eigenvectors = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
-eigenvalues = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
 x_matrix = np.load("matrices/XCV_" + root + ".dat", allow_pickle=True)
 
 CS = inv(exp_covariance_matrix + th_covariance_matrix)

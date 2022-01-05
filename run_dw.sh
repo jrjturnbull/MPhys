@@ -2,6 +2,8 @@
 
 # RUNS THE ENTIRE PROJECT (SO FAR) FOR THE DEWEIGHTED (NON-ITERATED) DATA FILES
 # REQUIRES DATA, SYSTYPE, THEORY FILES FOR EACH EXPERIMENT
+#
+# Note: this file is more useful for simply seeing dependencies
 
 echo
 echo "Running data-theory comparisons..."
