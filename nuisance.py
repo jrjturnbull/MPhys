@@ -38,7 +38,7 @@ for a in range(0, l):
     print("Computing NPE {0} of {1}...".format(a+1, l), end='\r')
     beta = eigenvectors_nz[a]
 
-    mat = np.einsum('i,ij',beta,CS)
+    mat = np.einsum('i,ij->j',beta,CS)
     TD = theory_data - exp_data
     nuisance_params[a] = np.einsum('i,i', mat, TD)
     
@@ -96,7 +96,7 @@ for i in range(l):
     print(Z_bar[i,i])
 
 
-""" CURRENTLY DOESN'T WORK AS Z IS SOMETIMES LESS THAN ONE (WHICH IT SHOULDN'T BE...)
+""" CURRENTLY DOESN'T WORK AS Z IS SOMETIMES NEGATIVE (WHICH IT SHOULDN'T BE...)
 
 uncertainties_nuc = np.array([math.sqrt(Z[i,i]) for i in range(l)])
 uncertainties_pdf = [math.sqrt(Z_pdf[i,i]) for i in range(l)]
