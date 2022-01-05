@@ -43,4 +43,4 @@ th_contribution_1 = th_covariance_matrix - np.einsum('ij,jk,kl->il', th_covarian
 th_contribution_2 = th_contribution_1 + np.einsum('ij,jk,kl,lm,mn->in', th_covariance_matrix, CS, x_matrix, CS, th_covariance_matrix)
 
 x_contribution_1 = np.einsum('ij,jk,kl,lm,mn->in', exp_covariance_matrix, CS, x_matrix, CS, exp_covariance_matrix)
-x_contribution_2 = x_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix,CS,x_matrix) - np.einsum('ij,jk,kl->il', x_matrix,CS,th_covariance_matrix)
+x_contribution_2 = x_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix,CS,x_matrix) - np.einsum('ij,jk,kl->il', x_matrix,CS, th_covariance_matrix)
