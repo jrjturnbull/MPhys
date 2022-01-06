@@ -16,19 +16,16 @@ import os
 import numpy as np
 import math
 
+import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm, SymLogNorm
+
 print()
 print("Extracting experimental covariance matrices from ExpCov")
 
 rootdir = "ExpCov"
 table_paths = []
 
-# ITERATE THROUGH EACH VALIDPHYS FOLDER AND LOCATE GROUPS_COVMAT PATHS
-for subdir, dirs, files in os.walk(rootdir):
-    for file in files:
-        path = os.path.join(subdir, file)
-        if "groups_covmat.csv" in path:
-            table_paths.append(path)
-table_paths.sort() # ensures correct ordering
+table_paths = np.array(["ExpCov/Nuclear/output/tables/groups_covmat.csv"]) # in array form to work with older code
 
 # EXTRACTS THE COVARIANCE MATRICES FOR EACH PATH
 cov_matrices = []
@@ -78,6 +75,10 @@ for i in range(0, dim_cut):
         norm = math.sqrt(experimental_covariance[i,i] * experimental_covariance[j,j])
         if not (norm == 0):
             experimental_correlation[i, j] = experimental_covariance[i,j] / norm
+
+#plt.imshow(experimental_covariance, norm=SymLogNorm(1e-4,vmin=-100, vmax=100), cmap='jet')
+#plt.colorbar()
+#plt.show()
 
 # DUMPS ALL OUTPUT TO /MATRICES
 experimental_covariance.dump("matrices/ECV_" + "CombinedData_dw" + ".dat")

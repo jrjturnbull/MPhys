@@ -24,17 +24,20 @@ eigenvectors = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
 experimental_covariance_matrix = np.load("matrices/ECV_" + root + ".dat", allow_pickle=True)
 pdf_covariance_matrix = np.load("matrices/XCV_" + root + ".dat", allow_pickle=True)
 
-# nuisance_parameters = np.load("matrices/NPE_" + root + ".dat", allow_pickle=True)
-# uncertainties_nuc = np.load("matrices/ZNE_" + root + ".dat", allow_pickle=True)
-# uncertainties_pdf = np.load("matrices/ZPE_" + root + ".dat", allow_pickle=True)
-# uncertainties_tot = np.load("matrices/ZTE_" + root + ".dat", allow_pickle=True)
+nuisance_parameters = np.load("matrices/NPE_" + root + ".dat", allow_pickle=True)
+uncertainties_nuc = np.load("matrices/ZNE_" + root + ".dat", allow_pickle=True)
+uncertainties_pdf = np.load("matrices/ZPE_" + root + ".dat", allow_pickle=True)
+uncertainties_tot = np.load("matrices/ZTE_" + root + ".dat", allow_pickle=True)
 
-# autoprediction = np.load("matrices/AP_" + root + ".dat", allow_pickle=True)
+autoprediction = np.load("matrices/AP_" + root + ".dat", allow_pickle=True)
 
-# th_contribution_1 = np.load("matrices/TH1_" + root + ".dat", allow_pickle=True)
-# th_contribution_2 = np.load("matrices/TH2_" + root + ".dat", allow_pickle=True)
-# x_contribution_1 = np.load("matrices/X1_" + root + ".dat", allow_pickle=True)
-# x_contribution_2 = np.load("matrices/X2_" + root + ".dat", allow_pickle=True)
+autoprediction_shifts = np.load("matrices/DT_" + root + ".dat", allow_pickle=True)
+theory_data_diff = np.load("matrices/TD_" + root + ".dat", allow_pickle=True)
+
+th_contribution_1 = np.load("matrices/TH1_" + root + ".dat", allow_pickle=True)
+th_contribution_2 = np.load("matrices/TH2_" + root + ".dat", allow_pickle=True)
+pdf_contribution_1 = np.load("matrices/X1_" + root + ".dat", allow_pickle=True)
+pdf_contribution_2 = np.load("matrices/X2_" + root + ".dat", allow_pickle=True)
 
 n_dat_nz = np.shape(nuclear_uncertainty_array)[0]
 n_nuis = np.shape(nuclear_uncertainty_array)[1]
@@ -58,7 +61,7 @@ experimental_covariance_matrix_norm = np.zeros_like(experimental_covariance_matr
 for i in range(len(experimental_covariance_matrix)):
     for j in range(len(experimental_covariance_matrix)):
         experimental_covariance_matrix_norm[i,j] = experimental_covariance_matrix[i,j] / (theory_data[i] * theory_data[j])
-plt.imshow(experimental_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-100, vmax=100), cmap=cmap)
+plt.imshow(experimental_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
 plt.colorbar()
 plt.title("Heatmap of experimental covariance matrix, normalised to the theory")
 #plt.show()
@@ -118,10 +121,11 @@ for i in range(l):
     X_norm[i] = pdf_covariance_matrix[i,i] / (theory_data[i] * theory_data[i])
 
 x = np.arange(len(C_norm))
-plt.scatter(x, C_norm, c='g', s=1.5)
-plt.scatter(x, S_norm, c='b', s=1.5)
-plt.scatter(x, X_norm, c='r', s=1.5)
-plt.title("Diagonal elements of C (green), S (blue), X (red), normalised to the theory")
+plt.scatter(x, C_norm, c='g', s=1.5, label='C')
+plt.scatter(x, S_norm, c='b', s=1.5, label='S')
+plt.scatter(x, X_norm, c='r', s=1.5, label='X')
+plt.title("Diagonal elements, normalised to the theory")
+plt.legend()
 #plt.show()
 plt.savefig("output/diagonal_elements.png")
 plt.clf()
@@ -138,30 +142,7 @@ plt.yscale('log')
 plt.savefig("output/nz_eigenvalues.png")
 plt.clf()
 
-""" CURRENTLY BROKEN DUE TO ERRORS IN NUISANCE.PY & AUTOPREDICTION.PY
 
-# NUISANCE PARAMETER EXPECTATION VALUES
-plt.scatter(x, nuisance_parameters
-plt.errorbar(x,nuisance_parameters,yerr=uncertainties_nuc, ls='none'))
-plt.title("Nuisance parameters with nuclear uncertainties")
-plt.savefig("output/NPE_nuc.png)
-plt.clf()
-
-plt.scatter(x, nuisance_parameters
-plt.errorbar(x,nuisance_parameters,yerr=uncertainties_pdf, ls='none'))
-plt.title("Nuisance parameters with PDF uncertainties")
-plt.savefig("output/NPE_pdf.png)
-plt.clf()
-
-plt.scatter(x, nuisance_parameters
-plt.errorbar(x,nuisance_parameters,yerr=uncertainties_tot, ls='none'))
-plt.title("Nuisance parameters with total uncertainties")
-plt.savefig("output/NPE_pdf.png)
-plt.clf()
-
-
-# AUTOPREDICTION SHIFTS COMPARED TO THEORY-DATA DIFFERENCES
-# TODO
 
 # AUTOPREDICTION MATRICES
 autoprediction_norm = np.zeros_like(autoprediction)
@@ -178,7 +159,7 @@ plt.clf()
 autoprediction_corr = np.zeros_like(autoprediction)
 for i in range(len(autoprediction)):
     for j in range(len(autoprediction)):
-            autoprediction_corr[i,j] = autoprediction[i,j] / sqrt(autoprediction[i,i] * autoprediction[j,j])
+            autoprediction_corr[i,j] = autoprediction[i,j] / math.sqrt(autoprediction[i,i] * autoprediction[j,j])
 plt.imshow(autoprediction_corr ,vmin=-1, vmax=1, cmap=cmap)
 plt.colorbar()
 plt.title("Heatmap of autoprediction correlation matrix")
@@ -188,13 +169,92 @@ plt.clf()
 
 autoprediction_cons = pdf_covariance_matrix + theory_covariance_matrix
 
-unc_ap = np.array([math.sqrt(autoprediction[i,i])/ (theory_data[i] * theory_data[i]) for i in range(len(autoprediction))])
-unc_pdf = np.array([math.sqrt(pdf_covariance_matrix[i,i]) / (theory_data[i] * theory_data[i]) for i in range(len(pdf_covariance_matrix))])
-unc_cons = np.array([math.sqrt(autoprediction_cons[i,i]) / (theory_data[i] * theory_data[i]) for i in range(len(autoprediction_cons))])
+unc_ap = np.array([math.sqrt(autoprediction[i,i])/ theory_data[i] for i in range(len(autoprediction))])
+unc_pdf = np.array([math.sqrt(pdf_covariance_matrix[i,i]) / theory_data[i] for i in range(len(pdf_covariance_matrix))])
+unc_cons = np.array([math.sqrt(autoprediction_cons[i,i]) / theory_data[i] for i in range(len(autoprediction_cons))])
 
-TODO: SCATTER PLOT OF THESE THREE UNCERTAINTIES
+x = np.arange(len(unc_ap))
+plt.scatter(x, unc_ap, c='g', s=1.5, label='P')
+plt.scatter(x, unc_pdf, c='b', s=1.5, label='X')
+plt.scatter(x, unc_cons, c='r', s=1.5, label='P_cons')
+plt.title("Autoprediction percentage uncertainties")
+plt.legend()
+#plt.show()
+plt.savefig("output/autoprediction_uncertainties")
+plt.clf()
+
+
+# AUTOPREDICTION SHIFTS
+autoprediction_shifts_norm = np.zeros_like(autoprediction_shifts)
+for i in range(len(autoprediction_shifts)):
+    autoprediction_shifts_norm[i] = autoprediction_shifts[i] / theory_data[i]
+theory_data_diff_norm = np.zeros_like(theory_data_diff)
+for i in range(len(theory_data_diff)):
+    theory_data_diff_norm[i] = theory_data_diff[i] / theory_data[i]
+
+x = np.arange(len(autoprediction_shifts))
+plt.plot(x, theory_data_diff_norm, c='b', label='T-D', linewidth=0.35)
+plt.plot(x, autoprediction_shifts_norm, c='r', label='δT', linewidth=0.35)
+plt.title("Autoprediction shifts compared to theory-data differences")
+plt.legend()
+#plt.show()
+plt.savefig("output/autoprediction_shifts")
+plt.clf()
+
+
 
 # CONTRIBUTIONS TO THE DIAGONAL ELEMENTS OF THE CORRELATED THEORY & PDF UNCERTAINTIES
-TODO
+th_contribution_1_norm = np.zeros(shape=len(th_contribution_1))
+for i in range(len(th_contribution_1)):
+    th_contribution_1_norm[i] = th_contribution_1[i,i] / theory_covariance_matrix[i,i]
+th_contribution_2_norm = np.zeros(shape=len(th_contribution_2))
+for i in range(len(th_contribution_2)):
+    th_contribution_2_norm[i] = th_contribution_2[i,i] / theory_covariance_matrix[i,i]
 
-"""
+x = np.arange(len(th_contribution_1_norm))
+plt.scatter(x, th_contribution_1_norm, c='b', s=1.5, label='Contribution 1')
+plt.scatter(x, th_contribution_2_norm, c='r', s=1.5, label='Contribution 2')
+plt.title("Diagonal contributions to the theory uncertainties")
+plt.legend()
+#plt.show()
+plt.savefig("output/theory_contributions")
+plt.clf()
+
+pdf_contribution_1_norm = np.zeros(shape=len(pdf_contribution_1))
+for i in range(len(pdf_contribution_1)):
+    pdf_contribution_1_norm[i] = pdf_contribution_1[i,i] / pdf_covariance_matrix[i,i]
+pdf_contribution_2_norm = np.zeros(shape=len(pdf_contribution_2))
+for i in range(len(pdf_contribution_2)):
+    pdf_contribution_2_norm[i] = pdf_contribution_2[i,i] / pdf_covariance_matrix[i,i]
+
+x = np.arange(len(pdf_contribution_1_norm))
+plt.scatter(x, pdf_contribution_1_norm, c='b', s=1.5, label='Contribution 1')
+plt.scatter(x, pdf_contribution_2_norm, c='r', s=1.5, label='Contribution 2')
+plt.title("Diagonal contributions to the PDF uncertainties")
+plt.legend()
+#plt.show()
+plt.savefig("output/pdf_contributions")
+plt.clf()
+
+
+""" CURRENTLY BROKEN DUE TO ERRORS IN NUISANCE.PY & AUTOPREDICTION.PY """
+
+# NUISANCE PARAMETER EXPECTATION VALUES
+x = np.arange(len(nuisance_parameters))
+plt.scatter(x, nuisance_parameters)
+plt.errorbar(x,nuisance_parameters,yerr=uncertainties_nuc, ls='none')
+plt.title("Nuisance parameters with nuclear uncertainties")
+plt.savefig("output/NPE_nuc")
+plt.clf()
+
+plt.scatter(x, nuisance_parameters)
+plt.errorbar(x,nuisance_parameters,yerr=uncertainties_pdf, ls='none')
+plt.title("Nuisance parameters with PDF uncertainties")
+plt.savefig("output/NPE_pdf")
+plt.clf()
+
+plt.scatter(x, nuisance_parameters)
+plt.errorbar(x,nuisance_parameters,yerr=uncertainties_tot, ls='none')
+plt.title("Nuisance parameters with total uncertainties")
+plt.savefig("output/NPE_tot")
+plt.clf()

@@ -11,9 +11,9 @@ use_cuts: nocuts
 dataset_inputs:
    -  { dataset: CHORUSNBPb }
    -  { dataset: CHORUSNUPb }
+   -  { dataset: DYE605 }
    -  { dataset: NTVNBDMNFe }
    -  { dataset: NTVNUDMNFe }
-   -  { dataset: DYE605 }
 
 template_text: |
  

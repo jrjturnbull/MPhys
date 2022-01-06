@@ -1,0 +1,25 @@
+meta:
+      author: Emanuele R. Nocera
+      title: Experimental covariance matrix for nuclear datasets
+
+theoryid: 200
+
+pdf:  NNPDF40_nnlo_as_01180
+
+use_cuts: nocuts
+
+dataset_inputs:
+   -  { dataset: CHORUSNBPb }
+   -  { dataset: CHORUSNUPb }
+   -  { dataset: DYE605 }
+   -  { dataset: NTVNBDMNFe }
+   -  { dataset: NTVNUDMNFe }
+
+template_text: |
+ 
+    ## Experimental covariance matrix for nuclear data sets
+    {@ groups_covmat @}
+
+actions_:
+  - report(main=false)
+  

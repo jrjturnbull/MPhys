@@ -33,17 +33,15 @@ l = len(eigenvalues_nz)
 # COMPUTES THE NUISANCE PARAMETER EXPECTATION VALUES
 nuisance_params = np.zeros(shape=l, dtype=float64)
 CS = inv(th_covariance_matrix + exp_covariance_matrix)
+TD = theory_data - exp_data
 
 for a in range(0, l):
     print("Computing NPE {0} of {1}...".format(a+1, l), end='\r')
     beta = eigenvectors_nz[a]
-
-    mat = np.einsum('i,ij->j',beta,CS)
-    TD = theory_data - exp_data
-    nuisance_params[a] = np.einsum('i,i', mat, TD)
+    nuisance_params[a] = -1 * np.einsum('i,ij,j',beta,CS,TD)
     
 print("Computed all NPEs                                          ")
-print(eigenvalues_nz)
+print(nuisance_params)
 
 """
 *********************************************************************************************************
@@ -62,7 +60,7 @@ def t2(a, b):
     beta_a = eigenvectors_nz[a]
     beta_b = eigenvectors_nz[b]
     
-    e = np.einsum('i,ij,j', beta_a, CS, beta_b)
+    e = np.einsum('i,ij,j', beta_a, CS, beta_b, optimize='optimal')
 
     return e
 
@@ -70,7 +68,7 @@ def t3(a, b):
     beta_a = eigenvectors_nz[a]
     beta_b = eigenvectors_nz[b]
 
-    e = np.einsum('i,ij,jk,kl,l', beta_a, CS, x_matrix, CS, beta_b)
+    e = np.einsum('i,ij,jk,kl,l', beta_a, CS, x_matrix, CS, beta_b, optimize='optimal')
 
     return e
 
@@ -96,19 +94,11 @@ for i in range(l):
     print(Z_bar[i,i])
 
 
-""" CURRENTLY DOESN'T WORK AS Z IS SOMETIMES NEGATIVE (WHICH IT SHOULDN'T BE...)
+""" CURRENTLY DOESN'T WORK AS Z IS SOMETIMES NEGATIVE (WHICH IT SHOULDN'T BE...) """
 
-uncertainties_nuc = np.array([math.sqrt(Z[i,i]) for i in range(l)])
-uncertainties_pdf = [math.sqrt(Z_pdf[i,i]) for i in range(l)]
-uncertainties_tot = [math.sqrt(Z_bar[i,i]) for i in range(l)]
-
-
-x = np.arange(len(nuisance_params))
-y = nuisance_params
-plt.scatter(x,y)
-plt.errorbar(x,y,yerr=uncertainties_nuc, ls='none')
-plt.show()
-
+uncertainties_nuc = np.array([math.sqrt(abs(Z[i,i])) for i in range(l)])
+uncertainties_pdf = np.array([math.sqrt(abs(Z_pdf[i,i])) for i in range(l)])
+uncertainties_tot = np.array([math.sqrt(abs(Z_bar[i,i])) for i in range(l)])
 
 # DUMPS MATRICES TO FILE
 nuisance_params.dump("matrices/NPE_" + root + ".dat")
@@ -118,5 +108,3 @@ Z_bar.dump("matrices/ZN_" + root + ".dat")
 uncertainties_nuc.dump("matrices/ZNE_" + root + ".dat")
 uncertainties_pdf.dump("matrices/ZPE_" + root + ".dat")
 uncertainties_tot.dump("matrices/ZTE_" + root + ".dat")
-
-"""
