@@ -25,7 +25,9 @@ ________________________________________________________________________________
 
 """
 
-# COMPUTES THE GIVEN COVARIANCE MATRIX ELEMENT
+
+"""
+# COMPUTES THE GIVEN COVARIANCE MATRIX ELEMENT     ---     NO LONGER USED!
 def compute_covariance_element(i, j, n_nuis):
     e = 0
     for n in range(0, n_nuis):
@@ -34,6 +36,7 @@ def compute_covariance_element(i, j, n_nuis):
         e += (delta_i * delta_j)
     e /= n_nuis # normalisation
     return e
+"""
 
 # COMPUTES THE GIVEN CORRELATION MATRIX ELEMENT
 def compute_correlation_element(i, j):
@@ -141,6 +144,7 @@ with open(path_data) as data:
 n_dat_nz = len(nuclear_uncertainty_array) # number of non-zero data points
 
 # DETERMINE THE COVARIANCE MATRIX
+""" OLD METHOD
 covariance_matrix = np.zeros(shape = (n_dat_nz, n_dat_nz))
 for i in range(0, n_dat_nz):
     for j in range(0, n_dat_nz):
@@ -149,6 +153,17 @@ for i in range(0, n_dat_nz):
 
 print("Computed all {0} covariance elements                                      ".format(n_dat_nz*n_dat_nz))
 #print("Sparsity of covariance matrix: " + "{:.2%}".format(compute_sparsity(covariance_matrix)))
+"""
+
+covariance_matrix = np.zeros(shape = (n_dat_nz, n_dat_nz))
+for n in range(n_nuis):
+    print("Computing covariance matrix term {0} of {1}...".format(n+1, n_nuis), end='\r')
+    beta_i = nuclear_uncertainty_array[:,n]
+    beta_j = nuclear_uncertainty_array[:,n]
+    e = np.einsum('i,j->ij', beta_i, beta_j)
+    covariance_matrix += e
+print("Computed all {0} covariance matrix terms                            ".format(n_nuis))
+covariance_matrix /= n_nuis
 
 # DETERMINE THE CORRELATION MATRIX
 correlation_matrix = np.zeros_like(covariance_matrix)

@@ -5,29 +5,29 @@
 #
 # Note: this file is more useful for simply seeing dependencies
 
-echo
-echo "Running data-theory comparisons..."
-echo
-
-for dir in dt_comparison/*/
-do
-    dir=${dir%*/}
-    cd $dir
-    validphys runcard.yaml
-    cd ../..
-done
-
-echo
-echo "Computing experimental covariance arrays..."
-echo
-
-for dir in ExpCov/*/
-do
-    dir=${dir%*/}
-    cd $dir
-    validphys runcard.yaml
-    cd ../..
-done
+# echo
+# echo "Running data-theory comparisons..."
+# echo
+# 
+# for dir in dt_comparison/*/
+# do
+#     dir=${dir%*/}
+#     cd $dir
+#     validphys runcard.yaml
+#     cd ../..
+# done
+# 
+# echo
+# echo "Computing experimental covariance arrays..."
+# echo
+# 
+# for dir in ExpCov/*/
+# do
+#     dir=${dir%*/}
+#     cd $dir
+#     validphys runcard.yaml
+#     cd ../..
+# done
 
 python3 extract_theory.py
 
@@ -44,6 +44,6 @@ python3 extract_exp.py
 
 python3 pdf_covariance.py
 
-# python3 nuisance.py "CombinedData_dw"
-# python3 output.py "CombinedData_dw"           STILL WORKING ON THESE
-# python3 autoprediction.py
+python3 nuisance.py "CombinedData_dw"
+python3 autoprediction.py           STILL WORKING ON THESE
+python3 output.py "CombinedData_dw"
