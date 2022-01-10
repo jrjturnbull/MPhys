@@ -21,6 +21,8 @@ exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
 theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
 eigenvalues = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
 eigenvectors = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
+eigenvalues_norm = np.load("matrices/EVLN_" + root + ".dat", allow_pickle=True)
+eigenvectors_norm = np.load("matrices/EVCN_" + root + ".dat", allow_pickle=True)
 experimental_covariance_matrix = np.load("matrices/ECV_" + root + ".dat", allow_pickle=True)
 pdf_covariance_matrix = np.load("matrices/XCV_" + root + ".dat", allow_pickle=True)
 
@@ -142,7 +144,16 @@ plt.yscale('log')
 plt.savefig("output/nz_eigenvalues.png")
 plt.clf()
 
+nz_eigen_norm = [i for i in range(len(eigenvalues_norm)) if eigenvalues_norm[i] > 1e-5]
+eigenvalues_nz_norm = np.array([eigenvalues_norm[i] for i in nz_eigen_norm])[::-1]
 
+x = np.arange(len(eigenvalues_nz_norm))
+plt.scatter(x, eigenvalues_nz_norm, s=1.5)
+plt.title("Non-zero eigenvalues of S (cutoff = 1e-5), normalised to the theory")
+plt.yscale('log')
+#plt.show()
+plt.savefig("output/nz_eigenvalues_norm.png")
+plt.clf()
 
 # AUTOPREDICTION MATRICES
 autoprediction_norm = np.zeros_like(autoprediction)
@@ -174,9 +185,9 @@ unc_pdf = np.array([math.sqrt(pdf_covariance_matrix[i,i]) / theory_data[i] for i
 unc_cons = np.array([math.sqrt(autoprediction_cons[i,i]) / theory_data[i] for i in range(len(autoprediction_cons))])
 
 x = np.arange(len(unc_ap))
-plt.scatter(x, unc_ap, c='g', s=1.5, label='P')
-plt.scatter(x, unc_pdf, c='b', s=1.5, label='X')
-plt.scatter(x, unc_cons, c='r', s=1.5, label='P_cons')
+plt.scatter(x, unc_ap, c='b', s=1, label='P')
+plt.scatter(x, unc_cons, c='cyan', s=1, label='P_cons')
+plt.scatter(x, unc_pdf, c='r', s=1, label='X')
 plt.title("Autoprediction percentage uncertainties")
 plt.legend()
 #plt.show()
@@ -193,8 +204,8 @@ for i in range(len(theory_data_diff)):
     theory_data_diff_norm[i] = theory_data_diff[i] / theory_data[i]
 
 x = np.arange(len(autoprediction_shifts))
-plt.plot(x, theory_data_diff_norm, c='b', label='T-D', linewidth=0.35)
-plt.plot(x, autoprediction_shifts_norm, c='r', label='δT', linewidth=0.35)
+plt.plot(x, -theory_data_diff_norm, c='cyan', label='D-T', linewidth=0.35)
+plt.plot(x, autoprediction_shifts_norm, c='b', label='δT', linewidth=0.35)
 plt.title("Autoprediction shifts compared to theory-data differences")
 plt.legend()
 #plt.show()

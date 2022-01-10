@@ -5,8 +5,7 @@ covariance.py
 Computes theory correlation/covariance matrices + eigenstuff for the supplied root:
     -   Reads in and interprets DATA, SYSTYPE and THEORY files for supplied root
     -   Computes nuclear covariance & correlation matrices for given DATA file (ignoring zero rows)
-    -   Normalises the covariance matrix to the theoretical data
-    -   Outputs nonzero eigenvalues of the covariance matrix
+    -   Outputs eigenvalues & eigenvectors of the covariance matrix
     -   Saves all matrices to file
 _________________________________________________________________________________________________________
 
@@ -160,12 +159,10 @@ for n in range(n_nuis):
     print("Computing covariance matrix term {0} of {1}...".format(n+1, n_nuis), end='\r')
     beta_i = nuclear_uncertainty_array[:,n]
     beta_j = nuclear_uncertainty_array[:,n]
-    e = np.einsum('i,j->ij', beta_i, beta_j)
-    covariance_matrix += e
+    covariance_matrix += np.einsum('i,j->ij', beta_i, beta_j) / n_nuis
 print("Computed all {0} covariance matrix terms                            ".format(n_nuis))
-covariance_matrix /= n_nuis
 
-# DETERMINE THE CORRELATION MATRIX
+# DETERMINE THE CORRELATION MATRIX     ---     SLIGHTLY SLOW BUT STILL WORKS
 correlation_matrix = np.zeros_like(covariance_matrix)
 for i in range(0, n_dat_nz):
     for j in range(0, n_dat_nz):
@@ -181,6 +178,15 @@ eigenvalues_cov = w #[w[i] for i in nz_eigen]
 eigenvectors_cov = v #[v[i] for i in nz_eigen]
 eval = np.array(eigenvalues_cov)
 evec = np.array(eigenvectors_cov)
+
+# NORMALISED EIGENSTUFF
+covariance_matrix_norm = np.zeros_like(covariance_matrix)
+for i in range(len(covariance_matrix)):
+    for j in range(len(covariance_matrix)):
+        covariance_matrix_norm[i,j] = covariance_matrix[i,j] / (theory_values[i] * theory_values[j])
+eval_norm, evec_norm = eigh(covariance_matrix_norm)
+eval_norm = np.array(eval_norm)
+evec_norm = np.array(evec_norm)
 
 """
 *********************************************************************************************************
@@ -198,5 +204,8 @@ theory_values.dump("matrices/TH_" + root + ".dat")
 
 eval.dump("matrices/EVL_" + root + ".dat")
 evec.dump("matrices/EVC_" + root + ".dat")
+
+eval_norm.dump("matrices/EVLN_" + root + ".dat")
+evec_norm.dump("matrices/EVCN_" + root + ".dat")
 
 print()
