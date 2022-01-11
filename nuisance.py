@@ -3,16 +3,13 @@ from numpy import float64
 from numpy.linalg import inv
 import math
 import sys
-from numpy.core.fromnumeric import shape
-import matplotlib.pyplot as plt
-from numpy.linalg.linalg import eig
 
 print()
 
 if (len(sys.argv) == 2):
     root = sys.argv[1]
 else:
-    root = "CombinedData_dw"
+    root = "CombinedData_dw" # FOR EASE OF TESTING
 
 # LOADS ALL REQUIRED MATRICES
 th_covariance_matrix = np.load("matrices/CV_" + root + ".dat", allow_pickle=True)
