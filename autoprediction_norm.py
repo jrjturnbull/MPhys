@@ -31,8 +31,7 @@ TD = (theory_data - exp_data) / theory_data
 delta_T = -np.einsum('ij,j->i', SCS, TD)
 
 delta_T.dump("matrices/DT_CombinedData_dw.dat")
-TD_old = theory_data - exp_data
-TD_old.dump("matrices/TD_CombinedData_dw.dat")
+TD.dump("matrices/TD_CombinedData_dw.dat")
 
 
 

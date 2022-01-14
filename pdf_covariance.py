@@ -55,13 +55,13 @@ theory_values = np.delete(theory_values, to_cut, 0)
 central_values = np.delete(central_values, to_cut)
 
 # DETERMINE THE COVARIANCE MATRIX
-x_matrix = np.zeros(shape=(len(central_values),len(central_values)))
-for n in range(len(theory_values[0])):
-    x_vector = np.zeros(shape=len(central_values))
-    for i in range(len(central_values)):
-        x_vector[i] = theory_values[i][n] - central_values[i]
-    x_matrix += np.outer(x_vector, x_vector)
-x_matrix /= len(theory_values[0])
+n_dat = len(central_values)
+n_nuis = len(theory_values[0])
+
+x_matrix = np.zeros(shape=(n_dat,n_dat))
+for n in range(n_nuis):
+    x_vector = np.array([theory_values[i,n] - central_values[i] for i in range(n_dat)])
+    x_matrix += np.einsum('i,j->ij', x_vector, x_vector) / n_nuis
 
 # DETERMINE THE CORRELATION MATRIX
 dim = x_matrix.shape[0]

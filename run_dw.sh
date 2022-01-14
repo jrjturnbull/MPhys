@@ -7,35 +7,35 @@
 
 
 rm datafiles/THEORY/*
-rm -r ExpCov/*/output
-rm -r dt_comparison/*/output
+# rm -r ExpCov/*/output
+# rm -r dt_comparison/*/output
 rm matrices/*
 rm output/*
 
 
-echo
-echo "Running data-theory comparisons..."
-echo
-
-for dir in dt_comparison/*/
-do
-    dir=${dir%*/}
-    cd $dir
-    validphys runcard.yaml
-    cd ../..
-done
-
-echo
-echo "Computing experimental covariance arrays..."
-echo
-
-for dir in ExpCov/*/
-do
-    dir=${dir%*/}
-    cd $dir
-    validphys runcard.yaml
-    cd ../..
-done
+# echo
+# echo "Running data-theory comparisons..."
+# echo
+# 
+# for dir in dt_comparison/*/
+# do
+#     dir=${dir%*/}
+#     cd $dir
+#     validphys runcard.yaml
+#     cd ../..
+# done
+# 
+# echo
+# echo "Computing experimental covariance arrays..."
+# echo
+# 
+# for dir in ExpCov/*/
+# do
+#     dir=${dir%*/}
+#     cd $dir
+#     validphys runcard.yaml
+#     cd ../..
+# done
 
 python3 extract_theory.py
 

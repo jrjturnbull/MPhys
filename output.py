@@ -198,10 +198,10 @@ plt.clf()
 # AUTOPREDICTION SHIFTS
 autoprediction_shifts_norm = np.zeros_like(autoprediction_shifts)
 for i in range(len(autoprediction_shifts)):
-    autoprediction_shifts_norm[i] = autoprediction_shifts[i] / theory_data[i]
+    autoprediction_shifts_norm[i] = autoprediction_shifts[i] # / theory_data[i]
 theory_data_diff_norm = np.zeros_like(theory_data_diff)
 for i in range(len(theory_data_diff)):
-    theory_data_diff_norm[i] = theory_data_diff[i] / theory_data[i]
+    theory_data_diff_norm[i] = theory_data_diff[i] # / theory_data[i]
 
 x = np.arange(len(autoprediction_shifts))
 plt.plot(x, -theory_data_diff_norm, c='cyan', label='D-T', linewidth=0.35)
