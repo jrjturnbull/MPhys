@@ -46,7 +46,6 @@ exp_covariance_matrix = np.reshape(np.array([exp_covariance_matrix[i,j] / (theor
 x_matrix = np.reshape(np.array([x_matrix[i,j] / (theory_data[i] * theory_data[j]) \
     for i in range(len(x_matrix)) for j in range(len(x_matrix))]), \
     (len(x_matrix), len(x_matrix)))
-print(np.shape(x_matrix))
 
 # COMPUTES THE NUISANCE PARAMETER EXPECTATION VALUES
 nuisance_params = np.zeros(shape=l, dtype=float64)

@@ -66,6 +66,8 @@ for root in root_list:
         row_end = linecount
     n_dat_list.append(row_end - row_start)
 
+print(n_nuis_list)
+print(n_dat_list)
 n_nuis_min = min(n_nuis_list)
 print("Selecting {0} uncertainties from each data file".format(n_nuis_min))
 
@@ -104,12 +106,12 @@ with open(output_data_path, 'w') as data:
             for i in range(1, len(lines)):
                 values_to_write = []
                 values_to_write.append(line_no)
-                values_to_write += lines[i].split('\t')[1:7]
-                nn = lines[i].split('\t')[7:-1]
-                nn = nn[nuclear_start * 2:]
-                nn = [float(n) for n in nn]
+                values_to_write += lines[i].split('\t')[1:7] # copies kinematic data etc.
+                nn = lines[i].split('\t')[7:-1] # the set of uncertainties
+                nn = nn[nuclear_start * 2:] # filter to only the nuclear uncertainties
+                nn = [float(n) for n in nn] # str to float conversion
                 
-                unc_pairs = []
+                unc_pairs = [] # contains uncertainty pairs as formatted strings
                 for j in range(0, int(len(nn)/2)):
                     unc_pairs.append('{:0.12e}'.format(nn[2*j]) + '\t' + '{:0.12e}'.format(nn[(2*j)+1]))
                 unc_rand = [unc_pairs[i] for i in sorted(random.sample(range(len(unc_pairs)),n_nuis_min))]
@@ -123,6 +125,7 @@ with open(output_data_path, 'w') as data:
 # GENERATE THEORY FILE
 with open(output_theo_path, 'w') as theo:
     for root in root_list:
+        print(root)
         path_theo = "datafiles/THEORY/THEORY_" + root + ".dat"
         with open(path_theo) as path:
             for l in path.readlines():

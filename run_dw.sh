@@ -52,6 +52,6 @@ python3 extract_exp.py
 
 python3 pdf_covariance.py
 
-python3 nuisance.py "CombinedData_dw"
-python3 autoprediction.py
+python3 nuisance_norm.py "CombinedData_dw"
+python3 autoprediction_norm.py
 python3 output.py "CombinedData_dw"

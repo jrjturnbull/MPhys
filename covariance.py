@@ -157,9 +157,8 @@ print("Computed all {0} covariance elements                                     
 covariance_matrix = np.zeros(shape = (n_dat_nz, n_dat_nz))
 for n in range(n_nuis):
     print("Computing covariance matrix term {0} of {1}...".format(n+1, n_nuis), end='\r')
-    beta_i = nuclear_uncertainty_array[:,n]
-    beta_j = nuclear_uncertainty_array[:,n]
-    covariance_matrix += np.einsum('i,j->ij', beta_i, beta_j) / n_nuis
+    beta = nuclear_uncertainty_array[:,n]
+    covariance_matrix += np.einsum('i,j->ij', beta, beta) / n_nuis
 print("Computed all {0} covariance matrix terms                            ".format(n_nuis))
 
 # DETERMINE THE CORRELATION MATRIX     ---     SLIGHTLY SLOW BUT STILL WORKS

@@ -73,8 +73,7 @@ experimental_correlation = np.zeros_like(experimental_covariance)
 for i in range(0, dim_cut):
     for j in range(0, dim_cut):
         norm = math.sqrt(experimental_covariance[i,i] * experimental_covariance[j,j])
-        if not (norm == 0):
-            experimental_correlation[i, j] = experimental_covariance[i,j] / norm
+        experimental_correlation[i, j] = experimental_covariance[i,j] / norm
 
 #plt.imshow(experimental_covariance, norm=SymLogNorm(1e-4,vmin=-100, vmax=100), cmap='jet')
 #plt.colorbar()
