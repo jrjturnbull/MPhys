@@ -1,10 +1,10 @@
 meta:
-  author: Emanuele R. Nocera
-  title: Experimental covariance matrix for nuclear datasets
+  author: Jamie Turnbull
+  title: C for nuclear datasets, with internal cuts
 
 theoryid: 200
 pdf: NNPDF40_nnlo_as_01180
-use_cuts: nocuts
+use_cuts: internal
 dataset_inputs:
 - {dataset: CHORUSNBPb}
 - {dataset: CHORUSNUPb}

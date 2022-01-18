@@ -5,6 +5,7 @@
     - *SYSTYPE*: the column headers for the DATA files
     - *THEORY*: the theoretical predictions, taken from validphys
 - **dt_comparison**: contains all files pertaining to the validphys data-theory comparisons
+- **dt_comparison_internal**: as above but with internal cuts applied
 - **ExpCov**: contains validphys files for the experimental covariance matrices
 - **matrices**: contains all computed matrices from in pickled format (kinematic cuts applied):
     - *CR*: the theory correlation matrix

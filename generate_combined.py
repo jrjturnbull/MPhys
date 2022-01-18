@@ -14,6 +14,7 @@ ________________________________________________________________________________
 import sys
 import os.path
 import random
+import numpy as np
 
 print()
 print("Generating combined data file")
@@ -27,6 +28,7 @@ output_root = sys.argv[-1]
 output_data_path = "datafiles/DATA/DATA_" + output_root + ".dat"
 output_syst_path = "datafiles/SYSTYPE/SYSTYPE_" + output_root + "_DEFAULT.dat"
 output_theo_path = "datafiles/THEORY/THEORY_" + output_root + ".dat"
+output_cent_path = "datafiles/THEORY/CENT_" + output_root + ".dat"
 
 
 # DETERMINES THE NUMBER OF REPLICAS AND DATAPOINTS FOR EACH EXPERIMENT
@@ -66,8 +68,6 @@ for root in root_list:
         row_end = linecount
     n_dat_list.append(row_end - row_start)
 
-print(n_nuis_list)
-print(n_dat_list)
 n_nuis_min = min(n_nuis_list)
 print("Selecting {0} uncertainties from each data file".format(n_nuis_min))
 
@@ -125,11 +125,17 @@ with open(output_data_path, 'w') as data:
 # GENERATE THEORY FILE
 with open(output_theo_path, 'w') as theo:
     for root in root_list:
-        print(root)
         path_theo = "datafiles/THEORY/THEORY_" + root + ".dat"
         with open(path_theo) as path:
             for l in path.readlines():
                 theo.write(l)
 
+# GENERATE CENT FILE
+with open(output_cent_path, 'w') as cent:
+    for root in root_list:
+        path_cent = "datafiles/THEORY/CENT_" + root + ".dat"
+        with open(path_cent) as path:
+            for l in path.readlines():
+                cent.write(l)
 
 print()

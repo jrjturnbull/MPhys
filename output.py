@@ -6,8 +6,7 @@ TO BE ADDED TO....
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm, SymLogNorm
-from scipy.linalg import eigh
+from matplotlib.colors import  SymLogNorm
 import sys
 import math
 from matplotlib.colors import LinearSegmentedColormap
@@ -16,7 +15,6 @@ root = sys.argv[1]
 
 theory_covariance_matrix = np.load("matrices/CV_" + root + ".dat", allow_pickle=True)
 correlation_matrix = np.load("matrices/CR_" + root + ".dat", allow_pickle=True)
-nuclear_uncertainty_array = np.load("matrices/NUA_" + root + ".dat", allow_pickle=True)
 exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
 theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
 eigenvalues = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
@@ -41,9 +39,6 @@ th_contribution_2 = np.load("matrices/TH2_" + root + ".dat", allow_pickle=True)
 pdf_contribution_1 = np.load("matrices/X1_" + root + ".dat", allow_pickle=True)
 pdf_contribution_2 = np.load("matrices/X2_" + root + ".dat", allow_pickle=True)
 
-n_dat_nz = np.shape(nuclear_uncertainty_array)[0]
-n_nuis = np.shape(nuclear_uncertainty_array)[1]
-
 # ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
 c = ["firebrick","red","chocolate","orange","sandybrown","peachpuff","lightyellow",
         "honeydew","palegreen","aquamarine","mediumturquoise", "royalblue","midnightblue"]
@@ -65,7 +60,7 @@ for i in range(len(experimental_covariance_matrix)):
         experimental_covariance_matrix_norm[i,j] = experimental_covariance_matrix[i,j] / (theory_data[i] * theory_data[j])
 plt.imshow(experimental_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
 plt.colorbar()
-plt.title("Heatmap of experimental covariance matrix, normalised to the theory")
+plt.title("Experimental covariance matrix, normalised to the theory")
 #plt.show()
 plt.savefig("output/exp_covariance")
 plt.clf()
@@ -75,9 +70,9 @@ theory_covariance_matrix_norm = np.zeros_like(theory_covariance_matrix)
 for i in range(len(theory_covariance_matrix)):
     for j in range(len(theory_covariance_matrix)):
         theory_covariance_matrix_norm[i,j] = theory_covariance_matrix[i,j] / (theory_data[i] * theory_data[j])
-plt.imshow(theory_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-5, vmax=5), cmap=cmap)
+plt.imshow(theory_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
 plt.colorbar()
-plt.title("Heatmap of theory covariance matrix, normalised to the theory")
+plt.title("Theory covariance matrix, normalised to the theory")
 #plt.show()
 plt.savefig("output/th_covariance")
 plt.clf()
@@ -87,9 +82,9 @@ pdf_covariance_matrix_norm = np.zeros_like(pdf_covariance_matrix)
 for i in range(len(pdf_covariance_matrix)):
     for j in range(len(pdf_covariance_matrix)):
         pdf_covariance_matrix_norm[i,j] = pdf_covariance_matrix[i,j] / (theory_data[i] * theory_data[j])
-plt.imshow(pdf_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-5, vmax=5), cmap=cmap)
+plt.imshow(pdf_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
 plt.colorbar()
-plt.title("Heatmap of PDF covariance matrix, normalised to the theory")
+plt.title("PDF covariance matrix, normalised to the theory")
 #plt.show()
 plt.savefig("output/pdf_covariance")
 plt.clf()
@@ -133,8 +128,8 @@ plt.savefig("output/diagonal_elements.png")
 plt.clf()
 
 # NON-ZERO EIGENVALUES
-nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-5]
-eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])[::-1]
+nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-6]
+eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])
 
 x = np.arange(len(eigenvalues_nz))
 plt.scatter(x, eigenvalues_nz, s=1.5)
@@ -144,8 +139,8 @@ plt.yscale('log')
 plt.savefig("output/nz_eigenvalues.png")
 plt.clf()
 
-nz_eigen_norm = [i for i in range(len(eigenvalues_norm)) if eigenvalues_norm[i] > 1e-5]
-eigenvalues_nz_norm = np.array([eigenvalues_norm[i] for i in nz_eigen_norm])[::-1]
+nz_eigen_norm = [i for i in range(len(eigenvalues_norm)) if eigenvalues_norm[i] > 1e-6]
+eigenvalues_nz_norm = np.array([eigenvalues_norm[i] for i in nz_eigen_norm])
 
 x = np.arange(len(eigenvalues_nz_norm))
 plt.scatter(x, eigenvalues_nz_norm, s=1.5)
@@ -160,9 +155,9 @@ autoprediction_norm = np.zeros_like(autoprediction)
 for i in range(len(autoprediction)):
     for j in range(len(autoprediction)):
         autoprediction_norm[i,j] = autoprediction[i,j] / (theory_data[i] * theory_data[j])
-plt.imshow(autoprediction_norm, norm=SymLogNorm(1e-4,vmin=-5, vmax=5), cmap=cmap)
+plt.imshow(autoprediction_norm, norm=SymLogNorm(1e-4,vmin=-1, vmax=1), cmap=cmap)
 plt.colorbar()
-plt.title("Heatmap of autoprediction covariance matrix, normalised to the theory")
+plt.title("Autoprediction covariance matrix, normalised to the theory")
 #plt.show()
 plt.savefig("output/autoprediction_covariance")
 plt.clf()
@@ -173,7 +168,7 @@ for i in range(len(autoprediction)):
             autoprediction_corr[i,j] = autoprediction[i,j] / math.sqrt(autoprediction[i,i] * autoprediction[j,j])
 plt.imshow(autoprediction_corr ,vmin=-1, vmax=1, cmap=cmap)
 plt.colorbar()
-plt.title("Heatmap of autoprediction correlation matrix")
+plt.title("Autoprediction correlation matrix")
 #plt.show()
 plt.savefig("output/autoprediction_correlation")
 plt.clf()
@@ -198,10 +193,10 @@ plt.clf()
 # AUTOPREDICTION SHIFTS
 autoprediction_shifts_norm = np.zeros_like(autoprediction_shifts)
 for i in range(len(autoprediction_shifts)):
-    autoprediction_shifts_norm[i] = autoprediction_shifts[i] # / theory_data[i]
+    autoprediction_shifts_norm[i] = autoprediction_shifts[i] / theory_data[i]
 theory_data_diff_norm = np.zeros_like(theory_data_diff)
 for i in range(len(theory_data_diff)):
-    theory_data_diff_norm[i] = theory_data_diff[i] # / theory_data[i]
+    theory_data_diff_norm[i] = theory_data_diff[i] / theory_data[i]
 
 x = np.arange(len(autoprediction_shifts))
 plt.plot(x, -theory_data_diff_norm, c='cyan', label='D-T', linewidth=0.35)
@@ -223,8 +218,8 @@ for i in range(len(th_contribution_2)):
     th_contribution_2_norm[i] = th_contribution_2[i,i] / theory_covariance_matrix[i,i]
 
 x = np.arange(len(th_contribution_1_norm))
-plt.scatter(x, th_contribution_1_norm, c='b', s=1.5, label='Contribution 1')
-plt.scatter(x, th_contribution_2_norm, c='r', s=1.5, label='Contribution 2')
+plt.scatter(x, th_contribution_1_norm, c='fuchsia', s=1.5, label='Contribution 1')
+plt.scatter(x, th_contribution_2_norm, c='black', s=1.5, label='Contribution 2')
 plt.title("Diagonal contributions to the theory uncertainties")
 plt.legend()
 #plt.show()
@@ -239,16 +234,14 @@ for i in range(len(pdf_contribution_2)):
     pdf_contribution_2_norm[i] = pdf_contribution_2[i,i] / pdf_covariance_matrix[i,i]
 
 x = np.arange(len(pdf_contribution_1_norm))
-plt.scatter(x, pdf_contribution_1_norm, c='b', s=1.5, label='Contribution 1')
-plt.scatter(x, pdf_contribution_2_norm, c='r', s=1.5, label='Contribution 2')
+plt.scatter(x, pdf_contribution_1_norm, c='lightgreen', s=1.5, label='Contribution 1')
+plt.scatter(x, pdf_contribution_2_norm, c='pink', s=1.5, label='Contribution 2')
 plt.title("Diagonal contributions to the PDF uncertainties")
 plt.legend()
 #plt.show()
 plt.savefig("output/pdf_contributions")
 plt.clf()
 
-
-""" CURRENTLY BROKEN DUE TO ERRORS IN NUISANCE.PY & AUTOPREDICTION.PY """
 
 # NUISANCE PARAMETER EXPECTATION VALUES
 x = np.arange(len(nuisance_parameters))

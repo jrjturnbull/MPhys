@@ -38,7 +38,6 @@ for a in range(0, l):
     nuisance_params[a] = -1 * np.einsum('i,ij,j',beta,CS,TD)
     
 print("Computed all NPEs                                          ")
-print(nuisance_params)
 
 """
 *********************************************************************************************************
@@ -84,14 +83,6 @@ for a in range(l):
         Z_pdf[a,b] = -t_3
         Z_bar[a,b] = t_1 - t_2 - t_3
 print("Computed all NPE uncertainties                                        ")
-
-for i in range(l):
-    print(Z[i,i], end='\t')
-    print(Z_pdf[i,i], end='\t')
-    print(Z_bar[i,i])
-
-
-""" CURRENTLY DOESN'T WORK AS Z IS SOMETIMES NEGATIVE (WHICH IT SHOULDN'T BE...) """
 
 uncertainties_nuc = np.array([math.sqrt(abs(Z[i,i])) for i in range(l)])
 uncertainties_pdf = np.array([math.sqrt(abs(Z_pdf[i,i])) for i in range(l)])

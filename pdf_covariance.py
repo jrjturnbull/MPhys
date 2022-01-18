@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import shape
 import math
 
-rootdir = "dt_comparison"
+rootdir = "dt_comparison_internal"
 table_paths = []
 
 # ITERATE THROUGH EACH VALIDPHYS FOLDER AND LOCATE GROUP_RESULT_TABLE PATHS
@@ -42,17 +42,14 @@ for i in range(0, len(table_paths)):
             theory_values.append(values[5:-1])
             central_values.append(values[4])
 
-to_cut = [] # indices of rows/columns to cut
 data_path = "datafiles/DATA/DATA_CombinedData_dw.dat"
 with open(data_path) as data:
     data_lines = data.readlines()[1:]
     for n in range(0, len(data_lines)):
         elements = data_lines[n].split('\t')[7:-1]
         elements = [float(e) for e in elements]
-        if(all(v == 0 for v in elements)):
-            to_cut.append(n)
-theory_values = np.delete(theory_values, to_cut, 0)
-central_values = np.delete(central_values, to_cut)
+central_values = np.array(central_values)
+theory_values = np.array(theory_values)
 
 # DETERMINE THE COVARIANCE MATRIX
 n_dat = len(central_values)
