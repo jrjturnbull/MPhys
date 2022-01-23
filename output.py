@@ -40,7 +40,7 @@ pdf_contribution_1 = np.load("matrices/X1_" + root + ".dat", allow_pickle=True)
 pdf_contribution_2 = np.load("matrices/X2_" + root + ".dat", allow_pickle=True)
 
 # ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
-c = ["firebrick","red","chocolate","orange","sandybrown","peachpuff","lightyellow",
+c = ["maroon","firebrick","chocolate","orange","sandybrown","peachpuff","lightyellow",
         "honeydew","palegreen","aquamarine","mediumturquoise", "royalblue","midnightblue"]
 v = [0,.1,.2,.3,.4,.45,.5,.55,.6,.7,.8,.9,1]
 l = list(zip(v,reversed(c)))
@@ -58,7 +58,7 @@ experimental_covariance_matrix_norm = np.zeros_like(experimental_covariance_matr
 for i in range(len(experimental_covariance_matrix)):
     for j in range(len(experimental_covariance_matrix)):
         experimental_covariance_matrix_norm[i,j] = experimental_covariance_matrix[i,j] / (theory_data[i] * theory_data[j])
-plt.imshow(experimental_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
+plt.imshow(experimental_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-1, vmax=1), cmap=cmap)
 plt.colorbar()
 plt.title("Experimental covariance matrix, normalised to the theory")
 #plt.show()
@@ -70,7 +70,7 @@ theory_covariance_matrix_norm = np.zeros_like(theory_covariance_matrix)
 for i in range(len(theory_covariance_matrix)):
     for j in range(len(theory_covariance_matrix)):
         theory_covariance_matrix_norm[i,j] = theory_covariance_matrix[i,j] / (theory_data[i] * theory_data[j])
-plt.imshow(theory_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
+plt.imshow(theory_covariance_matrix_norm, norm=SymLogNorm(1e-4,vmin=-1.5, vmax=1.5), cmap=cmap)
 plt.colorbar()
 plt.title("Theory covariance matrix, normalised to the theory")
 #plt.show()
@@ -102,33 +102,22 @@ plt.clf()
 
 
 # PLOT OF DIAGONAL ELEMENTS NORMALISED TO THE THEORY
-C_norm = np.zeros(shape = len(experimental_covariance_matrix))
-l = experimental_covariance_matrix.shape[0]
-for i in range(l):
-    C_norm[i] = experimental_covariance_matrix[i,i] / (theory_data[i] * theory_data[i])
-
-S_norm = np.zeros(shape = len(theory_covariance_matrix))
-l = theory_covariance_matrix.shape[0]
-for i in range(l):
-    S_norm[i] = theory_covariance_matrix[i,i] / (theory_data[i] * theory_data[i])
-
-X_norm = np.zeros(shape = len(pdf_covariance_matrix))
-l = pdf_covariance_matrix.shape[0]
-for i in range(l):
-    X_norm[i] = pdf_covariance_matrix[i,i] / (theory_data[i] * theory_data[i])
+C_norm = np.array([math.sqrt(experimental_covariance_matrix_norm[i,i]) for i in range(len(experimental_covariance_matrix_norm))])
+S_norm = np.array([math.sqrt(theory_covariance_matrix_norm[i,i]) for i in range(len(theory_covariance_matrix_norm))])
+X_norm = np.array([math.sqrt(pdf_covariance_matrix_norm[i,i]) for i in range(len(pdf_covariance_matrix_norm))])
 
 x = np.arange(len(C_norm))
 plt.scatter(x, C_norm, c='g', s=1.5, label='C')
 plt.scatter(x, S_norm, c='b', s=1.5, label='S')
 plt.scatter(x, X_norm, c='r', s=1.5, label='X')
-plt.title("Diagonal elements, normalised to the theory")
+plt.title("Square root of diagonal elements, normalised to the theory")
 plt.legend()
 #plt.show()
 plt.savefig("output/diagonal_elements.png")
 plt.clf()
 
 # NON-ZERO EIGENVALUES
-nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-6]
+nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-5]
 eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])
 
 x = np.arange(len(eigenvalues_nz))
@@ -139,7 +128,7 @@ plt.yscale('log')
 plt.savefig("output/nz_eigenvalues.png")
 plt.clf()
 
-nz_eigen_norm = [i for i in range(len(eigenvalues_norm)) if eigenvalues_norm[i] > 1e-6]
+nz_eigen_norm = [i for i in range(len(eigenvalues_norm)) if eigenvalues_norm[i] > 1e-5]
 eigenvalues_nz_norm = np.array([eigenvalues_norm[i] for i in nz_eigen_norm])
 
 x = np.arange(len(eigenvalues_nz_norm))
@@ -245,20 +234,29 @@ plt.clf()
 
 # NUISANCE PARAMETER EXPECTATION VALUES
 x = np.arange(len(nuisance_parameters))
-plt.scatter(x, nuisance_parameters)
-plt.errorbar(x,nuisance_parameters,yerr=uncertainties_nuc, ls='none')
+plt.ylim(-2,2)
+plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
+plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
+plt.errorbar(x,nuisance_parameters,yerr=uncertainties_nuc, ls='none', zorder=6)
+plt.axhline(y=0, color='k', linestyle='-', zorder=6)
 plt.title("Nuisance parameters with nuclear uncertainties")
 plt.savefig("output/NPE_nuc")
 plt.clf()
 
-plt.scatter(x, nuisance_parameters)
-plt.errorbar(x,nuisance_parameters,yerr=uncertainties_pdf, ls='none')
+plt.ylim(-2,2)
+plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
+plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
+plt.errorbar(x,nuisance_parameters,yerr=uncertainties_pdf, ls='none', zorder=6)
+plt.axhline(y=0, color='k', linestyle='-', zorder=7)
 plt.title("Nuisance parameters with PDF uncertainties")
 plt.savefig("output/NPE_pdf")
 plt.clf()
 
-plt.scatter(x, nuisance_parameters)
-plt.errorbar(x,nuisance_parameters,yerr=uncertainties_tot, ls='none')
+plt.ylim(-2,2)
+plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
+plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
+plt.errorbar(x,nuisance_parameters,yerr=uncertainties_tot, ls='none', zorder=6)
+plt.axhline(y=0, color='k', linestyle='-', zorder=7)
 plt.title("Nuisance parameters with total uncertainties")
 plt.savefig("output/NPE_tot")
 plt.clf()

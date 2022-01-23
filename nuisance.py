@@ -88,6 +88,13 @@ uncertainties_nuc = np.array([math.sqrt(abs(Z[i,i])) for i in range(l)])
 uncertainties_pdf = np.array([math.sqrt(abs(Z_pdf[i,i])) for i in range(l)])
 uncertainties_tot = np.array([math.sqrt(abs(Z_bar[i,i])) for i in range(l)])
 
+# NORMALISATION
+norm = math.sqrt(2 * math.pi * np.var(nuisance_params))
+nuisance_params /= norm
+uncertainties_nuc /= norm
+uncertainties_pdf /= norm
+uncertainties_tot /= norm
+
 # DUMPS MATRICES TO FILE
 nuisance_params.dump("matrices/NPE_" + root + ".dat")
 Z.dump("matrices/Z_" + root + ".dat")

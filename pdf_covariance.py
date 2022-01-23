@@ -39,8 +39,8 @@ for i in range(0, len(table_paths)):
         for l in lines:
             values = l.split('\t')[4:]
             values = [float(v) for v in values]
-            theory_values.append(values[5:-1])
-            central_values.append(values[4])
+            theory_values.append(values[1:])
+            central_values.append(values[0])
 
 data_path = "datafiles/DATA/DATA_CombinedData_dw.dat"
 with open(data_path) as data:
@@ -53,12 +53,12 @@ theory_values = np.array(theory_values)
 
 # DETERMINE THE COVARIANCE MATRIX
 n_dat = len(central_values)
-n_nuis = len(theory_values[0])
+n_rep = len(theory_values[0])
 
 x_matrix = np.zeros(shape=(n_dat,n_dat))
-for n in range(n_nuis):
+for n in range(n_rep):
     x_vector = np.array([theory_values[i,n] - central_values[i] for i in range(n_dat)])
-    x_matrix += np.einsum('i,j->ij', x_vector, x_vector) / n_nuis
+    x_matrix += np.einsum('i,j->ij', x_vector, x_vector) / n_rep
 
 # DETERMINE THE CORRELATION MATRIX
 dim = x_matrix.shape[0]
