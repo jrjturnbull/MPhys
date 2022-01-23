@@ -88,6 +88,22 @@ plt.savefig("output/exp_covariance")
 plt.clf()
 plt.cla()
 
+exp_corr = np.zeros_like(experimental_covariance_matrix)
+for i in range(len(exp_corr)):
+    for j in range(len(exp_corr)):
+            if (experimental_covariance_matrix[i,j] == 0):
+                continue
+            exp_corr[i,j] = experimental_covariance_matrix[i,j] / math.sqrt(experimental_covariance_matrix[i,i] * experimental_covariance_matrix[j,j])
+plt.imshow(exp_corr ,vmin=-1, vmax=1, cmap=cmap)
+plt.colorbar()
+plt.title("Experimental correlation matrix")
+show_dataset_brackets(plt.gca())
+plt.gca().axes.xaxis.set_visible(False)
+plt.gca().axes.yaxis.set_visible(False)
+#plt.show()
+plt.savefig("output/exp_correlation")
+plt.clf()
+
 # HEATMAP OF THEORY COVARIANCE MATRIX
 
 fig, ax = plt.subplots()
@@ -106,6 +122,20 @@ show_dataset_brackets(ax)
 plt.savefig("output/th_covariance")
 plt.clf()
 plt.cla()
+
+th_corr = np.zeros_like(theory_covariance_matrix)
+for i in range(len(th_corr)):
+    for j in range(len(th_corr)):
+            th_corr[i,j] = theory_covariance_matrix[i,j] / math.sqrt(theory_covariance_matrix[i,i] * theory_covariance_matrix[j,j])
+plt.imshow(th_corr ,vmin=-1, vmax=1, cmap=cmap)
+plt.colorbar()
+plt.title("Theory correlation matrix")
+show_dataset_brackets(plt.gca())
+plt.gca().axes.xaxis.set_visible(False)
+plt.gca().axes.yaxis.set_visible(False)
+#plt.show()
+plt.savefig("output/th_correlation")
+plt.clf()
 
 # HEATMAP OF PDF UNCERTAINTIES
 fig, ax = plt.subplots()
@@ -149,7 +179,7 @@ plt.scatter(x, S_norm, c='b', s=1.5, label='S')
 plt.scatter(x, X_norm, c='r', s=1.5, label='X')
 plt.title("Sqaure root of diagonal elements, normalised to the theory")
 show_dataset_brackets(plt.gca())
-plt.gca().axes.yaxis.set_visible(False)
+plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
 plt.savefig("output/diagonal_elements.png")
@@ -185,7 +215,7 @@ autoprediction_norm = np.zeros_like(autoprediction)
 for i in range(len(autoprediction)):
     for j in range(len(autoprediction)):
         autoprediction_norm[i,j] = autoprediction[i,j] / (theory_data[i] * theory_data[j])
-plt.imshow(autoprediction_norm, norm=SymLogNorm(1e-4,vmin=-1, vmax=1), cmap=cmap)
+plt.imshow(autoprediction_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
 plt.colorbar()
 plt.title("Autoprediction covariance matrix, normalised to the theory")
 show_dataset_brackets(plt.gca())
@@ -237,10 +267,12 @@ for i in range(len(theory_data_diff)):
     theory_data_diff_norm[i] = theory_data_diff[i] / theory_data[i]
 
 x = np.arange(len(autoprediction_shifts))
+plt.ylim(-1,1)
 plt.plot(x, -theory_data_diff_norm, c='cyan', label='D-T', linewidth=0.35)
 plt.plot(x, autoprediction_shifts_norm, c='b', label='δT', linewidth=0.35)
 plt.title("Autoprediction shifts compared to theory-data differences")
 show_dataset_brackets(plt.gca())
+plt.axhline(y=0, color='k', linestyle='-')
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
@@ -262,6 +294,7 @@ plt.scatter(x, th_contribution_1_norm, c='fuchsia', s=1.5, label=r'$S-S(C+S)^{-1
 plt.scatter(x, th_contribution_2_norm, c='black', s=1.5, label=r'$S-S(C+S)^{-1}S + S(C+S)^{-1}X(C+S)^{-1}S$')
 plt.title("Diagonal contributions to the theory uncertainties")
 show_dataset_brackets(plt.gca())
+plt.axhline(y=0, color='k', linestyle='-')
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
@@ -280,6 +313,8 @@ plt.scatter(x, pdf_contribution_1_norm, c='lightgreen', s=1.5, label=r'$C(C+S)^{
 plt.scatter(x, pdf_contribution_2_norm, c='pink', s=1.5, label=r'$X-S(C+S)^{-1}X - X(C+S)^{-1}S$')
 plt.title("Diagonal contributions to the PDF uncertainties")
 show_dataset_brackets(plt.gca())
+plt.axhline(y=0, color='k', linestyle='-')
+plt.ylim(-1.6, 1.1)
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
