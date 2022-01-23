@@ -36,7 +36,7 @@ for path in table_paths:
         for row in data_rows:
             theory_values.append(row.split('\t')[4]) # append theory_central value
             cent_values.append(row.split('\t')[3]) # append data_central value
-    
+
     theory_output = "datafiles/THEORY/THEORY_" + root + ".dat"
     with open(theory_output, 'w') as output:
         for t in theory_values:

@@ -71,6 +71,8 @@ for root in root_list:
 n_nuis_min = min(n_nuis_list)
 print("Selecting {0} uncertainties from each data file".format(n_nuis_min))
 
+print(n_dat_list)
+
 # GENERATE SYSTYPE FILE
 with open(output_syst_path, 'w') as syst:
     syst.write(str(n_nuis_min) + '\n')
