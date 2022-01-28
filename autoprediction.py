@@ -43,22 +43,24 @@ x_contribution_2 = x_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix,CS,
 x_contribution_3 = np.einsum('ij,jk,kl,lm,mn->in', th_covariance_matrix, CS, x_matrix, CS, th_covariance_matrix, optimize='optimal')
 
 # DETERMINE CHI2 VALUES
-dataset_split = [0,416,832,917,954,len(TD)] # ds
-chi2_no_th = np.zeros(len(dataset_split)-1)
-chi2_yes_th = np.zeros(len(dataset_split)-1)
-chi2_auto = np.zeros(len(dataset_split)-1)
+ds = [0,416,832,917,954,len(TD)] # shorthand for dataset_split
+chi2_no_th = np.zeros(len(ds)-1)
+chi2_yes_th = np.zeros(len(ds)-1)
+chi2_auto = np.zeros(len(ds)-1)
 
-for n in range(len(dataset_split) - 1):
-     TD_ds = TD[dataset_split[n]:dataset_split[n+1]]
-     C_ds = exp_covariance_matrix[dataset_split[n]:dataset_split[n+1],dataset_split[n]:dataset_split[n+1]]
-     S_ds = th_covariance_matrix[dataset_split[n]:dataset_split[n+1],dataset_split[n]:dataset_split[n+1]]
-     CS_ds = inv((exp_covariance_matrix+th_covariance_matrix)[dataset_split[n]:dataset_split[n+1],dataset_split[n]:dataset_split[n+1]])
+for n in range(len(ds) - 1):
+     TD_ds = TD[ds[n]:ds[n+1]]
+     C_ds = exp_covariance_matrix[ds[n]:ds[n+1],ds[n]:ds[n+1]]
+     S_ds = th_covariance_matrix[ds[n]:ds[n+1],ds[n]:ds[n+1]]
+     CS_ds = inv((exp_covariance_matrix+th_covariance_matrix)[ds[n]:ds[n+1],ds[n]:ds[n+1]])
 
      delta_T_ds = - np.einsum('ij,jk,k->i', S_ds, CS_ds, TD_ds)
+     theory_data_ds = theory_data[ds[n]:ds[n+1]]
+     auto_ds = TD_ds + delta_T_ds
 
-     chi2_no_th[n] = np.einsum('i,ij,j', TD_ds, inv(C_ds), TD_ds, optimize='optimal') / (dataset_split[n+1] - dataset_split[n])
-     chi2_yes_th[n] = np.einsum('i,ij,j', TD_ds, CS_ds, TD_ds, optimize='optimal') / (dataset_split[n+1] - dataset_split[n])
-     chi2_auto[n] = np.einsum('i,ij,j', delta_T_ds, CS_ds, delta_T_ds, optimize='optimal') / (dataset_split[n+1] - dataset_split[n])
+     chi2_no_th[n] = np.einsum('i,ij,j', TD_ds, inv(C_ds), TD_ds, optimize='optimal') / (ds[n+1] - ds[n])
+     chi2_yes_th[n] = np.einsum('i,ij,j', TD_ds, CS_ds, TD_ds, optimize='optimal') / (ds[n+1] - ds[n])
+     chi2_auto[n] = np.einsum('i,ij,j', auto_ds, CS_ds, auto_ds, optimize='optimal') / (ds[n+1] - ds[n])
 
 
 # DUMP OUTPUT TO FILE
