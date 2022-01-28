@@ -1,7 +1,8 @@
-from math import sqrt
+from pickletools import optimize
 import numpy as np
 from numpy.linalg import inv
 import matplotlib.pyplot as plt
+import math
 
 root = "CombinedData_dw"
 
@@ -16,9 +17,8 @@ CS = inv(exp_covariance_matrix + th_covariance_matrix)
 
 
 # DETERMINE AUTOPREDICTION SHIFTS
-SCS = np.einsum('ij,jk->ik', th_covariance_matrix, CS)
 TD = theory_data - exp_data
-delta_T = -np.einsum('ij,j->i', SCS, TD)
+delta_T = - np.einsum('ij,jk,k->i', th_covariance_matrix, CS, TD)
 
 delta_T.dump("matrices/DT_CombinedData_dw.dat")
 TD.dump("matrices/TD_CombinedData_dw.dat")
@@ -40,8 +40,34 @@ th_contribution_2 = th_contribution_1 + np.einsum('ij,jk,kl,lm,mn->in', th_covar
 x_contribution_1 = np.einsum('ij,jk,kl,lm,mn->in', exp_covariance_matrix, CS, x_matrix, CS, exp_covariance_matrix, optimize='optimal')
 x_contribution_2 = x_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix,CS,x_matrix, optimize='optimal')       \
      - np.einsum('ij,jk,kl->il', x_matrix,CS, th_covariance_matrix, optimize='optimal')
+x_contribution_3 = np.einsum('ij,jk,kl,lm,mn->in', th_covariance_matrix, CS, x_matrix, CS, th_covariance_matrix, optimize='optimal')
 
+# DETERMINE CHI2 VALUES
+dataset_split = [0,416,832,917,954,len(TD)] # ds
+chi2_no_th = np.zeros(len(dataset_split)-1)
+chi2_yes_th = np.zeros(len(dataset_split)-1)
+chi2_auto = np.zeros(len(dataset_split)-1)
+
+for n in range(len(dataset_split) - 1):
+     TD_ds = TD[dataset_split[n]:dataset_split[n+1]]
+     C_ds = exp_covariance_matrix[dataset_split[n]:dataset_split[n+1],dataset_split[n]:dataset_split[n+1]]
+     S_ds = th_covariance_matrix[dataset_split[n]:dataset_split[n+1],dataset_split[n]:dataset_split[n+1]]
+     CS_ds = inv((exp_covariance_matrix+th_covariance_matrix)[dataset_split[n]:dataset_split[n+1],dataset_split[n]:dataset_split[n+1]])
+
+     delta_T_ds = - np.einsum('ij,jk,k->i', S_ds, CS_ds, TD_ds)
+
+     chi2_no_th[n] = np.einsum('i,ij,j', TD_ds, inv(C_ds), TD_ds, optimize='optimal') / (dataset_split[n+1] - dataset_split[n])
+     chi2_yes_th[n] = np.einsum('i,ij,j', TD_ds, CS_ds, TD_ds, optimize='optimal') / (dataset_split[n+1] - dataset_split[n])
+     chi2_auto[n] = np.einsum('i,ij,j', delta_T_ds, CS_ds, delta_T_ds, optimize='optimal') / (dataset_split[n+1] - dataset_split[n])
+
+
+# DUMP OUTPUT TO FILE
 th_contribution_1.dump("matrices/TH1_CombinedData_dw.dat")
 th_contribution_2.dump("matrices/TH2_CombinedData_dw.dat")
 x_contribution_1.dump("matrices/X1_CombinedData_dw.dat")
 x_contribution_2.dump("matrices/X2_CombinedData_dw.dat")
+x_contribution_3.dump("matrices/X3_CombinedData_dw.dat")
+
+chi2_no_th.dump("matrices/CHN_CombinedData_dw.dat")
+chi2_yes_th.dump("matrices/CHY_CombinedData_dw.dat")
+chi2_auto.dump("matrices/CHA_CombinedData_dw.dat")

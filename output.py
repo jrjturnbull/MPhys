@@ -38,6 +38,11 @@ th_contribution_1 = np.load("matrices/TH1_" + root + ".dat", allow_pickle=True)
 th_contribution_2 = np.load("matrices/TH2_" + root + ".dat", allow_pickle=True)
 pdf_contribution_1 = np.load("matrices/X1_" + root + ".dat", allow_pickle=True)
 pdf_contribution_2 = np.load("matrices/X2_" + root + ".dat", allow_pickle=True)
+pdf_contribution_3 = np.load("matrices/X3_" + root + ".dat", allow_pickle=True)
+
+chi2_no_th = np.load("matrices/CHN_" + root + ".dat", allow_pickle=True)
+chi2_yes_th = np.load("matrices/CHY_" + root + ".dat", allow_pickle=True)
+chi2_auto = np.load("matrices/CHA_" + root + ".dat", allow_pickle=True)
 
 # ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
 c = ["maroon","firebrick","chocolate","orange","sandybrown","peachpuff","lightyellow",
@@ -174,9 +179,9 @@ S_norm = np.array([math.sqrt(theory_covariance_matrix_norm[i,i]) for i in range(
 X_norm = np.array([math.sqrt(pdf_covariance_matrix_norm[i,i]) for i in range(len(pdf_covariance_matrix_norm))])
 
 x = np.arange(len(C_norm))
+plt.scatter(x, X_norm, c='orange', s=1.5, label='X')
 plt.scatter(x, C_norm, c='g', s=1.5, label='C')
-plt.scatter(x, S_norm, c='b', s=1.5, label='S')
-plt.scatter(x, X_norm, c='r', s=1.5, label='X')
+plt.scatter(x, S_norm, c='purple', s=1.5, label='S')
 plt.title("Sqaure root of diagonal elements, normalised to the theory")
 show_dataset_brackets(plt.gca())
 plt.gca().axes.xaxis.set_visible(False)
@@ -187,7 +192,7 @@ plt.clf()
 
 # NON-ZERO EIGENVALUES
 nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-5]
-eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])
+eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])[::-1]
 
 x = np.arange(len(eigenvalues_nz))
 plt.scatter(x, eigenvalues_nz, s=1.5)
@@ -199,7 +204,7 @@ plt.savefig("output/nz_eigenvalues.png")
 plt.clf()
 
 nz_eigen_norm = [i for i in range(len(eigenvalues_norm)) if eigenvalues_norm[i] > 1e-5]
-eigenvalues_nz_norm = np.array([eigenvalues_norm[i] for i in nz_eigen_norm])
+eigenvalues_nz_norm = np.array([eigenvalues_norm[i] for i in nz_eigen_norm])[::-1]
 
 x = np.arange(len(eigenvalues_nz_norm))
 plt.scatter(x, eigenvalues_nz_norm, s=1.5)
@@ -307,14 +312,19 @@ for i in range(len(pdf_contribution_1)):
 pdf_contribution_2_norm = np.zeros(shape=len(pdf_contribution_2))
 for i in range(len(pdf_contribution_2)):
     pdf_contribution_2_norm[i] = pdf_contribution_2[i,i] / pdf_covariance_matrix[i,i]
+pdf_contribution_3_norm = np.zeros(shape=len(pdf_contribution_3))
+for i in range(len(pdf_contribution_3)):
+    pdf_contribution_3_norm[i] = pdf_contribution_3[i,i] / pdf_covariance_matrix[i,i]
 
 x = np.arange(len(pdf_contribution_1_norm))
 plt.scatter(x, pdf_contribution_1_norm, c='lightgreen', s=1.5, label=r'$C(C+S)^{-1}X(C+S)^{-1}C$')
 plt.scatter(x, pdf_contribution_2_norm, c='pink', s=1.5, label=r'$X-S(C+S)^{-1}X - X(C+S)^{-1}S$')
+#plt.scatter(x, pdf_contribution_2_norm + pdf_contribution_3_norm, c='k', s=1.5, label='NEW TERM')
 plt.title("Diagonal contributions to the PDF uncertainties")
 show_dataset_brackets(plt.gca())
+plt.axhline(y=1, color='k', linestyle='-')
 plt.axhline(y=0, color='k', linestyle='-')
-plt.ylim(-1.6, 1.1)
+#plt.ylim(-1.6, 1.1)
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
@@ -324,8 +334,8 @@ plt.clf()
 
 # NUISANCE PARAMETER EXPECTATION VALUES
 x = np.arange(len(nuisance_parameters))
-plt.ylim(-2,2)
-plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
+plt.ylim(-200,200)
+plt.axhspan(-100, 100, color='yellow', alpha=0.5, zorder=1)
 plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
 plt.errorbar(x,nuisance_parameters,yerr=uncertainties_nuc, ls='none', zorder=6)
 plt.axhline(y=0, color='k', linestyle='-', zorder=6)
@@ -334,8 +344,8 @@ plt.gca().axes.xaxis.set_visible(False)
 plt.savefig("output/NPE_nuc")
 plt.clf()
 
-plt.ylim(-2,2)
-plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
+plt.ylim(-200,200)
+plt.axhspan(-100, 100, color='yellow', alpha=0.5, zorder=1)
 plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
 plt.errorbar(x,nuisance_parameters,yerr=uncertainties_pdf, ls='none', zorder=6)
 plt.axhline(y=0, color='k', linestyle='-', zorder=7)
@@ -344,8 +354,8 @@ plt.gca().axes.xaxis.set_visible(False)
 plt.savefig("output/NPE_pdf")
 plt.clf()
 
-plt.ylim(-2,2)
-plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
+plt.ylim(-200,200)
+plt.axhspan(-100, 100, color='yellow', alpha=0.5, zorder=1)
 plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
 plt.errorbar(x,nuisance_parameters,yerr=uncertainties_tot, ls='none', zorder=6)
 plt.axhline(y=0, color='k', linestyle='-', zorder=7)
@@ -353,3 +363,17 @@ plt.title("Nuisance parameters with total uncertainties")
 plt.gca().axes.xaxis.set_visible(False)
 plt.savefig("output/NPE_tot")
 plt.clf()
+
+# CHI2 PLOT (manual data insertion)
+x1 = np.array([0.8,1.8,2.8,3.8,4.8])
+x2 = np.array([1,2,3,4,5])
+x3 = np.array([1.2,2.2,3.2,4.2,5.2])
+plt.bar(x1, height=chi2_no_th, width=0.15, color='blue', label='chi2_no_th')
+plt.bar(x2, height=chi2_yes_th, width=0.15, color='orange', label='chi2_yes_th')
+plt.bar(x3, height=chi2_auto, width=0.15, color='green', label='chi2_auto')
+plt.legend()
+labels = [item.get_text() for item in plt.gca().get_xticklabels()]
+labels = ['', 'CHORUS_nb', 'CHORUS_nu', 'DYE605', 'NTV_nb', 'NTV_nu']
+plt.gca().set_xticklabels(labels)
+plt.title("Chi squared for the various processes")
+plt.savefig("output/chi2")

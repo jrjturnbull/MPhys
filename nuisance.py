@@ -1,6 +1,6 @@
 import numpy as np
 from numpy import float64
-from numpy.linalg import inv
+from numpy.linalg import inv, norm
 import math
 import sys
 
@@ -22,8 +22,8 @@ x_matrix = np.load("matrices/XCV_" + root + ".dat", allow_pickle=True)
 
 # EXTRACTS NONZERO EIGENVALUES
 nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-5]
-eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])
-eigenvectors_nz = np.array([eigenvectors[i] for i in nz_eigen])
+eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])[::-1]
+eigenvectors_nz = np.array([eigenvectors[i] for i in nz_eigen])[::-1]
 
 l = len(eigenvalues_nz)
 
@@ -89,7 +89,7 @@ uncertainties_pdf = np.array([math.sqrt(abs(Z_pdf[i,i])) for i in range(l)])
 uncertainties_tot = np.array([math.sqrt(abs(Z_bar[i,i])) for i in range(l)])
 
 # NORMALISATION
-norm = math.sqrt(2 * math.pi * np.var(nuisance_params))
+norm = 1#math.sqrt(2 * math.pi * np.var(nuisance_params))
 nuisance_params /= norm
 uncertainties_nuc /= norm
 uncertainties_pdf /= norm

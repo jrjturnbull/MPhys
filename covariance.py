@@ -148,9 +148,9 @@ eigenvalues_cov = w #[w[i] for i in nz_eigen]
 eigenvectors_cov = v #[v[i] for i in nz_eigen]
 eval = np.array(eigenvalues_cov)
 evec = np.array(eigenvectors_cov)
-idx = eval.argsort()[::-1]
-eval = eval[idx]
-evec = evec[:,idx]
+#idx = eval.argsort()[::-1]
+#eval = eval[idx]
+#evec = evec[:,idx]
 
 # NORMALISED EIGENSTUFF
 covariance_matrix_norm = np.zeros_like(covariance_matrix)
@@ -160,9 +160,9 @@ for i in range(len(covariance_matrix)):
 eval_norm, evec_norm = eigh(covariance_matrix_norm)
 eval_norm = np.array(eval_norm)
 evec_norm = np.array(evec_norm)
-idx = eval_norm.argsort()[::-1]
-eval_norm = eval_norm[idx]
-evec_norm = evec_norm[:,idx]
+#idx = eval_norm.argsort()[::-1]
+#eval_norm = eval_norm[idx]
+#evec_norm = evec_norm[:,idx]
 
 """
 *********************************************************************************************************
