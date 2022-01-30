@@ -33,6 +33,7 @@ autoprediction = np.load("matrices/AP_" + root + ".dat", allow_pickle=True)
 
 autoprediction_shifts = np.load("matrices/DT_" + root + ".dat", allow_pickle=True)
 theory_data_diff = np.load("matrices/TD_" + root + ".dat", allow_pickle=True)
+nuclear_corrections = np.load("matrices/NUC_" + root + ".dat", allow_pickle=True)
 
 th_contribution_1 = np.load("matrices/TH1_" + root + ".dat", allow_pickle=True)
 th_contribution_2 = np.load("matrices/TH2_" + root + ".dat", allow_pickle=True)
@@ -270,20 +271,23 @@ for i in range(len(autoprediction_shifts)):
 theory_data_diff_norm = np.zeros_like(theory_data_diff)
 for i in range(len(theory_data_diff)):
     theory_data_diff_norm[i] = theory_data_diff[i] / theory_data[i]
+nuclear_corrections_norm = np.zeros_like(nuclear_corrections)
+for i in range(len(nuclear_corrections)):
+    nuclear_corrections_norm[i] = nuclear_corrections[i] / theory_data[i]
 
 x = np.arange(len(autoprediction_shifts))
-plt.ylim(-1,1)
-plt.plot(x, -theory_data_diff_norm, c='cyan', label='D-T', linewidth=0.35)
-plt.plot(x, autoprediction_shifts_norm, c='b', label='δT', linewidth=0.35)
+plt.ylim(-1.4,1.4)
+plt.plot(x, -theory_data_diff_norm, c='cyan', label='D-T', linewidth=0.35, zorder=2)
+plt.plot(x, autoprediction_shifts_norm, c='b', label='δT', linewidth=0.35, zorder=2)
+plt.plot(x, nuclear_corrections_norm, c='r', label='Nuclear Corrections', linewidth=0.35, zorder=2)
 plt.title("Autoprediction shifts compared to theory-data differences")
 show_dataset_brackets(plt.gca())
-plt.axhline(y=0, color='k', linestyle='-')
+plt.axhline(y=0, color='k', linestyle='-', zorder=1)
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
 plt.savefig("output/autoprediction_shifts")
 plt.clf()
-
 
 
 # CONTRIBUTIONS TO THE DIAGONAL ELEMENTS OF THE CORRELATED THEORY & PDF UNCERTAINTIES
@@ -334,8 +338,8 @@ plt.clf()
 
 # NUISANCE PARAMETER EXPECTATION VALUES
 x = np.arange(len(nuisance_parameters))
-plt.ylim(-200,200)
-plt.axhspan(-100, 100, color='yellow', alpha=0.5, zorder=1)
+plt.ylim(-2,2)
+plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
 plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
 plt.errorbar(x,nuisance_parameters,yerr=uncertainties_nuc, ls='none', zorder=6)
 plt.axhline(y=0, color='k', linestyle='-', zorder=6)
@@ -344,8 +348,8 @@ plt.gca().axes.xaxis.set_visible(False)
 plt.savefig("output/NPE_nuc")
 plt.clf()
 
-plt.ylim(-200,200)
-plt.axhspan(-100, 100, color='yellow', alpha=0.5, zorder=1)
+plt.ylim(-2,2)
+plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
 plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
 plt.errorbar(x,nuisance_parameters,yerr=uncertainties_pdf, ls='none', zorder=6)
 plt.axhline(y=0, color='k', linestyle='-', zorder=7)
@@ -354,8 +358,8 @@ plt.gca().axes.xaxis.set_visible(False)
 plt.savefig("output/NPE_pdf")
 plt.clf()
 
-plt.ylim(-200,200)
-plt.axhspan(-100, 100, color='yellow', alpha=0.5, zorder=1)
+plt.ylim(-2,2)
+plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
 plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
 plt.errorbar(x,nuisance_parameters,yerr=uncertainties_tot, ls='none', zorder=6)
 plt.axhline(y=0, color='k', linestyle='-', zorder=7)
