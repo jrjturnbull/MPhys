@@ -16,14 +16,19 @@ th_covariance_matrix = np.load("matrices/CV_" + root + ".dat", allow_pickle=True
 exp_covariance_matrix = np.load("matrices/ECV_" + root + ".dat", allow_pickle=True)
 exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
 theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
-eigenvectors = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
-eigenvalues = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
+eigenvectors = np.load("matrices/EVCN_" + root + ".dat", allow_pickle=True)
+eigenvalues = np.load("matrices/EVLN_" + root + ".dat", allow_pickle=True)
 x_matrix = np.load("matrices/XCV_" + root + ".dat", allow_pickle=True)
 
 # EXTRACTS NONZERO EIGENVALUES
+eigenvectors = np.transpose(eigenvectors) # so that eig[i] is the 'i'th eigenvector
+
 nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-5]
 eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])[::-1]
 eigenvectors_nz = np.array([eigenvectors[i] for i in nz_eigen])[::-1]
+
+for a in range(len(eigenvectors_nz)):
+    eigenvectors_nz[a] *= math.sqrt(eigenvalues_nz[a]) # 'undo' normalisation
 
 l = len(eigenvalues_nz)
 
@@ -38,6 +43,7 @@ for a in range(0, l):
     nuisance_params[a] = -1 * np.einsum('i,ij,j',beta,CS,TD)
     
 print("Computed all NPEs                                          ")
+
 
 """
 *********************************************************************************************************
