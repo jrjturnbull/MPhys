@@ -29,6 +29,7 @@ output_data_path = "datafiles/DATA/DATA_" + output_root + ".dat"
 output_syst_path = "datafiles/SYSTYPE/SYSTYPE_" + output_root + "_DEFAULT.dat"
 output_theo_path = "datafiles/THEORY/THEORY_" + output_root + ".dat"
 output_cent_path = "datafiles/THEORY/CENT_" + output_root + ".dat"
+output_cuts_path = "datafiles/CUTS/CUTS_" + output_root + ".dat"
 
 
 # DETERMINES THE NUMBER OF REPLICAS AND DATAPOINTS FOR EACH EXPERIMENT
@@ -139,5 +140,16 @@ with open(output_cent_path, 'w') as cent:
         with open(path_cent) as path:
             for l in path.readlines():
                 cent.write(l)
+
+# GENERATE CUTS FILE
+with open(output_cuts_path, 'w') as cuts:
+    add = 0
+    for i in range(len(root_list)):
+        path_cuts = "datafiles/CUTS/CUTS_" + root_list[i] + ".dat"
+        with open(path_cuts) as path:
+            for l in path.readlines():
+                c = int(l) + add
+                cuts.write(str(c)+"\n")
+        add += n_dat_list[i]
 
 print()

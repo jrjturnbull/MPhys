@@ -49,6 +49,9 @@ python3 extract_exp.py
 python3 generate_combined.py "CHORUSNBPb_dw" "CHORUSNUPb_dw" "DYE605_dw" "NTVNBDMNFe_dw" "NTVNUDMNFe_dw" "CombinedData_dw"
 python3 covariance.py "CombinedData_dw"
 
+python3 extract_cuts.py
+python3 extract_nuclear.py
+
 python3 pdf_covariance.py
 
 python3 nuisance.py "CombinedData_dw"
