@@ -43,6 +43,7 @@ pdf_contribution_3 = np.load("matrices/X3_" + root + ".dat", allow_pickle=True)
 
 chi2_no_th = np.load("matrices/CHN_" + root + ".dat", allow_pickle=True)
 chi2_yes_th = np.load("matrices/CHY_" + root + ".dat", allow_pickle=True)
+chi2_shifted = np.load("matrices/CHS_" + root + ".dat", allow_pickle=True)
 chi2_auto = np.load("matrices/CHA_" + root + ".dat", allow_pickle=True)
 
 # ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
@@ -338,11 +339,7 @@ plt.clf()
 
 # NUISANCE PARAMETER EXPECTATION VALUES
 x = np.arange(len(nuisance_parameters))
-<<<<<<< HEAD
 plt.ylim(-4.2,4.2)
-=======
-plt.ylim(-2,2)
->>>>>>> aa44b3700a208b693f52a790ec707232c6ea9a69
 plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
 plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
 plt.errorbar(x,nuisance_parameters,yerr=uncertainties_nuc, ls='none', zorder=6)
@@ -352,11 +349,7 @@ plt.gca().axes.xaxis.set_visible(False)
 plt.savefig("output/NPE_nuc")
 plt.clf()
 
-<<<<<<< HEAD
 plt.ylim(-4.2,4.2)
-=======
-plt.ylim(-2,2)
->>>>>>> aa44b3700a208b693f52a790ec707232c6ea9a69
 plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
 plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
 plt.errorbar(x,nuisance_parameters,yerr=uncertainties_pdf, ls='none', zorder=6)
@@ -366,11 +359,7 @@ plt.gca().axes.xaxis.set_visible(False)
 plt.savefig("output/NPE_pdf")
 plt.clf()
 
-<<<<<<< HEAD
 plt.ylim(-4.2,4.2)
-=======
-plt.ylim(-2,2)
->>>>>>> aa44b3700a208b693f52a790ec707232c6ea9a69
 plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
 plt.scatter(x, nuisance_parameters, vmin=-2, vmax=2, zorder=5)
 plt.errorbar(x,nuisance_parameters,yerr=uncertainties_tot, ls='none', zorder=6)
@@ -384,9 +373,11 @@ plt.clf()
 x1 = np.array([0.8,1.8,2.8,3.8,4.8])
 x2 = np.array([1,2,3,4,5])
 x3 = np.array([1.2,2.2,3.2,4.2,5.2])
+x4 = np.array([1.4,2.4,3.4,4.4,5.4])
 plt.bar(x1, height=chi2_no_th, width=0.15, color='blue', label='chi2_no_th')
 plt.bar(x2, height=chi2_yes_th, width=0.15, color='orange', label='chi2_yes_th')
-plt.bar(x3, height=chi2_auto, width=0.15, color='green', label='chi2_auto')
+plt.bar(x3, height=chi2_shifted, width=0.15, color='red', label='chi2_shifted')
+plt.bar(x4, height=chi2_auto, width=0.15, color='green', label='chi2_auto')
 plt.legend()
 labels = [item.get_text() for item in plt.gca().get_xticklabels()]
 labels = ['', 'CHORUS_nb', 'CHORUS_nu', 'DYE605', 'NTV_nb', 'NTV_nu']

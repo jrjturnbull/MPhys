@@ -16,53 +16,24 @@ th_covariance_matrix = np.load("matrices/CV_" + root + ".dat", allow_pickle=True
 exp_covariance_matrix = np.load("matrices/ECV_" + root + ".dat", allow_pickle=True)
 exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
 theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
-eigenvectors = np.load("matrices/EVCN_" + root + ".dat", allow_pickle=True)
-eigenvalues = np.load("matrices/EVLN_" + root + ".dat", allow_pickle=True)
+eigenvectors = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
+eigenvalues = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
 x_matrix = np.load("matrices/XCV_" + root + ".dat", allow_pickle=True)
-
-for i in range(len(eigenvectors)):
-    eigenvectors[i] *= eigenvalues[i]
-
-## NUA MATRIX
-#datafile = open("datafiles/DATA/DATA_CombinedData_dw.dat")
-#cuts = [int(c) for c in open("datafiles/CUTS/CUTS_CombinedData_dw.dat").readlines()]
-#nua = np.zeros(shape=(993,100))
-#lines = datafile.readlines()[1:]
-#cut=0
-#for i in range(len(lines)):
-#    if(i in cuts):
-#        cut+=1
-#        continue
-#    nua[i-cut:] = lines[i].split('\t')[7:-1:2]
 
 # COMPUTES THE NUISANCE PARAMETER EXPECTATION VALUES
 TD = theory_data - exp_data
-
-## NORMALISATION
-#ll = len(theory_data)
-#for i in range(ll):
-#    TD[i] /= theory_data[i]
-#    nua[i,:] /= theory_data[i]
-#    for j in range(ll):
-#        th_covariance_matrix[i,j] /= (theory_data[i] * theory_data[j])
-#        exp_covariance_matrix[i,j] /= (theory_data[i] * theory_data[j])
-#        x_matrix[i,j] /= (theory_data[i] * theory_data[j])
-
 CS = inv(th_covariance_matrix + exp_covariance_matrix)
 
-# EXTRACTS NONZERO EIGENVALUES
 eigenvectors = np.transpose(eigenvectors) # so that eig[i] is the 'i'th eigenvector
-
 nz_eigen = [i for i in range(len(eigenvalues)) if eigenvalues[i] > 1e-5]
 eigenvalues_nz = np.array([eigenvalues[i] for i in nz_eigen])[::-1]
 eigenvectors_nz = np.array([eigenvectors[i] for i in nz_eigen])[::-1]
-
 for a in range(len(eigenvectors_nz)):
     eigenvectors_nz[a] *= math.sqrt(eigenvalues_nz[a]) # 'undo' normalisation
 
 l = len(eigenvalues_nz)
-nuisance_params = np.zeros(shape=l, dtype=float64)
 
+nuisance_params = np.zeros(shape=l, dtype=float64)
 for a in range(0, l):
     print("Computing NPE {0} of {1}...".format(a+1, l), end='\r')
     beta = eigenvectors_nz[a]
@@ -70,10 +41,7 @@ for a in range(0, l):
     
 print("Computed all NPEs                                          ")
 
-<<<<<<< HEAD
-=======
 #print(nuisance_params)
->>>>>>> aa44b3700a208b693f52a790ec707232c6ea9a69
 
 """
 *********************************************************************************************************

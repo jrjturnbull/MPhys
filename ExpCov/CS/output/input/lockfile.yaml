@@ -15,7 +15,7 @@ dataset_inputs:
 template_text: |2
 
   ## Experimental covariance matrix for nuclear data sets
-  {@ groups_invcovmat @}
+  {@ groups_covmat @}
 actions_:
 - report(main=false)
 data_grouping_recorded_spec_:

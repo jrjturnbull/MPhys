@@ -42,10 +42,17 @@ x_contribution_2 = x_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix,CS,
      - np.einsum('ij,jk,kl->il', x_matrix,CS, th_covariance_matrix, optimize='optimal')
 x_contribution_3 = np.einsum('ij,jk,kl,lm,mn->in', th_covariance_matrix, CS, x_matrix, CS, th_covariance_matrix, optimize='optimal')
 
+
 # DETERMINE CHI2 VALUES
+CS_shifted = np.zeros_like(CS)
+with open("ExpCov/CS_shifted/output/tables/groups_covmat.csv") as file:
+     lines = file.readlines()[4:]
+     CS_shifted = np.array([lines[i].split("\t")[3:] for i in range(len(lines))], dtype=float)
+
 ds = [0,416,832,917,954,len(TD)] # shorthand for dataset_split
 chi2_no_th = np.zeros(len(ds)-1)
 chi2_yes_th = np.zeros(len(ds)-1)
+chi2_shifted = np.zeros(len(ds)-1)
 chi2_auto = np.zeros(len(ds)-1)
 
 for n in range(len(ds) - 1):
@@ -53,13 +60,15 @@ for n in range(len(ds) - 1):
      C_ds = exp_covariance_matrix[ds[n]:ds[n+1],ds[n]:ds[n+1]]
      S_ds = th_covariance_matrix[ds[n]:ds[n+1],ds[n]:ds[n+1]]
      CS_ds = inv((exp_covariance_matrix+th_covariance_matrix)[ds[n]:ds[n+1],ds[n]:ds[n+1]])
+     CS_shifted_ds = inv((CS_shifted)[ds[n]:ds[n+1],ds[n]:ds[n+1]])
 
      delta_T_ds = - np.einsum('ij,jk,k->i', S_ds, CS_ds, TD_ds)
      theory_data_ds = theory_data[ds[n]:ds[n+1]]
-     auto_ds = TD_ds + delta_T_ds
+     auto_ds = delta_T_ds # + TD_ds
 
      chi2_no_th[n] = np.einsum('i,ij,j', TD_ds, inv(C_ds), TD_ds, optimize='optimal') / (ds[n+1] - ds[n])
      chi2_yes_th[n] = np.einsum('i,ij,j', TD_ds, CS_ds, TD_ds, optimize='optimal') / (ds[n+1] - ds[n])
+     chi2_shifted[n] = np.einsum('i,ij,j', TD_ds, CS_shifted_ds, TD_ds, optimize='optimal') / (ds[n+1] - ds[n])
      chi2_auto[n] = np.einsum('i,ij,j', auto_ds, CS_ds, auto_ds, optimize='optimal') / (ds[n+1] - ds[n])
 
 
@@ -72,4 +81,5 @@ x_contribution_3.dump("matrices/X3_CombinedData_dw.dat")
 
 chi2_no_th.dump("matrices/CHN_CombinedData_dw.dat")
 chi2_yes_th.dump("matrices/CHY_CombinedData_dw.dat")
+chi2_shifted.dump("matrices/CHS_CombinedData_dw.dat")
 chi2_auto.dump("matrices/CHA_CombinedData_dw.dat")
