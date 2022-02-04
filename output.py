@@ -46,6 +46,10 @@ chi2_yes_th = np.load("matrices/CHY_" + root + ".dat", allow_pickle=True)
 chi2_shifted = np.load("matrices/CHS_" + root + ".dat", allow_pickle=True)
 chi2_auto = np.load("matrices/CHA_" + root + ".dat", allow_pickle=True)
 
+chi2_no_th_t0 = np.load("matrices/CHNt0_" + root + ".dat", allow_pickle=True)
+chi2_yes_th_t0 = np.load("matrices/CHYt0_" + root + ".dat", allow_pickle=True)
+chi2_shifted_t0 = np.load("matrices/CHSt0_" + root + ".dat", allow_pickle=True)
+
 # ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
 c = ["maroon","firebrick","chocolate","orange","sandybrown","peachpuff","lightyellow",
         "honeydew","palegreen","aquamarine","mediumturquoise", "royalblue","midnightblue"]
@@ -384,3 +388,21 @@ labels = ['', 'CHORUS_nb', 'CHORUS_nu', 'DYE605', 'NTV_nb', 'NTV_nu']
 plt.gca().set_xticklabels(labels)
 plt.title("Chi squared for the various processes")
 plt.savefig("output/chi2")
+plt.clf()
+
+# CHI2 PLOT (manual data insertion)
+x1 = np.array([0.8,1.8,2.8,3.8,4.8])
+x2 = np.array([1,2,3,4,5])
+x3 = np.array([1.2,2.2,3.2,4.2,5.2])
+x4 = np.array([1.4,2.4,3.4,4.4,5.4])
+plt.bar(x1, height=chi2_no_th_t0, width=0.15, color='blue', label='chi2_no_th')
+plt.bar(x2, height=chi2_yes_th_t0, width=0.15, color='orange', label='chi2_yes_th')
+plt.bar(x3, height=chi2_shifted_t0, width=0.15, color='red', label='chi2_shifted')
+#plt.bar(x4, height=chi2_auto_t0, width=0.15, color='green', label='chi2_auto')
+plt.legend()
+labels = [item.get_text() for item in plt.gca().get_xticklabels()]
+labels = ['', 'CHORUS_nb', 'CHORUS_nu', 'DYE605', 'NTV_nb', 'NTV_nu']
+plt.gca().set_xticklabels(labels)
+plt.title("Chi squared for the various processes (t0 method)")
+plt.savefig("output/chi2t0")
+plt.clf()
