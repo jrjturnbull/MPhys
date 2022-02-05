@@ -14,6 +14,7 @@ print()
 print("Extracting theory data from dt_comparison")
 
 import os
+import numpy as np
 rootdir = "dt_comparison_internal"
 table_paths = []
 
@@ -49,23 +50,21 @@ for path in table_paths:
 
 # EXTRACT CFACTOR DATA
 print("Extracting K factor data")
-root_list = ["CHORUSNBPb", "CHORUSNUPb", "DYE605", "NTVNBDMNFe", "NTVNUDMNFe"]
+root_list = ["CHORUSNBPb_dw", "CHORUSNUPb_dw", "DYE605_dw", "NTVNBDMNFe_dw", "NTVNUDMNFe_dw"]
 for root in root_list:
     cf_file = open("datafiles/CF/CF_NUC_" + root + ".dat").readlines()
+    cuts = [int(c) for c in open("datafiles/CUTS/CUTS_" + root + ".dat").readlines()]
 
     x = 0
-    t = 0
     while(True): # ignore header lines
         x = x+1 if "***" in cf_file[0] else x
         cf_file = cf_file[1:]
         if (x==2):
             break
 
-        t += 1
-        if (t > 100): # just in case!
-            print("ERROR!!!")
-            break
+    cf_file = np.array(cf_file)
+    cf_file = np.delete(cf_file, cuts)
 
-    k_file = open("datafiles/CF/K_" + root + ".dat", 'r')
-    k_file.writelines([line.split('\t')[0] for line in cf_file])
+    k_file = open("datafiles/CF/K_" + root + ".dat", 'w')
+    k_file.writelines([line.split('  ')[0]+'\n' for line in cf_file])
     

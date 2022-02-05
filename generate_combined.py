@@ -30,6 +30,7 @@ output_syst_path = "datafiles/SYSTYPE/SYSTYPE_" + output_root + "_DEFAULT.dat"
 output_theo_path = "datafiles/THEORY/THEORY_" + output_root + ".dat"
 output_cent_path = "datafiles/THEORY/CENT_" + output_root + ".dat"
 output_cuts_path = "datafiles/CUTS/CUTS_" + output_root + ".dat"
+output_kfac_path = "datafiles/CF/K_" + output_root + ".dat"
 
 
 # DETERMINES THE NUMBER OF REPLICAS AND DATAPOINTS FOR EACH EXPERIMENT
@@ -140,6 +141,14 @@ with open(output_cent_path, 'w') as cent:
         with open(path_cent) as path:
             for l in path.readlines():
                 cent.write(l)
+
+# GENERATE KFAC FILE
+with open(output_kfac_path, 'w') as kfac:
+    for root in root_list:
+        path_kfac = "datafiles/CF/K_" + root + ".dat"
+        with open(path_kfac) as path:
+            for l in path.readlines():
+                kfac.write(l)
 
 # GENERATE CUTS FILE
 with open(output_cuts_path, 'w') as cuts:

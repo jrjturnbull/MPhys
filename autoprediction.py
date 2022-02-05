@@ -43,9 +43,15 @@ x_contribution_2 = x_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix,CS,
 x_contribution_3 = np.einsum('ij,jk,kl,lm,mn->in', th_covariance_matrix, CS, x_matrix, CS, th_covariance_matrix, optimize='optimal')
 
 
+# DETERMINE ORIGINAL NUCLEAR SHIFTS
+k_factor = np.array([float(k) for k in open("datafiles/CF/K_" + root + ".dat").readlines()])
+nuclear_shifts = theory_data * k_factor
+
 # DUMP OUTPUT TO FILE
 th_contribution_1.dump("matrices/TH1_CombinedData_dw.dat")
 th_contribution_2.dump("matrices/TH2_CombinedData_dw.dat")
 x_contribution_1.dump("matrices/X1_CombinedData_dw.dat")
 x_contribution_2.dump("matrices/X2_CombinedData_dw.dat")
 x_contribution_3.dump("matrices/X3_CombinedData_dw.dat")
+
+nuclear_shifts.dump("matrices/NSH_CombinedData_dw.dat")

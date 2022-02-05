@@ -33,7 +33,7 @@ autoprediction = np.load("matrices/AP_" + root + ".dat", allow_pickle=True)
 
 autoprediction_shifts = np.load("matrices/DT_" + root + ".dat", allow_pickle=True)
 theory_data_diff = np.load("matrices/TD_" + root + ".dat", allow_pickle=True)
-nuclear_corrections = np.load("matrices/NUC_" + root + ".dat", allow_pickle=True)
+nuclear_shifts = np.load("matrices/NSH_" + root + ".dat", allow_pickle=True)
 
 th_contribution_1 = np.load("matrices/TH1_" + root + ".dat", allow_pickle=True)
 th_contribution_2 = np.load("matrices/TH2_" + root + ".dat", allow_pickle=True)
@@ -276,15 +276,15 @@ for i in range(len(autoprediction_shifts)):
 theory_data_diff_norm = np.zeros_like(theory_data_diff)
 for i in range(len(theory_data_diff)):
     theory_data_diff_norm[i] = theory_data_diff[i] / theory_data[i]
-nuclear_corrections_norm = np.zeros_like(nuclear_corrections)
-for i in range(len(nuclear_corrections)):
-    nuclear_corrections_norm[i] = nuclear_corrections[i] / theory_data[i]
+nuclear_shifts_norm = np.zeros_like(nuclear_shifts)
+for i in range(len(nuclear_shifts)):
+    nuclear_shifts_norm[i] = nuclear_shifts[i] / theory_data[i]
 
 x = np.arange(len(autoprediction_shifts))
 plt.ylim(-1.4,1.4)
 plt.plot(x, -theory_data_diff_norm, c='cyan', label='D-T', linewidth=0.35, zorder=2)
 plt.plot(x, autoprediction_shifts_norm, c='b', label='δT', linewidth=0.35, zorder=2)
-plt.plot(x, nuclear_corrections_norm, c='r', label='Nuclear Corrections', linewidth=0.35, zorder=2)
+plt.plot(x, nuclear_shifts_norm, c='r', label='Nuclear Shifts', linewidth=0.35, zorder=2)
 plt.title("Autoprediction shifts compared to theory-data differences")
 show_dataset_brackets(plt.gca())
 plt.axhline(y=0, color='k', linestyle='-', zorder=1)
