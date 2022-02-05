@@ -20,7 +20,7 @@ dataset_inputs:
 template_text: |
  
     ## chi2 distribution without theoretical uncertainties
-    {@ dataset_inputs::pdfs plot_chi2dist @}
+    {@ dataset_inputs::pdfs fits_datasets_chi2_table @}
 
 template: dthcomparison.md
 

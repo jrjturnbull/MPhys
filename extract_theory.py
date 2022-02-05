@@ -45,3 +45,27 @@ for path in table_paths:
     with open(cent_output, 'w') as output:
         for d in cent_values:
             output.write(d + '\n')
+
+
+# EXTRACT CFACTOR DATA
+print("Extracting K factor data")
+root_list = ["CHORUSNBPb", "CHORUSNUPb", "DYE605", "NTVNBDMNFe", "NTVNUDMNFe"]
+for root in root_list:
+    cf_file = open("datafiles/CF/CF_NUC_" + root + ".dat").readlines()
+
+    x = 0
+    t = 0
+    while(True): # ignore header lines
+        x = x+1 if "***" in cf_file[0] else x
+        cf_file = cf_file[1:]
+        if (x==2):
+            break
+
+        t += 1
+        if (t > 100): # just in case!
+            print("ERROR!!!")
+            break
+
+    k_file = open("datafiles/CF/K_" + root + ".dat", 'r')
+    k_file.writelines([line.split('\t')[0] for line in cf_file])
+    
