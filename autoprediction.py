@@ -1,57 +1,45 @@
-from pickletools import optimize
 import numpy as np
-from numpy.linalg import inv
-import matplotlib.pyplot as plt
-import math
+import sys
 
-root = "CombinedData_dw"
+root = sys.argv[1]
 
-th_covariance_matrix = np.load("matrices/CV_" + root + ".dat", allow_pickle=True)
-exp_covariance_matrix = np.load("matrices/ECV_" + root + ".dat", allow_pickle=True)
-exp_data = np.load("matrices/EXP_" + root + ".dat", allow_pickle=True)
-theory_data = np.load("matrices/TH_" + root + ".dat", allow_pickle=True)
-x_matrix = np.load("matrices/XCV_" + root + ".dat", allow_pickle=True)
+C = np.load("matrices/C_" + root + ".dat", allow_pickle=True)
+S = np.load("matrices/S_" + root + ".dat", allow_pickle=True)
+invCS = np.load("matrices/CSINV_" + root + ".dat", allow_pickle=True)
 
-CS = inv(exp_covariance_matrix + th_covariance_matrix)
+D = np.load("matrices/D_" + root + ".dat", allow_pickle=True)
+T = np.load("matrices/T_" + root + ".dat", allow_pickle=True)
+X = np.load("matrices/X_" + root + ".dat", allow_pickle=True)
+TD = T - D
 
+#######################################################################
 
+print("Determining autoprediction matrix + shifts")
 
-# DETERMINE AUTOPREDICTION SHIFTS
-TD = theory_data - exp_data
-delta_T = - np.einsum('ij,jk,k->i', th_covariance_matrix, CS, TD)
+term_1 = np.einsum('ij,jk,kl,lm,mn->in', C, invCS, X, invCS, C, optimize='optimal')
+term_2 = S - np.einsum('ij,jk,kl->il', S, invCS, S, optimize='optimal')
+P = term_1 + term_2
 
-delta_T.dump("matrices/DT_CombinedData_dw.dat")
-TD.dump("matrices/TD_CombinedData_dw.dat")
+delta_T = - np.einsum('ij,jk,k->i', S, invCS, TD)
 
+#######################################################################
 
+print("Determining covariance matrix diagonal contributions")
 
-# DETERMINE AUTOPREDICTION COVARIANCE MATRIX
-term_1 = np.einsum('ij,jk,kl,lm,mn->in', exp_covariance_matrix, CS, x_matrix, CS, exp_covariance_matrix, optimize='optimal')
-term_2 = th_covariance_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix, CS, th_covariance_matrix, optimize='optimal')
-autoprediction = term_1 + term_2
+S_contribution_1 = S - np.einsum('ij,jk,kl->il', S, invCS, S, optimize='optimal')
+S_contribution_2 = S_contribution_1 + np.einsum('ij,jk,kl,lm,mn->in', S, invCS, X, invCS, S, optimize='optimal')
 
-autoprediction.dump("matrices/AP_CombinedData_dw.dat")
-
-
-# DETERMINE CONTRIBUTIONS TO THE DIAGONAL ELEMENTS OF THE CORRELATED THEORY & PDF UNCERTAINTIES
-th_contribution_1 = th_covariance_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix,CS, th_covariance_matrix, optimize='optimal')
-th_contribution_2 = th_contribution_1 + np.einsum('ij,jk,kl,lm,mn->in', th_covariance_matrix, CS, x_matrix, CS, th_covariance_matrix, optimize='optimal')
-
-x_contribution_1 = np.einsum('ij,jk,kl,lm,mn->in', exp_covariance_matrix, CS, x_matrix, CS, exp_covariance_matrix, optimize='optimal')
-x_contribution_2 = x_matrix - np.einsum('ij,jk,kl->il', th_covariance_matrix,CS,x_matrix, optimize='optimal')       \
-     - np.einsum('ij,jk,kl->il', x_matrix,CS, th_covariance_matrix, optimize='optimal')
-x_contribution_3 = np.einsum('ij,jk,kl,lm,mn->in', th_covariance_matrix, CS, x_matrix, CS, th_covariance_matrix, optimize='optimal')
+X_contribution_1 = np.einsum('ij,jk,kl,lm,mn->in', C, invCS, X, invCS, C, optimize='optimal')
+X_contribution_2 = X - np.einsum('ij,jk,kl->il', S, invCS, X, optimize='optimal')       \
+    - np.einsum('ij,jk,kl,lm,mn->in', S, invCS, X, invCS, S, optimize='optimal')
 
 
-# DETERMINE ORIGINAL NUCLEAR SHIFTS
-k_factor = np.array([float(k) for k in open("datafiles/CF/K_" + root + ".dat").readlines()])
-nuclear_shifts = theory_data * k_factor
+#######################################################################
 
-# DUMP OUTPUT TO FILE
-th_contribution_1.dump("matrices/TH1_CombinedData_dw.dat")
-th_contribution_2.dump("matrices/TH2_CombinedData_dw.dat")
-x_contribution_1.dump("matrices/X1_CombinedData_dw.dat")
-x_contribution_2.dump("matrices/X2_CombinedData_dw.dat")
-x_contribution_3.dump("matrices/X3_CombinedData_dw.dat")
+P.dump("matrices/P_" + root + ".dat")
+delta_T.dump("matrices/AUTO_" + root + ".dat")
 
-nuclear_shifts.dump("matrices/NSH_CombinedData_dw.dat")
+S_contribution_1.dump("matrices/S1_" + root + ".dat")
+S_contribution_2.dump("matrices/S2_" + root + ".dat")
+X_contribution_1.dump("matrices/X1_" + root + ".dat")
+X_contribution_2.dump("matrices/X2_" + root + ".dat")
