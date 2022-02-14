@@ -13,8 +13,8 @@ T = np.load("matrices/T_" + root + ".dat", allow_pickle=True)
 X = np.load("matrices/X_" + root + ".dat", allow_pickle=True)
 TD = T - D
 
-eval = np.load("matrices/EVAL_" + root + ".dat", allow_pickle=True)
-evec = np.load("matrices/EVEC_" + root + ".dat", allow_pickle=True)
+eval = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
+evec = np.load("matrices/EVC_" + root + ".dat", allow_pickle=True)
 
 evec = np.transpose(evec) # so that evec[i] is the 'i'th eigenvector
 nz_eigen = [i for i in range(len(eval)) if eval[i] > 1e-5]
@@ -63,9 +63,9 @@ for a in range(l):
         Z_pdf[a,b] = -t_3
         Z_bar[a,b] = t_1 - t_2 - t_3
 
-NPE_nuc = np.array([math.sqrt(Z[i,i]) for i in range(l)])
-NPE_pdf = np.array([math.sqrt(Z_pdf[i,i]) for i in range(l)])
-NPE_tot = np.array([math.sqrt(Z_bar[i,i]) for i in range(l)])
+NPE_nuc = np.array([math.sqrt(abs(Z[i,i])) for i in range(l)])
+NPE_pdf = np.array([math.sqrt(abs(Z_pdf[i,i])) for i in range(l)])
+NPE_tot = np.array([math.sqrt(abs(Z_bar[i,i])) for i in range(l)])
 
 print("Computed all NPE uncertainties                                           ")
 

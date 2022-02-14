@@ -4,7 +4,7 @@ meta:
 
 theoryid: 200
 
-pdf:  NNPDF40_nnlo_as_01180
+pdf: NNPDF40_nnlo_as_01180
 
 use_cuts: internal
 
@@ -15,25 +15,12 @@ dataset_inputs:
     -   { dataset:  NTVNBDMNFe  }
     -   { dataset:  NTVNUDMNFe  }
 
-dataset_inputs_nuclear:
-    -   { dataset:  CHORUSNBPb_dw  }
-    -   { dataset:  CHORUSNUPb_dw  }
-    -   { dataset:  DYE605_dw      }
-    -   { dataset:  NTVNBDMNFe_dw  }
-    -   { dataset:  NTVNUDMNFe_dw  }
-
 template_text:  |
   ## C matrix for nuclear datasets
-  {@ dataset_inputs::pdf groups_covmat @}
-  
-  ## (C+S) matrix for nuclear datasets
-  {@ dataset_inputs_nuclear::pdf groups_covmat @}
-
-  ## inv(C+S) matrix for nuclear datasets
-  {@ dataset_inputs_nuclear::pdf groups_invcovmat @}
+  {@ groups_covmat @}
 
   ## data-theory comparison for the nuclear datasets
-  {@ dataset_inputs::pdf group_result_table @}
+  {@ group_result_table @}
 
 actions_:
     - report(main=false)

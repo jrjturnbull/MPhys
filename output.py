@@ -1,0 +1,285 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import  SymLogNorm
+import sys
+import math
+from matplotlib.colors import LinearSegmentedColormap
+
+root = sys.argv[1]
+
+C = np.load("matrices/C_" + root + ".dat", allow_pickle=True)
+S = np.load("matrices/S_" + root + ".dat", allow_pickle=True)
+X = np.load("matrices/X_" + root + ".dat", allow_pickle=True)
+P = np.load("matrices/P_" + root + ".dat", allow_pickle=True)
+
+T = np.load("matrices/T_" + root + ".dat", allow_pickle=True)
+D = np.load("matrices/D_" + root + ".dat", allow_pickle=True)
+
+NPE = np.load("matrices/NPE_" + root + ".dat", allow_pickle=True)
+NPE_nuc = np.load("matrices/NPEnuc_" + root + ".dat", allow_pickle=True)
+NPE_pdf = np.load("matrices/NPEpdf_" + root + ".dat", allow_pickle=True)
+NPE_tot = np.load("matrices/NPEtot_" + root + ".dat", allow_pickle=True)
+
+AUTO = np.load("matrices/AUTO_" + root + ".dat", allow_pickle=True)
+
+S1 = np.load("matrices/S1_" + root + ".dat", allow_pickle=True)
+S2 = np.load("matrices/S2_" + root + ".dat", allow_pickle=True)
+X1 = np.load("matrices/S1_" + root + ".dat", allow_pickle=True)
+X2 = np.load("matrices/S2_" + root + ".dat", allow_pickle=True)
+
+# ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
+c = ["maroon","firebrick","chocolate","orange","sandybrown","peachpuff","lightyellow",
+        "honeydew","palegreen","aquamarine","mediumturquoise", "royalblue","midnightblue"]
+v = [0,.1,.2,.3,.4,.45,.5,.55,.6,.7,.8,.9,1]
+l = list(zip(v,reversed(c)))
+cmap=LinearSegmentedColormap.from_list('rg',l, N=256)
+
+# LABEL REGIONS OF AXIS
+def bracket(ax, pos=[0,0], scalex=1, scaley=1, text="", textkw = {}, linekw = {}):
+    x = np.array([0, 0.05, 0.45, 0.5])
+    y = np.array([0, -0.01, -0.01, -0.02])
+    x = np.concatenate((x, x+0.5))
+    y = np.concatenate((y, y[::-1]))
+    ax.plot(x*scalex+pos[0], y*scaley+pos[1], clip_on=False, transform=ax.get_xaxis_transform(), **linekw)
+    ax.text(pos[0]+0.5*scalex, (y.min()-0.01)*scaley+pos[1], text, transform=ax.get_xaxis_transform(),
+        ha="center", va="top", **textkw)
+
+def show_dataset_brackets(ax):
+    bracket(ax, text="1", pos=[0,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
+    bracket(ax, text="2", pos=[416,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
+    bracket(ax, text="3", pos=[832,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
+    bracket(ax, text="4", pos=[917,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
+    bracket(ax, text="5", pos=[954,0], scalex=39, scaley=3, linekw=dict(color="k", lw=2))
+
+#######################################################################
+
+#region covariance/correlation matrices
+
+# C matrix
+fig, ax = plt.subplots()
+C_norm = np.zeros_like(C)
+for i in range(len(C)):
+    for j in range(len(C)):
+        C_norm[i,j] = C[i,j] / (T[i] * T[j])
+im = ax.imshow(C_norm, norm=SymLogNorm(1e-4,vmin=-1, vmax=1), cmap=cmap)
+fig.colorbar(im)
+plt.title("Experimental covariance matrix, normalised to the theory")
+ax.axes.xaxis.set_visible(False)
+ax.axes.yaxis.set_visible(False)
+#show_dataset_brackets(ax)
+plt.savefig("figures/" + root + "/C_covariance")
+plt.clf()
+plt.cla()
+
+C_corr = np.zeros_like(C)
+for i in range(len(C)):
+    for j in range(len(C)):
+            if (C[i,j] == 0):
+                continue
+            C_corr[i,j] = C[i,j] / math.sqrt(C[i,i] * C[j,j])
+plt.imshow(C_corr ,vmin=-1, vmax=1, cmap=cmap)
+plt.colorbar()
+plt.title("Experimental correlation matrix")
+##show_dataset_brackets(plt.gca())
+plt.gca().axes.xaxis.set_visible(False)
+plt.gca().axes.yaxis.set_visible(False)
+#plt.show()
+plt.savefig("figures/" + root + "/C_correlation")
+plt.clf()
+
+# S matrix
+fig, ax = plt.subplots()
+S_norm = np.zeros_like(S)
+for i in range(len(S)):
+    for j in range(len(S)):
+        S_norm[i,j] = S[i,j] / (T[i] * T[j])
+im = ax.imshow(S_norm, norm=SymLogNorm(1e-4,vmin=-1.5, vmax=1.5), cmap=cmap)
+fig.colorbar(im)
+plt.title("Theory covariance matrix, normalised to the theory")
+ax.axes.xaxis.set_visible(False)
+ax.axes.yaxis.set_visible(False)
+#show_dataset_brackets(ax)
+plt.savefig("figures/" + root + "/S_covariance")
+plt.clf()
+plt.cla()
+
+S_corr = np.zeros_like(S)
+for i in range(len(S)):
+    for j in range(len(S)):
+            if (S[i,j] == 0):
+                continue
+            S_corr[i,j] = S[i,j] / math.sqrt(S[i,i] * S[j,j])
+plt.imshow(S_corr ,vmin=-1, vmax=1, cmap=cmap)
+plt.colorbar()
+plt.title("Theory correlation matrix")
+#show_dataset_brackets(plt.gca())
+plt.gca().axes.xaxis.set_visible(False)
+plt.gca().axes.yaxis.set_visible(False)
+#plt.show()
+plt.savefig("figures/" + root + "/S_correlation")
+plt.clf()
+
+# X matrix
+fig, ax = plt.subplots()
+X_norm = np.zeros_like(X)
+for i in range(len(X)):
+    for j in range(len(X)):
+        X_norm[i,j] = X[i,j] / (T[i] * T[j])
+im = ax.imshow(X_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
+fig.colorbar(im)
+plt.title("PDF covariance matrix, normalised to the theory")
+ax.axes.xaxis.set_visible(False)
+ax.axes.yaxis.set_visible(False)
+#show_dataset_brackets(ax)
+plt.savefig("figures/" + root + "/X_covariance")
+plt.clf()
+plt.cla()
+
+X_corr = np.zeros_like(X)
+for i in range(len(X)):
+    for j in range(len(X)):
+            if (X[i,j] == 0):
+                continue
+            X_corr[i,j] = X[i,j] / math.sqrt(X[i,i] * X[j,j])
+plt.imshow(X_corr ,vmin=-1, vmax=1, cmap=cmap)
+plt.colorbar()
+plt.title("PDF correlation matrix")
+#show_dataset_brackets(plt.gca())
+plt.gca().axes.xaxis.set_visible(False)
+plt.gca().axes.yaxis.set_visible(False)
+#plt.show()
+plt.savefig("figures/" + root + "/X_correlation")
+plt.clf()
+
+# P matrix
+fig, ax = plt.subplots()
+P_norm = np.zeros_like(P)
+for i in range(len(P)):
+    for j in range(len(P)):
+        P_norm[i,j] = P[i,j] / (T[i] * T[j])
+im = ax.imshow(X_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
+fig.colorbar(im)
+plt.title("Autoprediction covariance matrix, normalised to the theory")
+ax.axes.xaxis.set_visible(False)
+ax.axes.yaxis.set_visible(False)
+#show_dataset_brackets(ax)
+plt.savefig("figures/" + root + "/P_covariance")
+plt.clf()
+plt.cla()
+
+P_corr = np.zeros_like(P)
+for i in range(len(P)):
+    for j in range(len(P)):
+            if (P[i,j] == 0):
+                continue
+            P_corr[i,j] = P[i,j] / math.sqrt(P[i,i] * P[j,j])
+plt.imshow(P_corr ,vmin=-1, vmax=1, cmap=cmap)
+plt.colorbar()
+plt.title("Autoprediction correlation matrix")
+#show_dataset_brackets(plt.gca())
+plt.gca().axes.xaxis.set_visible(False)
+plt.gca().axes.yaxis.set_visible(False)
+#plt.show()
+plt.savefig("figures/" + root + "/P_correlation")
+plt.clf()
+
+#endregion
+
+#region autoprediction shifts
+AUTO_norm = np.zeros_like(AUTO)
+for i in range(len(AUTO)):
+    AUTO_norm[i] = AUTO[i] / T[i]
+TD_norm = np.zeros_like(T-D)
+for i in range(len(TD_norm)):
+    TD_norm[i] = (T-D)[i] / T[i]
+
+x = np.arange(len(AUTO))
+plt.ylim(-1.4,1.4)
+plt.plot(x, -TD_norm, c='cyan', label='D-T', linewidth=0.35, zorder=2)
+plt.plot(x, AUTO_norm, c='b', label='δT', linewidth=0.35, zorder=2)
+plt.title("Autoprediction shifts compared to theory-data differences")
+#show_dataset_brackets(plt.gca())
+plt.axhline(y=0, color='k', linestyle='-', zorder=1)
+plt.gca().axes.xaxis.set_visible(False)
+plt.legend()
+#plt.show()
+plt.savefig("figures/" + root + "/AUTO")
+plt.clf()
+
+#endregion
+
+#region nuisance parameters
+x = np.arange(len(NPE))
+plt.ylim(-4.2,4.2)
+plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
+plt.scatter(x, NPE, vmin=-2, vmax=2, zorder=5)
+plt.errorbar(x,NPE,yerr=NPE_nuc, ls='none', zorder=6)
+plt.axhline(y=0, color='k', linestyle='-', zorder=6)
+plt.title("Nuisance parameters with nuclear uncertainties")
+plt.gca().axes.xaxis.set_visible(False)
+plt.savefig("figures/" + root + "/NPE_nuc")
+plt.clf()
+
+plt.ylim(-4.2,4.2)
+plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
+plt.scatter(x, NPE, vmin=-2, vmax=2, zorder=5)
+plt.errorbar(x,NPE,yerr=NPE_pdf, ls='none', zorder=6)
+plt.axhline(y=0, color='k', linestyle='-', zorder=7)
+plt.title("Nuisance parameters with PDF uncertainties")
+plt.gca().axes.xaxis.set_visible(False)
+plt.savefig("figures/" + root + "/NPE_pdf")
+plt.clf()
+
+plt.ylim(-4.2,4.2)
+plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
+plt.scatter(x, NPE, vmin=-2, vmax=2, zorder=5)
+plt.errorbar(x,NPE,yerr=NPE_tot, ls='none', zorder=6)
+plt.axhline(y=0, color='k', linestyle='-', zorder=7)
+plt.title("Nuisance parameters with total uncertainties")
+plt.gca().axes.xaxis.set_visible(False)
+plt.savefig("figures/" + root + "/NPE_tot")
+plt.clf()
+#endregion
+
+#region diagonal contributions
+S1_norm = np.zeros(shape=len(S1))
+for i in range(len(S1)):
+    S1_norm[i] = S1[i,i] / S[i,i]
+S2_norm = np.zeros(shape=len(S2))
+for i in range(len(S2)):
+    S2_norm[i] = S2[i,i] / S[i,i]
+
+x = np.arange(len(S1_norm))
+plt.scatter(x, S1_norm, c='fuchsia', s=1.5, label=r'$S-S(C+S)^{-1}S$')
+plt.scatter(x, S2_norm, c='black', s=1.5, label=r'$S-S(C+S)^{-1}S + S(C+S)^{-1}X(C+S)^{-1}S$')
+plt.title("Diagonal contributions to the theory uncertainties")
+#show_dataset_brackets(plt.gca())
+plt.axhline(y=0, color='k', linestyle='-')
+plt.gca().axes.xaxis.set_visible(False)
+plt.legend()
+#plt.show()
+plt.savefig("figures/" + root + "/S_contributions")
+plt.clf()
+
+X1_norm = np.zeros(shape=len(X1))
+for i in range(len(X1)):
+    X1_norm[i] = X1[i,i] / X[i,i]
+X2_norm = np.zeros(shape=len(X2))
+for i in range(len(X2)):
+    X2_norm[i] = X2[i,i] / X[i,i]
+
+x = np.arange(len(X1_norm))
+plt.scatter(x, X1_norm, c='lightgreen', s=1.5, label=r'$C(C+S)^{-1}X(C+S)^{-1}C$')
+plt.scatter(x, X2_norm, c='pink', s=1.5, label=r'$X-S(C+S)^{-1}X - X(C+S)^{-1}S$')
+#plt.scatter(x, pdf_contribution_2_norm + pdf_contribution_3_norm, c='k', s=1.5, label='NEW TERM')
+plt.title("Diagonal contributions to the PDF uncertainties")
+#show_dataset_brackets(plt.gca())
+plt.axhline(y=1, color='k', linestyle='-')
+plt.axhline(y=0, color='k', linestyle='-')
+#plt.ylim(-1.6, 1.1)
+plt.gca().axes.xaxis.set_visible(False)
+plt.legend()
+#plt.show()
+plt.savefig("figures/" + root + "/X_contributions")
+plt.clf()
+#endregion
