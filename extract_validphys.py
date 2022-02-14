@@ -67,7 +67,7 @@ for path in cfac_paths:
         uncut_points.append(cuts_left[c])
         if (c+1 == len(cuts_left)):
             break
-        elif (cuts_left[c] == 14 and cuts_left[c+1] == 45):
+        elif (root == "deuterium" and cuts_left[c] == 14 and cuts_left[c+1] == 45): # dirty hack time!
             cuts_left = cuts_left[c+1:]
             break
         elif (cuts_left[c+1] < cuts_left[c]):
