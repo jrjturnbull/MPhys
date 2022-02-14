@@ -1,6 +1,7 @@
 import numpy as np
 import sys
 from numpy.linalg import eigh
+import os
 
 print()
 
@@ -32,10 +33,12 @@ for i in range(len(covmat_CSINV)):
 print("Extracting data-theory comparison, and computing X matrix")
 
 covmat_DT = open("covmat/" + root + "/output/tables/group_result_table.csv").readlines()[1:]
+CUTS = np.zeros(shape=len(covmat_DT))
 D = np.zeros(shape=len(covmat_DT))
 T = np.zeros(shape=len(covmat_DT))
 theory_values = np.zeros(shape=(len(covmat_DT), len(covmat_DT[0].split('\t')[5:])))
 for i in range(len(D)):
+    CUTS[i] = covmat_DT[i].split('\t')[2]
     D[i] = covmat_DT[i].split('\t')[3]
     T[i] = covmat_DT[i].split('\t')[4]
     theory_values[i] = covmat_DT[i].split('\t')[5:]
@@ -44,6 +47,37 @@ X = np.zeros(shape=(len(D), len(D)))
 for n in range(len(theory_values[0])):
     vec = np.array([theory_values[i,n] - T[i] for i in range(len(T))])
     X += np.einsum('i,j->ij', vec, vec) / len(theory_values[0])
+
+#######################################################################
+
+print("Extracting k-factor data")
+cfac_paths = []
+for subdir, dirs, files in os.walk("cfactor/" + root):
+    for file in files:
+        cfac_paths.append("cfactor/" + root + "/" + file)
+cfac_paths.sort()
+
+kfac = []
+cuts_left = CUTS
+for path in cfac_paths:
+    cfac = open(path).readlines()[9:]
+
+    uncut_points = []
+    for c in range(len(cuts_left)):
+        uncut_points.append(cuts_left[c])
+        if (c+1 == len(cuts_left)):
+            break
+        elif (cuts_left[c] == 14 and cuts_left[c+1] == 45):
+            cuts_left = cuts_left[c+1:]
+            break
+        elif (cuts_left[c+1] < cuts_left[c]):
+            cuts_left = cuts_left[c+1:]
+            break
+
+    kfac.extend(np.take(np.array([line.split('  ')[0] for line in cfac]), uncut_points))
+
+kfac = np.array([float(k) for k in kfac])
+
 
 #######################################################################
 
@@ -65,3 +99,5 @@ X.dump("matrices/X_" + root + ".dat")
 
 eval.dump("matrices/EVL_" + root + ".dat")
 evec.dump("matrices/EVC_" + root + ".dat")
+
+kfac.dump("matrices/KFAC_" + root + ".dat")

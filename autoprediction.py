@@ -10,6 +10,9 @@ invCS = np.load("matrices/CSINV_" + root + ".dat", allow_pickle=True)
 D = np.load("matrices/D_" + root + ".dat", allow_pickle=True)
 T = np.load("matrices/T_" + root + ".dat", allow_pickle=True)
 X = np.load("matrices/X_" + root + ".dat", allow_pickle=True)
+
+KFAC = np.load("matrices/KFAC_" + root + ".dat", allow_pickle=True)
+
 TD = T - D
 
 #######################################################################
@@ -21,6 +24,12 @@ term_2 = S - np.einsum('ij,jk,kl->il', S, invCS, S, optimize='optimal')
 P = term_1 + term_2
 
 delta_T = - np.einsum('ij,jk,k->i', S, invCS, TD)
+
+#######################################################################
+
+print("Determining original nuclear shifts from k-factor data")
+T_KFAC = T * KFAC
+
 
 #######################################################################
 
@@ -43,3 +52,5 @@ S_contribution_1.dump("matrices/S1_" + root + ".dat")
 S_contribution_2.dump("matrices/S2_" + root + ".dat")
 X_contribution_1.dump("matrices/X1_" + root + ".dat")
 X_contribution_2.dump("matrices/X2_" + root + ".dat")
+
+T_KFAC.dump("matrices/TK_" + root + ".dat")
