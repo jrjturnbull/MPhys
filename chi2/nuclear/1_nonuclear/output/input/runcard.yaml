@@ -1,0 +1,25 @@
+meta:
+    title: chi2 for nuclear dataset, no nuclear
+    author: Jamie Turnbull
+
+pdfs: 
+    - NNPDF40_nnlo_as_01180_nuc_nonuc
+
+theoryid: 200
+
+use_cuts: internal
+
+dataset_inputs:
+   -  { dataset: CHORUSNBPb }
+   -  { dataset: CHORUSNUPb }
+   -  { dataset: DYE605 }
+   -  { dataset: NTVNBDMNFe }
+   -  { dataset: NTVNUDMNFe }
+
+template_text: |
+ 
+    ## chi2 for nuclear dataset, no nuclear
+    {@ dataset_inputs::pdfs plot_chi2dist @}
+
+actions_:
+  - report(main=false)

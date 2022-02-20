@@ -1,10 +1,9 @@
 meta:
-    title: chi2 distribution without theoretical uncertainties
+    title: chi2 for nuclear dataset, nuc no shift
     author: Jamie Turnbull
 
-pdfs: 
-    - id: NNPDF40_nnlo_as_01180
-      label: NNPDF40_nnlo_as_01180
+fits: 
+    - NNPDF40_nnlo_as_01180
 
 theoryid: 200
 
@@ -19,10 +18,8 @@ dataset_inputs:
 
 template_text: |
  
-    ## chi2 distribution without theoretical uncertainties
-    {@ dataset_inputs::pdfs plot_chi2dist @}
-
-template: dthcomparison.md
+    ## chi2 for nuclear dataset, nuc no shift
+    {@ fits_datasets_chi2_table @}
 
 actions_:
   - report(main=false)

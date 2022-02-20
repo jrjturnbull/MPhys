@@ -28,6 +28,8 @@ S2 = np.load("matrices/S2_" + root + ".dat", allow_pickle=True)
 X1 = np.load("matrices/S1_" + root + ".dat", allow_pickle=True)
 X2 = np.load("matrices/S2_" + root + ".dat", allow_pickle=True)
 
+EVAL = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
+
 # ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
 c = ["maroon","firebrick","chocolate","orange","sandybrown","peachpuff","lightyellow",
         "honeydew","palegreen","aquamarine","mediumturquoise", "royalblue","midnightblue"]
@@ -208,7 +210,7 @@ for i in range(len(TK_norm)):
     TK_norm[i] = (T-T_KFAC)[i] / T[i]
 
 x = np.arange(len(AUTO))
-plt.ylim(-1.4,1.4)
+#plt.ylim(-1.4,1.4)
 plt.plot(x, -TD_norm, c='cyan', label='D-T', linewidth=0.35, zorder=2)
 plt.plot(x, AUTO_norm, c='b', label='δT', linewidth=0.35, zorder=2)
 plt.plot(x, -TK_norm, c='r', label='Nuclear shifts', linewidth=0.35, zorder=2)
@@ -221,9 +223,35 @@ plt.legend()
 plt.savefig("figures/" + root + "/AUTO")
 plt.clf()
 
+P_uncert = np.array([math.sqrt(P[i,i])/T[i] for i in range(len(P))])
+X_uncert = np.array([math.sqrt(X[i,i])/T[i] for i in range(len(X))])
+Pc_uncert = np.array([math.sqrt((X+S)[i,i])/T[i] for i in range(len(X))])
+x = np.arange(len(P))
+plt.scatter(x, P_uncert, c='b', s=1, label=r'$P$')
+plt.scatter(x, Pc_uncert, c='cyan', s=1, label=r'$P^{con}$')
+plt.scatter(x, X_uncert, c='r', s=1, label=r'$X$')
+plt.title("Percentage uncertainties")
+show_dataset_brackets(plt.gca())
+plt.gca().axes.xaxis.set_visible(False)
+plt.legend()
+#plt.show()
+plt.savefig("figures/" + root + "/uncertainties")
+plt.clf()
+
 #endregion
 
-#region nuisance parameters
+#region eigenvalues + nuisance parameters
+nz_eigen = [i for i in range(len(EVAL)) if EVAL[i] > 1e-5]
+eigenvalues_nz = np.array([EVAL[i] for i in nz_eigen])[::-1]
+x = np.arange(len(eigenvalues_nz))
+plt.scatter(x, eigenvalues_nz, s=1.5)
+plt.title("Non-zero eigenvalues of S (cutoff = 1e-5)")
+plt.yscale('log')
+plt.gca().axes.xaxis.set_visible(False)
+#plt.show()
+plt.savefig("figures/" + root + "/eigenvalues")
+plt.clf()
+
 x = np.arange(len(NPE))
 plt.ylim(-4.2,4.2)
 plt.axhspan(-1, 1, color='yellow', alpha=0.5, zorder=1)
