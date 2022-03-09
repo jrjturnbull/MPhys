@@ -1,0 +1,19 @@
+meta:
+    title: chi2 for nuclear dataset, no nuclear
+    author: Jamie Turnbull
+
+pdfs:
+    - NNPDF40_nnlo_as_01180_nonuc
+
+
+theoryid: 200
+
+use_cuts: internal
+
+template_text: |
+ 
+    ## chi2 for nuclear dataset, no nuclear
+    {@ plot_chi2dist @}
+
+actions_:
+  - report(main=false)

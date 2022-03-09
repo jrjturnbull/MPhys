@@ -1,0 +1,19 @@
+meta:
+    title: chi2 for nuclear dataset, nuclear no shift
+    author: Jamie Turnbull
+
+fits:
+    - NNPDF40_nnlo_as_01180_1000
+
+
+theoryid: 200
+
+use_cuts: internal
+
+template_text: |
+ 
+    ## chi2 for nuclear dataset, nuclear no shift
+    {@ fits_datasets_chi2_table @}
+
+actions_:
+  - report(main=false)

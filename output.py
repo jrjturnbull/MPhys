@@ -30,6 +30,9 @@ X2 = np.load("matrices/S2_" + root + ".dat", allow_pickle=True)
 
 EVAL = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
 
+CHI2 = np.load("matrices/CHI2_" + root + ".dat", allow_pickle=True)
+CHI2t0 = np.load("matrices/CHI2t0_" + root + ".dat", allow_pickle=True)
+
 # ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
 c = ["maroon","firebrick","chocolate","orange","sandybrown","peachpuff","lightyellow",
         "honeydew","palegreen","aquamarine","mediumturquoise", "royalblue","midnightblue"]
@@ -196,6 +199,22 @@ plt.gca().axes.yaxis.set_visible(False)
 plt.savefig("figures/" + root + "/P_correlation")
 plt.clf()
 
+# Diagonal contributions
+X_diag = np.array([math.sqrt(X[i,i])/T[i] for i in range(len(X))])
+C_diag = np.array([math.sqrt(C[i,i])/T[i] for i in range(len(X))])
+S_diag = np.array([math.sqrt(S[i,i])/T[i] for i in range(len(X))])
+x = np.arange(len(X_diag))
+
+plt.scatter(x, X_diag, c='orange', s=1.5, label='X')
+plt.scatter(x, C_diag, c='green', s=1.5, label='C')
+plt.scatter(x, S_diag, c='purple', s=1.5, label='S')
+plt.title("Square root of diagonal elements, normalised to the theory")
+show_dataset_brackets(plt.gca())
+plt.gca().axes.xaxis.set_visible(False)
+plt.legend()
+plt.savefig("figures/" + root + "/diagonal_elements")
+plt.clf()
+
 #endregion
 
 #region autoprediction shifts
@@ -220,7 +239,7 @@ plt.axhline(y=0, color='k', linestyle='-', zorder=1)
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
-plt.savefig("figures/" + root + "/AUTO")
+plt.savefig("figures/" + root + "/autopredictions")
 plt.clf()
 
 P_uncert = np.array([math.sqrt(P[i,i])/T[i] for i in range(len(P))])
@@ -325,4 +344,55 @@ plt.legend()
 #plt.show()
 plt.savefig("figures/" + root + "/X_contributions")
 plt.clf()
+#endregion
+
+#region chi2
+
+if (root == "nuclear"):
+    x1 = np.array([0.8,1.8,2.8,3.8,4.8])
+    x2 = np.array([1,2,3,4,5])
+    x3 = np.array([1.2,2.2,3.2,4.2,5.2])
+elif (root == "deuterium"):
+    x1 = np.array([0.8,1.8,2.8,3.8])
+    x2 = np.array([1,2,3,4])
+    x3 = np.array([1.2,2.2,3.2,4.2])
+else:
+    print("Error: root not recognised")
+
+# exp method
+plt.ylim(0,1.4)
+plt.bar(x1, height=CHI2[0], width=0.15, color='blue', label='nonuclear')
+plt.bar(x2, height=CHI2[1], width=0.15, color='orange', label='noshift')
+plt.bar(x3, height=CHI2[2], width=0.15, color='red', label='shift')
+
+if (root == "nuclear"):
+    plt.gca().set_xticklabels(('', 'CHORUS_nb', 'CHORUS_nu', 'DYE605', 'NTV_nb', 'NTV_nu'))
+elif (root == "deuterium"):
+    plt.gca().set_xticklabels(('', 'BCDMSD','', 'DYE886R','', 'NMCPD','', 'SLACD')) # extra spaces because it works somehow...
+else:
+    print("Error: root not recognised")
+
+plt.legend()
+plt.title("Chi squared for the various processes, exp method")
+plt.savefig("figures/" + root + "/chi2")
+plt.clf()
+
+# t0 method
+plt.ylim(0,1.4)
+plt.bar(x1, height=CHI2t0[0], width=0.15, color='blue', label='nonuclear')
+plt.bar(x2, height=CHI2t0[1], width=0.15, color='orange', label='noshift')
+plt.bar(x3, height=CHI2t0[2], width=0.15, color='red', label='shift')
+
+if (root == "nuclear"):
+    plt.gca().set_xticklabels(('', 'CHORUS_nb', 'CHORUS_nu', 'DYE605', 'NTV_nb', 'NTV_nu'))
+elif (root == "deuterium"):
+    plt.gca().set_xticklabels(('', 'BCDMSD','', 'DYE886R','', 'NMCPD','', 'SLACD')) # extra spaces because it works somehow...
+else:
+    print("Error: root not recognised")
+
+plt.legend()
+plt.title("Chi squared for the various processes, t0 method")
+plt.savefig("figures/" + root + "/chi2t0")
+plt.clf()
+
 #endregion

@@ -1,0 +1,18 @@
+meta:
+  title: chi2 for nuclear dataset, shifted
+  author: Jamie Turnbull
+
+fits:
+- NNPDF40_nnlo_as_01180_shift
+
+
+theoryid: 200
+use_cuts: internal
+template_text: |2
+
+  ## chi2 for nuclear dataset, shifted
+  {@ fits_datasets_chi2_table @}
+actions_:
+- report(main=false)
+data_grouping_recorded_spec_:
+  standard_report: experiment
