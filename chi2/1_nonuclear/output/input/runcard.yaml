@@ -2,7 +2,7 @@ meta:
     title: chi2 for nuclear dataset, no nuclear
     author: Jamie Turnbull
 
-pdfs:
+fits:
     - NNPDF40_nnlo_as_01180_nonuc
 
 
@@ -13,7 +13,7 @@ use_cuts: internal
 template_text: |
  
     ## chi2 for nuclear dataset, no nuclear
-    {@ plot_chi2dist @}
+    {@ fits_datasets_chi2_table @}
 
 actions_:
   - report(main=false)
