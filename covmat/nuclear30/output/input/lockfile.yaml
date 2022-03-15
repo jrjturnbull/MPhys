@@ -1,0 +1,25 @@
+meta:
+  author: Jamie Turnbull
+  title: Various covariance matrices, plus data-theory comparison, for the nuclear
+    datasets
+
+theoryid: 200
+pdf: NNPDF40_nnlo_as_01180
+use_cuts: internal
+dataset_inputs:
+- {dataset: CHORUSNBPb}
+- {dataset: CHORUSNUPb}
+- {dataset: DYE605}
+- {dataset: NTVNBDMNFe}
+- {dataset: NTVNUDMNFe}
+
+template_text: |
+  ## C matrix for nuclear datasets
+  {@ groups_covmat @}
+
+  ## data-theory comparison for the nuclear datasets
+  {@ group_result_table @}
+actions_:
+- report(main=false)
+data_grouping_recorded_spec_:
+  standard_report: experiment

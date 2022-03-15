@@ -30,8 +30,8 @@ X2 = np.load("matrices/S2_" + root + ".dat", allow_pickle=True)
 
 EVAL = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
 
-CHI2 = np.load("matrices/CHI2_" + root + ".dat", allow_pickle=True)
-CHI2t0 = np.load("matrices/CHI2t0_" + root + ".dat", allow_pickle=True)
+#CHI2 = np.load("matrices/CHI2_" + root + ".dat", allow_pickle=True)
+#CHI2t0 = np.load("matrices/CHI2t0_" + root + ".dat", allow_pickle=True)
 
 # ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
 c = ["maroon","firebrick","chocolate","orange","sandybrown","peachpuff","lightyellow",
@@ -346,6 +346,7 @@ plt.savefig("figures/" + root + "/X_contributions")
 plt.clf()
 #endregion
 
+"""
 #region chi2
 
 if (root == "nuclear"):
@@ -396,3 +397,4 @@ plt.savefig("figures/" + root + "/chi2t0")
 plt.clf()
 
 #endregion
+"""

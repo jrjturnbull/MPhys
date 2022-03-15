@@ -2,13 +2,7 @@ meta:
     title: chi2 for nuclear dataset, no nuclear
     author: Jamie Turnbull
 
-pdfs:
-    -   id:     NNPDF40_nnlo_as_01180_nonuc
-        label:  nonuc
-    -   id:     NNPDF40_nnlo_as_01180
-        label:  noshift
-    -   id:     NNPDF40_nnlo_as_01180_shift
-        label:  shift
+pdf: NNPDF40_nnlo_as_01180
 
 theoryid: 200
 
@@ -28,7 +22,7 @@ dataset_inputs:
 template_text: |
  
     ## chi2
-    {@ dataset_inputs::pdfs plot_chi2dist @}
+    {@ groups_chi2_table @}
 
 actions_:
-  - report(main=false)
+  - report(main=true)
