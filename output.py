@@ -58,7 +58,12 @@ def show_dataset_brackets(ax):
         bracket(ax, text="3", pos=[832,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="4", pos=[917,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="5", pos=[954,0], scalex=39, scaley=3, linekw=dict(color="k", lw=2))
-    elif(root == "deuterium"):
+    elif(root == "nuclear30"):
+        bracket(ax, text="1", pos=[0,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="2", pos=[416,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="4", pos=[832,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="5", pos=[869,0], scalex=39, scaley=3, linekw=dict(color="k", lw=2))
+    elif(root == "deuterium" or root == "deuterium30"):
         bracket(ax, text="1", pos=[0,0], scalex=248, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="2", pos=[248,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="3", pos=[263,0], scalex=121, scaley=3, linekw=dict(color="k", lw=2))
@@ -353,7 +358,7 @@ if (root == "nuclear"):
     x1 = np.array([0.8,1.8,2.8,3.8,4.8])
     x2 = np.array([1,2,3,4,5])
     x3 = np.array([1.2,2.2,3.2,4.2,5.2])
-elif (root == "deuterium"):
+elif (root == "deuterium" or root == "nuclear30):
     x1 = np.array([0.8,1.8,2.8,3.8])
     x2 = np.array([1,2,3,4])
     x3 = np.array([1.2,2.2,3.2,4.2])

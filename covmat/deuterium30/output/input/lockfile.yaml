@@ -1,0 +1,24 @@
+meta:
+  author: Jamie Turnbull
+  title: Various covariance matrices, plus data-theory comparison, for the deuterium
+    datasets
+
+theoryid: 200
+pdf: NNPDF40_nnlo_as_01180
+use_cuts: internal
+dataset_inputs:
+- {dataset: BCDMSD}
+- {dataset: DYE886R}
+- {dataset: NMCPD}
+- {dataset: SLACD}
+
+template_text: |
+  ## C matrix for deuterium datasets
+  {@ groups_covmat @}
+
+  ## data-theory comparison for the deuterium datasets
+  {@ group_result_table @}
+actions_:
+- report(main=false)
+data_grouping_recorded_spec_:
+  standard_report: experiment

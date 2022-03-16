@@ -67,14 +67,14 @@ for path in cfac_paths:
         uncut_points.append(cuts_left[c])
         if (c+1 == len(cuts_left)):
             break
-        elif (root == "deuterium" and cuts_left[c] == 14 and cuts_left[c+1] == 45): # dirty hack time!
+        elif ("deuterium" in root and cuts_left[c] == 14 and cuts_left[c+1] == 45): # dirty hack time!
             cuts_left = cuts_left[c+1:]
             break
         elif (cuts_left[c+1] < cuts_left[c]):
             cuts_left = cuts_left[c+1:]
             break
 
-    kfac.extend(np.take(np.array([line.split('  ')[0] for line in cfac]), uncut_points))
+    kfac.extend(np.take(np.array([line.split('  ')[0].split('\t')[0] for line in cfac]), uncut_points))
 
 kfac = np.array([float(k) for k in kfac])
 
