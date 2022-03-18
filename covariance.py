@@ -21,6 +21,13 @@ CS = np.zeros(shape=(len(covmat_CS), len(covmat_CS)))
 for i in range(len(covmat_CS)):
     CS[i] = [float(c) for c in covmat_CS[i].split('\t')[3:]]
 
+if ('nuclear30' in root):
+    sift = [845,846,847,848,862,863,864,865,866,880,881,882,883,884,
+        898,899,900,901,902,916,917,918,919,920,934,935,936,937,938,
+        946,947,948,949,950]
+    CS = np.delete(CS,sift,0)
+    CS = np.delete(CS,sift,1)
+
 S = np.array(CS - C)
 
 covmat_CSINV = open("covmat/" + root + "_dw/output/tables/groups_invcovmat.csv").readlines()[4:]
@@ -36,6 +43,7 @@ covmat_DT = open("covmat/" + root + "/output/tables/group_result_table.csv").rea
 CUTS = np.zeros(shape=len(covmat_DT))
 D = np.zeros(shape=len(covmat_DT))
 T = np.zeros(shape=len(covmat_DT))
+
 theory_values = np.zeros(shape=(len(covmat_DT), len(covmat_DT[0].split('\t')[5:])))
 for i in range(len(D)):
     CUTS[i] = covmat_DT[i].split('\t')[2]

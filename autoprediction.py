@@ -1,11 +1,12 @@
 import numpy as np
+from numpy.linalg import inv
 import sys
 
 root = sys.argv[1]
 
 C = np.load("matrices/C_" + root + ".dat", allow_pickle=True)
 S = np.load("matrices/S_" + root + ".dat", allow_pickle=True)
-invCS = np.load("matrices/CSINV_" + root + ".dat", allow_pickle=True)
+invCS = inv(C+S) #np.load("matrices/CSINV_" + root + ".dat", allow_pickle=True)
 
 D = np.load("matrices/D_" + root + ".dat", allow_pickle=True)
 T = np.load("matrices/T_" + root + ".dat", allow_pickle=True)

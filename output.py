@@ -52,17 +52,12 @@ def bracket(ax, pos=[0,0], scalex=1, scaley=1, text="", textkw = {}, linekw = {}
 
 def show_dataset_brackets(ax):
 
-    if(root == "nuclear"):
+    if(root == "nuclear" or root == 'nuclear30'):
         bracket(ax, text="1", pos=[0,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="2", pos=[416,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="3", pos=[832,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="4", pos=[917,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="5", pos=[954,0], scalex=39, scaley=3, linekw=dict(color="k", lw=2))
-    elif(root == "nuclear30"):
-        bracket(ax, text="1", pos=[0,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="2", pos=[416,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="4", pos=[832,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="5", pos=[869,0], scalex=39, scaley=3, linekw=dict(color="k", lw=2))
     elif(root == "deuterium" or root == "deuterium30"):
         bracket(ax, text="1", pos=[0,0], scalex=248, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="2", pos=[248,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))
