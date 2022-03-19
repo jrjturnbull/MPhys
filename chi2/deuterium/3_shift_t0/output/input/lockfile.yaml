@@ -1,0 +1,23 @@
+use_t0: true
+t0pdfset: 210219-02-rs-nnpdf40-1000
+meta:
+  title: chi2 for nuclear dataset, shifted
+  author: Jamie Turnbull
+
+pdf: NNPDF40_nnlo_as_01180_shift
+theoryid: 200
+use_cuts: internal
+dataset_inputs:
+- {dataset: BCDMSD_sh_ite, cfac: [DEUI]}
+- {dataset: NMCPD_sh_ite, cfac: [DEUI]}
+- {dataset: SLACD_sh_ite, cfac: [DEUI]}
+- {dataset: DYE886R_sh_ite, cfac: [QCD, DEUI]}
+
+template_text: |2
+
+  ## chi2
+  {@ groups_chi2_table @}
+actions_:
+- report(main=false)
+data_grouping_recorded_spec_:
+  standard_report: experiment

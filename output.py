@@ -30,8 +30,8 @@ X2 = np.load("matrices/S2_" + root + ".dat", allow_pickle=True)
 
 EVAL = np.load("matrices/EVL_" + root + ".dat", allow_pickle=True)
 
-#CHI2 = np.load("matrices/CHI2_" + root + ".dat", allow_pickle=True)
-#CHI2t0 = np.load("matrices/CHI2t0_" + root + ".dat", allow_pickle=True)
+CHI2 = np.load("matrices/CHI2_" + root + ".dat", allow_pickle=True)
+CHI2t0 = np.load("matrices/CHI2t0_" + root + ".dat", allow_pickle=True)
 
 # ATTEMPT TO REPLICATE THE COLORBAR USED IN THE LITERATURE (STILL NOT QUITE RIGHT...)
 c = ["maroon","firebrick","chocolate","orange","sandybrown","peachpuff","lightyellow",
@@ -52,17 +52,27 @@ def bracket(ax, pos=[0,0], scalex=1, scaley=1, text="", textkw = {}, linekw = {}
 
 def show_dataset_brackets(ax):
 
-    if(root == "nuclear" or root == 'nuclear30'):
-        bracket(ax, text="1", pos=[0,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="2", pos=[416,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="3", pos=[832,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="4", pos=[917,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="5", pos=[954,0], scalex=39, scaley=3, linekw=dict(color="k", lw=2))
-    elif(root == "deuterium" or root == "deuterium30"):
+    if(root == "nuclear"):
+        bracket(ax, text="NTV-nu          ", pos=[0,0], scalex=39, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="          NTV-nb", pos=[39,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="CH-nu", pos=[76,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="CH-nb", pos=[492,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))        
+        bracket(ax, text="DYE605", pos=[908,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
+    elif(root == "deuterium"):
+        bracket(ax, text="BCDMSC", pos=[0,0], scalex=248, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="SLAC", pos=[248,0], scalex=121, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="NMC", pos=[369,0], scalex=34, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="     DYE886", pos=[403,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))
+    elif(root == "30"):
         bracket(ax, text="1", pos=[0,0], scalex=248, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="2", pos=[248,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="3", pos=[263,0], scalex=121, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="4", pos=[385,0], scalex=34, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="2", pos=[248,0], scalex=121, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="3", pos=[369,0], scalex=34, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="4", pos=[403,0], scalex=39, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="5", pos=[442,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="6", pos=[479,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="7", pos=[895,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="8", pos=[1281,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))        
+        bracket(ax, text="9", pos=[1296,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
     else:
         print("Unable to show dataset brackets: root not recognised...")
 
@@ -346,17 +356,21 @@ plt.savefig("figures/" + root + "/X_contributions")
 plt.clf()
 #endregion
 
-"""
+
 #region chi2
 
 if (root == "nuclear"):
     x1 = np.array([0.8,1.8,2.8,3.8,4.8])
     x2 = np.array([1,2,3,4,5])
     x3 = np.array([1.2,2.2,3.2,4.2,5.2])
-elif (root == "deuterium" or root == "nuclear30):
+elif (root == "deuterium"):
     x1 = np.array([0.8,1.8,2.8,3.8])
     x2 = np.array([1,2,3,4])
     x3 = np.array([1.2,2.2,3.2,4.2])
+elif (root == "30"):
+    x1 = np.array([0.8,1.8,2.8,3.8,4.8,5.8,6.8,7.8,8.8])
+    x2 = np.array([1,2,3,4,5,6,7,8,9])
+    x3 = np.array([1.2,2.2,3.2,4.2,5.2,6.2,7.2,8.2,9.2])
 else:
     print("Error: root not recognised")
 
@@ -367,9 +381,11 @@ plt.bar(x2, height=CHI2[1], width=0.15, color='orange', label='noshift')
 plt.bar(x3, height=CHI2[2], width=0.15, color='red', label='shift')
 
 if (root == "nuclear"):
-    plt.gca().set_xticklabels(('', 'CHORUS_nb', 'CHORUS_nu', 'DYE605', 'NTV_nb', 'NTV_nu'))
+    plt.gca().set_xticklabels(('', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb", "DYE605"))
 elif (root == "deuterium"):
-    plt.gca().set_xticklabels(('', 'BCDMSD','', 'DYE886R','', 'NMCPD','', 'SLACD')) # extra spaces because it works somehow...
+    plt.gca().set_xticklabels(('', 'BCDMSD','', 'NMCPD','', 'SLACD','', 'DYE886R')) # extra spaces because it works somehow...
+elif (root == "30"):
+    plt.gca().set_xticklabels(('','BCDMSC','NMCPD','SLACD', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'DYE886R', "DYE605"))
 else:
     print("Error: root not recognised")
 
@@ -385,9 +401,11 @@ plt.bar(x2, height=CHI2t0[1], width=0.15, color='orange', label='noshift')
 plt.bar(x3, height=CHI2t0[2], width=0.15, color='red', label='shift')
 
 if (root == "nuclear"):
-    plt.gca().set_xticklabels(('', 'CHORUS_nb', 'CHORUS_nu', 'DYE605', 'NTV_nb', 'NTV_nu'))
+    plt.gca().set_xticklabels(('', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb", "DYE605"))
 elif (root == "deuterium"):
-    plt.gca().set_xticklabels(('', 'BCDMSD','', 'DYE886R','', 'NMCPD','', 'SLACD')) # extra spaces because it works somehow...
+    plt.gca().set_xticklabels(('', 'BCDMSD','', 'NMCPD','', 'SLACD','', 'DYE886R')) # extra spaces because it works somehow...
+elif (root == "30"):
+    plt.gca().set_xticklabels(('','BCDMSC','NMCPD','SLACD', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'DUE886R', "DYE605"))
 else:
     print("Error: root not recognised")
 
@@ -397,4 +415,3 @@ plt.savefig("figures/" + root + "/chi2t0")
 plt.clf()
 
 #endregion
-"""

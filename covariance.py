@@ -21,12 +21,12 @@ CS = np.zeros(shape=(len(covmat_CS), len(covmat_CS)))
 for i in range(len(covmat_CS)):
     CS[i] = [float(c) for c in covmat_CS[i].split('\t')[3:]]
 
-if ('nuclear30' in root):
-    sift = [845,846,847,848,862,863,864,865,866,880,881,882,883,884,
-        898,899,900,901,902,916,917,918,919,920,934,935,936,937,938,
-        946,947,948,949,950]
-    CS = np.delete(CS,sift,0)
-    CS = np.delete(CS,sift,1)
+#if ('nuclear30' in root):
+#    sift = [845,846,847,848,862,863,864,865,866,880,881,882,883,884,
+#        898,899,900,901,902,916,917,918,919,920,934,935,936,937,938,
+#        946,947,948,949,950]
+#    CS = np.delete(CS,sift,0)
+#    CS = np.delete(CS,sift,1)
 
 S = np.array(CS - C)
 
@@ -59,11 +59,22 @@ for n in range(len(theory_values[0])):
 #######################################################################
 
 print("Extracting k-factor data")
-cfac_paths = []
-for subdir, dirs, files in os.walk("cfactor/" + root):
-    for file in files:
-        cfac_paths.append("cfactor/" + root + "/" + file)
-cfac_paths.sort()
+
+if (root == "nuclear"):
+    cfac_paths = ["cfactor/nuclear/CF_NUCI_NTVNUDMNFe.dat","cfactor/nuclear/CF_NUCI_NTVNBDMNFe.dat",
+                "cfactor/nuclear/CF_NUCI_CHORUSNUPb.dat", "cfactor/nuclear/CF_NUCI_CHORUSNBPb.dat",
+                "cfactor/nuclear/CF_NUCI_DYE605.dat"] # manual dataset ordering
+elif (root == "deuterium"):
+    cfac_paths = ["cfactor/deuterium/CF_DEUI_BCDMSD.dat","cfactor/deuterium/CF_DEUI_NMCPD_D.dat", 
+                "cfactor/deuterium/CF_DEUI_SLACD.dat","cfactor/deuterium/CF_DEUI_DYE886R_D.dat"]
+elif (root == "30"):
+    cfac_paths = ["cfactor/deuterium/CF_DEUI_BCDMSD.dat","cfactor/deuterium/CF_DEUI_NMCPD_D.dat",
+                "cfactor/deuterium/CF_DEUI_SLACD.dat",
+                "cfactor/nuclear/CF_NUCI_NTVNUDMNFe.dat","cfactor/nuclear/CF_NUCI_NTVNBDMNFe.dat",
+                "cfactor/nuclear/CF_NUCI_CHORUSNUPb.dat", "cfactor/nuclear/CF_NUCI_CHORUSNBPb.dat",
+                "cfactor/deuterium/CF_DEUI_DYE886R_D.dat", "cfactor/nuclear/CF_NUCI_DYE605.dat"]
+else:
+    print("Error: root not recognised")
 
 kfac = []
 cuts_left = CUTS
@@ -74,9 +85,6 @@ for path in cfac_paths:
     for c in range(len(cuts_left)):
         uncut_points.append(cuts_left[c])
         if (c+1 == len(cuts_left)):
-            break
-        elif ("deuterium" in root and cuts_left[c] == 14 and cuts_left[c+1] == 45): # dirty hack time!
-            cuts_left = cuts_left[c+1:]
             break
         elif (cuts_left[c+1] < cuts_left[c]):
             cuts_left = cuts_left[c+1:]

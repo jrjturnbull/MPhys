@@ -7,11 +7,11 @@ theoryid: 200
 pdf: NNPDF40_nnlo_as_01180
 use_cuts: internal
 dataset_inputs:
-- {dataset: CHORUSNBPb}
+- {dataset: NTVNUDMNFe, cfac: [MAS]}
+- {dataset: NTVNBDMNFe, cfac: [MAS]}
 - {dataset: CHORUSNUPb}
-- {dataset: DYE605}
-- {dataset: NTVNBDMNFe}
-- {dataset: NTVNUDMNFe}
+- {dataset: CHORUSNBPb}
+- {dataset: DYE605, cfac: [QCD]}
 
 template_text: |
   ## C matrix for nuclear datasets

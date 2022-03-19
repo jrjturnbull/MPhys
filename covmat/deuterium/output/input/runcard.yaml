@@ -10,9 +10,9 @@ use_cuts: internal
 
 dataset_inputs:
     -   { dataset:  BCDMSD      }
-    -   { dataset:  DYE886R     }
     -   { dataset:  NMCPD       }
     -   { dataset:  SLACD       }
+    -   { dataset:  DYE886R, cfac: [QCD] }
 
 template_text:  |
   ## C matrix for deuterium datasets

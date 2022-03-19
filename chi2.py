@@ -7,15 +7,17 @@ print("Extracting chi2 values from /chi2")
 
 root = sys.argv[1]
 
-table_paths = ["chi2/1_nonuclear/output/tables/fits_datasets_chi2_table.csv" ,
-                "chi2/2_noshift/output/tables/fits_datasets_chi2_table.csv" ,
-                "chi2/3_shift/output/tables/fits_datasets_chi2_table.csv" ]
+table_paths = ["chi2/"+root+"/1_nonuclear/output/tables/fits_datasets_chi2_table.csv" ,
+                "chi2/"+root+"/2_noshift/output/tables/fits_datasets_chi2_table.csv" ,
+                "chi2/"+root+"/3_shift/output/tables/fits_datasets_chi2_table.csv" ]
 
 datasets = []
 if (root == "nuclear"):
-    datasets = ["CHORUSNBPb", "CHORUSNUPb", "DYE605", "NTVNBDMNFe", "NTVNUDMNFe"]
+    datasets = ["NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", "DYE605"]
 elif (root == "deuterium"):
-    datasets = ['BCDMSD', 'DYE886R', 'NMCPD', 'SLACD']
+    datasets = ['BCDMSD', 'NMCPD', 'SLACD', 'DYE886R']
+elif (root == "30"):
+    datasets = ['BCDMSD', 'NMCPD', 'SLACD', "NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", 'DYE886R', "DYE605"]
 else:
     print("Error: root not recognised")
 
@@ -37,15 +39,17 @@ print("Extracting t0 chi2 values from /chi2")
 
 root = sys.argv[1]
 
-table_paths = ["chi2/1_nonuclear_t0/output/tables/fits_datasets_chi2_table.csv" ,
-                "chi2/2_noshift_t0/output/tables/fits_datasets_chi2_table.csv" ,
-                "chi2/3_shift_t0/output/tables/fits_datasets_chi2_table.csv" ]
+table_paths = ["chi2/"+root+"/1_nonuclear_t0/output/tables/fits_datasets_chi2_table.csv" ,
+                "chi2/"+root+"/2_noshift_t0/output/tables/fits_datasets_chi2_table.csv" ,
+                "chi2/"+root+"/3_shift_t0/output/tables/fits_datasets_chi2_table.csv" ]
 
 datasets = []
 if (root == "nuclear"):
-    datasets = ["CHORUSNBPb", "CHORUSNUPb", "DYE605", "NTVNBDMNFe", "NTVNUDMNFe"]
+    datasets = ["NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", "DYE605"]
 elif (root == "deuterium"):
-    datasets = ['BCDMSD', 'DYE886R', 'NMCPD', 'SLACD']
+    datasets = ['BCDMSD', 'NMCPD', 'SLACD', 'DYE886R']
+elif (root == "30"):
+    datasets = ['BCDMSD', 'NMCPD', 'SLACD', "NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", 'DYE886R', "DYE605"]
 else:
     print("Error: root not recognised")
 
