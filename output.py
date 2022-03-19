@@ -71,8 +71,8 @@ def show_dataset_brackets(ax):
         bracket(ax, text="5", pos=[442,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="6", pos=[479,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="7", pos=[895,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="8", pos=[1281,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))        
-        bracket(ax, text="9", pos=[1296,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="8", pos=[1311,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))        
+        bracket(ax, text="9", pos=[1326,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
     else:
         print("Unable to show dataset brackets: root not recognised...")
 
@@ -381,11 +381,14 @@ plt.bar(x2, height=CHI2[1], width=0.15, color='orange', label='noshift')
 plt.bar(x3, height=CHI2[2], width=0.15, color='red', label='shift')
 
 if (root == "nuclear"):
+    plt.gca().set_xticks([0,1,2,3,4,5])
     plt.gca().set_xticklabels(('', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb", "DYE605"))
 elif (root == "deuterium"):
-    plt.gca().set_xticklabels(('', 'BCDMSD','', 'NMCPD','', 'SLACD','', 'DYE886R')) # extra spaces because it works somehow...
+    plt.gca().set_xticks([0,1,2,3,4])
+    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886R')) # extra spaces because it works somehow...
 elif (root == "30"):
-    plt.gca().set_xticklabels(('','BCDMSC','NMCPD','SLACD', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'DYE886R', "DYE605"))
+    plt.gca().set_xticks([0,1,2,3,4,5,6,7,8,9])
+    plt.gca().set_xticklabels(('','BCD','NMC','SLAC', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'E886', "E605"))
 else:
     print("Error: root not recognised")
 
@@ -401,11 +404,14 @@ plt.bar(x2, height=CHI2t0[1], width=0.15, color='orange', label='noshift')
 plt.bar(x3, height=CHI2t0[2], width=0.15, color='red', label='shift')
 
 if (root == "nuclear"):
+    plt.gca().set_xticks([0,1,2,3,4,5])
     plt.gca().set_xticklabels(('', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb", "DYE605"))
 elif (root == "deuterium"):
-    plt.gca().set_xticklabels(('', 'BCDMSD','', 'NMCPD','', 'SLACD','', 'DYE886R')) # extra spaces because it works somehow...
+    plt.gca().set_xticks([0,1,2,3,4])
+    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886R')) # extra spaces because it works somehow...
 elif (root == "30"):
-    plt.gca().set_xticklabels(('','BCDMSC','NMCPD','SLACD', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'DUE886R', "DYE605"))
+    plt.gca().set_xticks([0,1,2,3,4,5,6,7,8,9])
+    plt.gca().set_xticklabels(('','BCD','NMC','SLAC', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'E886', "E605"))
 else:
     print("Error: root not recognised")
 
