@@ -7,9 +7,9 @@ print("Extracting chi2 values from /chi2")
 
 root = sys.argv[1]
 
-table_paths = ["chi2/"+root+"/1_nonuclear/output/tables/fits_datasets_chi2_table.csv" ,
-                "chi2/"+root+"/2_noshift/output/tables/fits_datasets_chi2_table.csv" ,
-                "chi2/"+root+"/3_shift/output/tables/fits_datasets_chi2_table.csv" ]
+table_paths = ["chi2/"+root+"/1_nonuclear/output/tables/groups_chi2_table.csv" ,
+                "chi2/"+root+"/2_noshift/output/tables/groups_chi2_table.csv" ,
+                "chi2/"+root+"/3_shift/output/tables/groups_chi2_table.csv" ]
 
 datasets = []
 if (root == "nuclear"):
@@ -39,9 +39,9 @@ print("Extracting t0 chi2 values from /chi2")
 
 root = sys.argv[1]
 
-table_paths = ["chi2/"+root+"/1_nonuclear_t0/output/tables/fits_datasets_chi2_table.csv" ,
-                "chi2/"+root+"/2_noshift_t0/output/tables/fits_datasets_chi2_table.csv" ,
-                "chi2/"+root+"/3_shift_t0/output/tables/fits_datasets_chi2_table.csv" ]
+table_paths = ["chi2/"+root+"/1_nonuclear_t0/output/tables/groups_chi2_table.csv" ,
+                "chi2/"+root+"/2_noshift_t0/output/tables/groups_chi2_table.csv" ,
+                "chi2/"+root+"/3_shift_t0/output/tables/groups_chi2_table.csv" ]
 
 datasets = []
 if (root == "nuclear"):

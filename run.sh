@@ -1,3 +1,5 @@
+#!/bin/bash
+
 python covariance.py $1
 python nuisance.py $1
 python autoprediction.py $1
