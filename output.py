@@ -385,7 +385,7 @@ if (root == "nuclear"):
     plt.gca().set_xticklabels(('', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb", "DYE605"))
 elif (root == "deuterium"):
     plt.gca().set_xticks([0,1,2,3,4])
-    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886R')) # extra spaces because it works somehow...
+    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886R'))
 elif (root == "30"):
     plt.gca().set_xticks([0,1,2,3,4,5,6,7,8,9])
     plt.gca().set_xticklabels(('','BCD','NMC','SLAC', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'E886', "E605"))
@@ -408,7 +408,7 @@ if (root == "nuclear"):
     plt.gca().set_xticklabels(('', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb", "DYE605"))
 elif (root == "deuterium"):
     plt.gca().set_xticks([0,1,2,3,4])
-    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886R')) # extra spaces because it works somehow...
+    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886R'))
 elif (root == "30"):
     plt.gca().set_xticks([0,1,2,3,4,5,6,7,8,9])
     plt.gca().set_xticklabels(('','BCD','NMC','SLAC', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'E886', "E605"))
