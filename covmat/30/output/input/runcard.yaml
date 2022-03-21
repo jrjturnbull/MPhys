@@ -4,7 +4,7 @@ meta:
 
 theoryid: 200
 
-pdf: NNPDF40_nnlo_as_01180
+pdf: 220321-ern-001
 
 use_cuts: internal
 
@@ -17,6 +17,7 @@ dataset_inputs:
     -   { dataset:  CHORUSNUPb  }
     -   { dataset:  CHORUSNBPb  }
     -   { dataset:  DYE886R, cfac: [QCD] }
+    -   { dataset:  DYE906R, cfac: [ACC, QCD]}
     -   { dataset:  DYE605, cfac: [QCD]    }
 
 template_text:  |

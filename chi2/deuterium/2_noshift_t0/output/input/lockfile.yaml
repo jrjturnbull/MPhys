@@ -12,6 +12,7 @@ dataset_inputs:
 - {dataset: NMCPD_dw_ite}
 - {dataset: SLACD_dw_ite}
 - {dataset: DYE886R_dw_ite, cfac: [QCD]}
+- {dataset: DYE906R_dw_ite, cfac: [ACC, QCD]}
 
 template_text: |2
 

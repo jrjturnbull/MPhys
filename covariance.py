@@ -66,13 +66,15 @@ if (root == "nuclear"):
                 "cfactor/nuclear/CF_NUCI_DYE605.dat"] # manual dataset ordering
 elif (root == "deuterium"):
     cfac_paths = ["cfactor/deuterium/CF_DEUI_BCDMSD.dat","cfactor/deuterium/CF_DEUI_NMCPD_D.dat", 
-                "cfactor/deuterium/CF_DEUI_SLACD.dat","cfactor/deuterium/CF_DEUI_DYE886R_D.dat"]
+                "cfactor/deuterium/CF_DEUI_SLACD.dat","cfactor/deuterium/CF_DEUI_DYE886R_D.dat",
+                "cfactor/deuterium/CF_DEUI_DYE906R_D.dat"]
 elif (root == "30"):
-    cfac_paths = ["cfactor/deuterium/CF_DEUI_BCDMSD.dat","cfactor/deuterium/CF_DEUI_NMCPD_D.dat",
-                "cfactor/deuterium/CF_DEUI_SLACD.dat",
-                "cfactor/nuclear/CF_NUCI_NTVNUDMNFe.dat","cfactor/nuclear/CF_NUCI_NTVNBDMNFe.dat",
-                "cfactor/nuclear/CF_NUCI_CHORUSNUPb.dat", "cfactor/nuclear/CF_NUCI_CHORUSNBPb.dat",
-                "cfactor/deuterium/CF_DEUI_DYE886R_D.dat", "cfactor/nuclear/CF_NUCI_DYE605.dat"]
+    cfac_paths = ["cfactor/30/CF_DEU3_BCDMSD.dat","cfactor/30/CF_DEU3_NMCPD_D.dat",
+                "cfactor/30/CF_DEU3_SLACD.dat",
+                "cfactor/30/CF_NUC3_NTVNUDMNFe.dat","cfactor/30/CF_NUC3_NTVNBDMNFe.dat",
+                "cfactor/30/CF_NUC3_CHORUSNUPb.dat", "cfactor/30/CF_NUC3_CHORUSNBPb.dat",
+                "cfactor/30/CF_DEU3_DYE886R_D.dat","cfactor/30/CF_DEU3_DYE906R_D.dat",
+                "cfactor/30/CF_NUC3_DYE605.dat"]
 else:
     print("Error: root not recognised")
 
@@ -93,7 +95,6 @@ for path in cfac_paths:
     kfac.extend(np.take(np.array([line.split('  ')[0].split('\t')[0] for line in cfac]), uncut_points))
 
 kfac = np.array([float(k) for k in kfac])
-
 
 #######################################################################
 

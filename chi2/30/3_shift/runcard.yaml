@@ -17,6 +17,7 @@ dataset_inputs:
     -   { dataset:  CHORUSNUPb_sh_30, cfac: [NUC3]}
     -   { dataset:  CHORUSNBPb_sh_30, cfac: [NUC3]}
     -   { dataset:  DYE886R_sh_30, cfac: [QCD, DEU3] }
+    -   { dataset:  DYE906R_sh_30, cfac: [ACC, QCD, DEU3]}
     -   { dataset:  DYE605_sh_30, cfac: [QCD, NUC3]    }
 
 template_text: |

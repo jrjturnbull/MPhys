@@ -49,7 +49,7 @@ cd ../3_shift
 validphys runcard.yaml
 cd ../3_shift_t0
 validphys runcard.yaml
-echo "Running nNNPDF chi2 scripts (6 in total)"
+echo "Running nNNPDF3.0 chi2 scripts (6 in total)"
 cd ../../30/1_nonuclear
 validphys runcard.yaml
 cd ../1_nonuclear_t0

@@ -16,6 +16,7 @@ dataset_inputs:
     -   { dataset:  NMCPD       }
     -   { dataset:  SLACD       }
     -   { dataset:  DYE886R, cfac: [QCD] }
+    -   { dataset:  DYE906R, cfac: [ACC, QCD]}
 
 template_text: |
  

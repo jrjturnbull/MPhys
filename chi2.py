@@ -15,9 +15,9 @@ datasets = []
 if (root == "nuclear"):
     datasets = ["NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", "DYE605"]
 elif (root == "deuterium"):
-    datasets = ['BCDMSD', 'NMCPD', 'SLACD', 'DYE886R']
+    datasets = ['BCDMSD', 'NMCPD', 'SLACD', 'DYE886R','DYE906R']
 elif (root == "30"):
-    datasets = ['BCDMSD', 'NMCPD', 'SLACD', "NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", 'DYE886R', "DYE605"]
+    datasets = ['BCDMSD', 'NMCPD', 'SLACD', "NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", 'DYE886R','DYE906R', "DYE605"]
 else:
     print("Error: root not recognised")
 
@@ -47,9 +47,9 @@ datasets = []
 if (root == "nuclear"):
     datasets = ["NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", "DYE605"]
 elif (root == "deuterium"):
-    datasets = ['BCDMSD', 'NMCPD', 'SLACD', 'DYE886R']
+    datasets = ['BCDMSD', 'NMCPD', 'SLACD', 'DYE886R','DYE906R']
 elif (root == "30"):
-    datasets = ['BCDMSD', 'NMCPD', 'SLACD', "NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", 'DYE886R', "DYE605"]
+    datasets = ['BCDMSD', 'NMCPD', 'SLACD', "NTVNUDMNFe", "NTVNBDMNFe", "CHORUSNUPb", "CHORUSNBPb", 'DYE886R','DYE906R', "DYE605"]
 else:
     print("Error: root not recognised")
 

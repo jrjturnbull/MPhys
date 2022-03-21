@@ -10,6 +10,7 @@ dataset_inputs:
 - {dataset: NMCPD_sh_ite, cfac: [DEUI]}
 - {dataset: SLACD_sh_ite, cfac: [DEUI]}
 - {dataset: DYE886R_sh_ite, cfac: [QCD, DEUI]}
+- {dataset: DYE906R_sh_ite, cfac: [ACC, QCD, DEUI]}
 
 template_text: |2
 

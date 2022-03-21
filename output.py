@@ -61,8 +61,9 @@ def show_dataset_brackets(ax):
     elif(root == "deuterium"):
         bracket(ax, text="BCDMSC", pos=[0,0], scalex=248, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="SLAC", pos=[248,0], scalex=121, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="NMC", pos=[369,0], scalex=34, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="     DYE886", pos=[403,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="NMC     ", pos=[369,0], scalex=34, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="\nE886  ", pos=[403,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="         E906", pos=[418,0], scalex=6, scaley=3, linekw=dict(color="k", lw=2))
     elif(root == "30"):
         bracket(ax, text="1", pos=[0,0], scalex=248, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="2", pos=[248,0], scalex=121, scaley=3, linekw=dict(color="k", lw=2))
@@ -71,8 +72,9 @@ def show_dataset_brackets(ax):
         bracket(ax, text="5", pos=[442,0], scalex=37, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="6", pos=[479,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="7", pos=[895,0], scalex=416, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="8", pos=[1311,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))        
-        bracket(ax, text="9", pos=[1326,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="8     ", pos=[1311,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))        
+        bracket(ax, text="9 ", pos=[1326,0], scalex=6, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text=" 10", pos=[1332,0], scalex=85, scaley=3, linekw=dict(color="k", lw=2))
     else:
         print("Unable to show dataset brackets: root not recognised...")
 
@@ -364,13 +366,13 @@ if (root == "nuclear"):
     x2 = np.array([1,2,3,4,5])
     x3 = np.array([1.2,2.2,3.2,4.2,5.2])
 elif (root == "deuterium"):
-    x1 = np.array([0.8,1.8,2.8,3.8])
-    x2 = np.array([1,2,3,4])
-    x3 = np.array([1.2,2.2,3.2,4.2])
+    x1 = np.array([0.8,1.8,2.8,3.8,4.8])
+    x2 = np.array([1,2,3,4,5])
+    x3 = np.array([1.2,2.2,3.2,4.2,5.2])
 elif (root == "30"):
-    x1 = np.array([0.8,1.8,2.8,3.8,4.8,5.8,6.8,7.8,8.8])
-    x2 = np.array([1,2,3,4,5,6,7,8,9])
-    x3 = np.array([1.2,2.2,3.2,4.2,5.2,6.2,7.2,8.2,9.2])
+    x1 = np.array([0.8,1.8,2.8,3.8,4.8,5.8,6.8,7.8,8.8,9.8])
+    x2 = np.array([1,2,3,4,5,6,7,8,9,10])
+    x3 = np.array([1.2,2.2,3.2,4.2,5.2,6.2,7.2,8.2,9.2,10.2])
 else:
     print("Error: root not recognised")
 
@@ -384,11 +386,11 @@ if (root == "nuclear"):
     plt.gca().set_xticks([0,1,2,3,4,5])
     plt.gca().set_xticklabels(('', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb", "DYE605"))
 elif (root == "deuterium"):
-    plt.gca().set_xticks([0,1,2,3,4])
-    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886R'))
+    plt.gca().set_xticks([0,1,2,3,4,5])
+    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886', 'DYE906'))
 elif (root == "30"):
-    plt.gca().set_xticks([0,1,2,3,4,5,6,7,8,9])
-    plt.gca().set_xticklabels(('','BCD','NMC','SLAC', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'E886', "E605"))
+    plt.gca().set_xticks([0,1,2,3,4,5,6,7,8,9,10])
+    plt.gca().set_xticklabels(('','BCD','NMC','SLAC', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'E886',"E906", "E605"))
 else:
     print("Error: root not recognised")
 
@@ -407,11 +409,11 @@ if (root == "nuclear"):
     plt.gca().set_xticks([0,1,2,3,4,5])
     plt.gca().set_xticklabels(('', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb", "DYE605"))
 elif (root == "deuterium"):
-    plt.gca().set_xticks([0,1,2,3,4])
-    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886R'))
+    plt.gca().set_xticks([0,1,2,3,4,5])
+    plt.gca().set_xticklabels(('', 'BCDMSD', 'NMCPD', 'SLACD', 'DYE886', 'DYE906'))
 elif (root == "30"):
-    plt.gca().set_xticks([0,1,2,3,4,5,6,7,8,9])
-    plt.gca().set_xticklabels(('','BCD','NMC','SLAC', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'E886', "E605"))
+    plt.gca().set_xticks([0,1,2,3,4,5,6,7,8,9,10])
+    plt.gca().set_xticklabels(('','BCD','NMC','SLAC', "NTV-nu", "NTV-nb", "CH-nu", "CH-nb",'E886',"E906", "E605"))
 else:
     print("Error: root not recognised")
 
