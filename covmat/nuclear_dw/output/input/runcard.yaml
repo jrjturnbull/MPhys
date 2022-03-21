@@ -9,11 +9,11 @@ pdf: NNPDF40_nnlo_as_01180
 use_cuts: internal
 
 dataset_inputs:
-    -   { dataset:  NTVNUDMNFe_dw_ite, cfac: [MAS, NUCI]}
-    -   { dataset:  NTVNBDMNFe_dw_ite, cfac: [MAS, NUCI]}
-    -   { dataset:  CHORUSNUPb_dw_ite, cfac: [NUCI]  }
-    -   { dataset:  CHORUSNBPb_dw_ite, cfac: [NUCI]   }
-    -   { dataset:  DYE605_dw_ite, cfac: [QCD, NUCI]    }
+    -   { dataset:  NTVNUDMNFe_dw_ite, cfac: [MAS]}
+    -   { dataset:  NTVNBDMNFe_dw_ite, cfac: [MAS]}
+    -   { dataset:  CHORUSNUPb_dw_ite }
+    -   { dataset:  CHORUSNBPb_dw_ite }
+    -   { dataset:  DYE605_dw_ite, cfac: [QCD]    }
 
 template_text:  |
   ## (C+S) matrix for nuclear datasets

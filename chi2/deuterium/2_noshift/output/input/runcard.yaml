@@ -9,10 +9,10 @@ theoryid: 200
 use_cuts: internal
 
 dataset_inputs:
-    -   { dataset:  BCDMSD_dw_ite, cfac: [DEUI]      }
-    -   { dataset:  NMCPD_dw_ite, cfac: [DEUI]       }
-    -   { dataset:  SLACD_dw_ite, cfac: [DEUI]       }
-    -   { dataset:  DYE886R_dw_ite, cfac: [QCD, DEUI] }
+    -   { dataset:  BCDMSD_dw_ite   }
+    -   { dataset:  NMCPD_dw_ite    }
+    -   { dataset:  SLACD_dw_ite    }
+    -   { dataset:  DYE886R_dw_ite, cfac: [QCD]}
 
 template_text: |
  

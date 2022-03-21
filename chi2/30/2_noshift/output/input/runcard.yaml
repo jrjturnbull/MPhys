@@ -9,15 +9,15 @@ theoryid: 200
 use_cuts: internal
 
 dataset_inputs:
-    -   { dataset:  BCDMSD_dw_30, cfac: [DEU3]}
-    -   { dataset:  NMCPD_dw_30, cfac: [DEU3]}
-    -   { dataset:  SLACD_dw_30, cfac: [DEU3]}
-    -   { dataset:  NTVNUDMNFe_dw_30, cfac: [MAS, NUC3]}
-    -   { dataset:  NTVNBDMNFe_dw_30, cfac: [MAS, NUC3]}
-    -   { dataset:  CHORUSNUPb_dw_30, cfac: [NUC3]}
-    -   { dataset:  CHORUSNBPb_dw_30, cfac: [NUC3]}
-    -   { dataset:  DYE886R_dw_30, cfac: [QCD, DEU3] }
-    -   { dataset:  DYE605_dw_30, cfac: [QCD, NUC3]    }
+    -   { dataset:  BCDMSD_dw_30}
+    -   { dataset:  NMCPD_dw_30}
+    -   { dataset:  SLACD_dw_30}
+    -   { dataset:  NTVNUDMNFe_dw_30, cfac: [MAS]}
+    -   { dataset:  NTVNBDMNFe_dw_30, cfac: [MAS]}
+    -   { dataset:  CHORUSNUPb_dw_30}
+    -   { dataset:  CHORUSNBPb_dw_30}
+    -   { dataset:  DYE886R_dw_30, cfac: [QCD]}
+    -   { dataset:  DYE605_dw_30, cfac: [QCD]}
 
 template_text: |
  
