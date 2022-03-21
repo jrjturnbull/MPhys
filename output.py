@@ -228,21 +228,21 @@ plt.clf()
 #endregion
 
 #region autoprediction shifts
-AUTO_norm = np.zeros_like(AUTO)
-for i in range(len(AUTO)):
-    AUTO_norm[i] = AUTO[i] / T[i]
+AUTO_norm = np.zeros_like(T-D+AUTO)
+for i in range(len(T-D+AUTO)):
+    AUTO_norm[i] = (T-D+AUTO)[i] / T[i]
 TD_norm = np.zeros_like(T-D)
 for i in range(len(TD_norm)):
     TD_norm[i] = (T-D)[i] / T[i]
-TK_norm = np.zeros_like(T-T_KFAC)
+TK_norm = np.zeros_like(T_KFAC-T - D)
 for i in range(len(TK_norm)):
-    TK_norm[i] = (T-T_KFAC)[i] / T[i]
+    TK_norm[i] = (T_KFAC - D)[i] / T[i]
 
-x = np.arange(len(AUTO))
+x = np.arange(len(T-D+AUTO))
 #plt.ylim(-1.4,1.4)
-plt.plot(x, -TD_norm, c='cyan', label='D-T', linewidth=0.35, zorder=2)
-plt.plot(x, AUTO_norm, c='b', label='δT', linewidth=0.35, zorder=2)
-plt.plot(x, -TK_norm, c='r', label='Nuclear shifts', linewidth=0.35, zorder=2)
+plt.plot(x, TD_norm, c='cyan', label='T-D', linewidth=0.35, zorder=2)
+plt.plot(x, TK_norm, c='r', label='(T*KFAC)-D', linewidth=0.35, zorder=2)
+plt.plot(x, AUTO_norm, c='b', label='(T+δT)-D', linewidth=0.35, zorder=2)
 plt.title("Autoprediction shifts compared to theory-data differences")
 show_dataset_brackets(plt.gca())
 plt.axhline(y=0, color='k', linestyle='-', zorder=1)
