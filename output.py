@@ -61,9 +61,9 @@ def show_dataset_brackets(ax):
     elif(root == "deuterium"):
         bracket(ax, text="BCDMSC", pos=[0,0], scalex=248, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="SLAC", pos=[248,0], scalex=121, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="NMC     ", pos=[369,0], scalex=34, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="\nE886  ", pos=[403,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))
-        bracket(ax, text="         E906", pos=[418,0], scalex=6, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="NMC       ", pos=[369,0], scalex=34, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="   E886  ", pos=[403,0], scalex=15, scaley=3, linekw=dict(color="k", lw=2))
+        bracket(ax, text="              E906", pos=[418,0], scalex=6, scaley=3, linekw=dict(color="k", lw=2))
     elif(root == "30"):
         bracket(ax, text="1", pos=[0,0], scalex=248, scaley=3, linekw=dict(color="k", lw=2))
         bracket(ax, text="2", pos=[248,0], scalex=121, scaley=3, linekw=dict(color="k", lw=2))
@@ -89,13 +89,13 @@ C_norm = np.zeros_like(C)
 for i in range(len(C)):
     for j in range(len(C)):
         C_norm[i,j] = C[i,j] / (T[i] * T[j])
-im = ax.imshow(C_norm, norm=SymLogNorm(1e-4,vmin=-1, vmax=1), cmap=cmap)
+im = ax.imshow(C_norm, norm=SymLogNorm(1e-5,vmin=-1, vmax=1), cmap=cmap)
 fig.colorbar(im)
 plt.title("Experimental covariance matrix, normalised to the theory")
 ax.axes.xaxis.set_visible(False)
 ax.axes.yaxis.set_visible(False)
 show_dataset_brackets(ax)
-plt.savefig("figures/" + root + "/C_covariance")
+plt.savefig("figures/" + root + "/C_covariance", dpi=300)
 plt.clf()
 plt.cla()
 
@@ -112,7 +112,7 @@ show_dataset_brackets(plt.gca())
 plt.gca().axes.xaxis.set_visible(False)
 plt.gca().axes.yaxis.set_visible(False)
 #plt.show()
-plt.savefig("figures/" + root + "/C_correlation")
+plt.savefig("figures/" + root + "/C_correlation", dpi=300)
 plt.clf()
 
 # S matrix
@@ -121,13 +121,13 @@ S_norm = np.zeros_like(S)
 for i in range(len(S)):
     for j in range(len(S)):
         S_norm[i,j] = S[i,j] / (T[i] * T[j])
-im = ax.imshow(S_norm, norm=SymLogNorm(1e-4,vmin=-1.5, vmax=1.5), cmap=cmap)
+im = ax.imshow(S_norm, norm=SymLogNorm(1e-5,vmin=-1.5, vmax=1.5), cmap=cmap)
 fig.colorbar(im)
 plt.title("Theory covariance matrix, normalised to the theory")
 ax.axes.xaxis.set_visible(False)
 ax.axes.yaxis.set_visible(False)
 show_dataset_brackets(ax)
-plt.savefig("figures/" + root + "/S_covariance")
+plt.savefig("figures/" + root + "/S_covariance", dpi=300)
 plt.clf()
 plt.cla()
 
@@ -144,7 +144,7 @@ show_dataset_brackets(plt.gca())
 plt.gca().axes.xaxis.set_visible(False)
 plt.gca().axes.yaxis.set_visible(False)
 #plt.show()
-plt.savefig("figures/" + root + "/S_correlation")
+plt.savefig("figures/" + root + "/S_correlation", dpi=300)
 plt.clf()
 
 # X matrix
@@ -153,13 +153,13 @@ X_norm = np.zeros_like(X)
 for i in range(len(X)):
     for j in range(len(X)):
         X_norm[i,j] = X[i,j] / (T[i] * T[j])
-im = ax.imshow(X_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
+im = ax.imshow(X_norm, norm=SymLogNorm(1e-5,vmin=-0.1, vmax=0.1), cmap=cmap)
 fig.colorbar(im)
 plt.title("PDF covariance matrix, normalised to the theory")
 ax.axes.xaxis.set_visible(False)
 ax.axes.yaxis.set_visible(False)
 show_dataset_brackets(ax)
-plt.savefig("figures/" + root + "/X_covariance")
+plt.savefig("figures/" + root + "/X_covariance", dpi=300)
 plt.clf()
 plt.cla()
 
@@ -176,7 +176,7 @@ show_dataset_brackets(plt.gca())
 plt.gca().axes.xaxis.set_visible(False)
 plt.gca().axes.yaxis.set_visible(False)
 #plt.show()
-plt.savefig("figures/" + root + "/X_correlation")
+plt.savefig("figures/" + root + "/X_correlation", dpi=300)
 plt.clf()
 
 # P matrix
@@ -185,13 +185,13 @@ P_norm = np.zeros_like(P)
 for i in range(len(P)):
     for j in range(len(P)):
         P_norm[i,j] = P[i,j] / (T[i] * T[j])
-im = ax.imshow(X_norm, norm=SymLogNorm(1e-4,vmin=-0.1, vmax=0.1), cmap=cmap)
+im = ax.imshow(X_norm, norm=SymLogNorm(1e-5,vmin=-0.1, vmax=0.1), cmap=cmap)
 fig.colorbar(im)
 plt.title("Autoprediction covariance matrix, normalised to the theory")
 ax.axes.xaxis.set_visible(False)
 ax.axes.yaxis.set_visible(False)
 show_dataset_brackets(ax)
-plt.savefig("figures/" + root + "/P_covariance")
+plt.savefig("figures/" + root + "/P_covariance", dpi=300)
 plt.clf()
 plt.cla()
 
@@ -208,7 +208,7 @@ show_dataset_brackets(plt.gca())
 plt.gca().axes.xaxis.set_visible(False)
 plt.gca().axes.yaxis.set_visible(False)
 #plt.show()
-plt.savefig("figures/" + root + "/P_correlation")
+plt.savefig("figures/" + root + "/P_correlation", dpi=300)
 plt.clf()
 
 # Diagonal contributions
@@ -224,7 +224,7 @@ plt.title("Square root of diagonal elements, normalised to the theory")
 show_dataset_brackets(plt.gca())
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
-plt.savefig("figures/" + root + "/diagonal_elements")
+plt.savefig("figures/" + root + "/diagonal_elements", dpi=300)
 plt.clf()
 
 #endregion
@@ -251,7 +251,7 @@ plt.axhline(y=0, color='k', linestyle='-', zorder=1)
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
-plt.savefig("figures/" + root + "/autopredictions")
+plt.savefig("figures/" + root + "/autopredictions", dpi=300)
 plt.clf()
 
 P_uncert = np.array([math.sqrt(P[i,i])/T[i] for i in range(len(P))])
@@ -266,7 +266,7 @@ show_dataset_brackets(plt.gca())
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
-plt.savefig("figures/" + root + "/uncertainties")
+plt.savefig("figures/" + root + "/uncertainties", dpi=300)
 plt.clf()
 
 #endregion
@@ -280,7 +280,7 @@ plt.title("Non-zero eigenvalues of S (cutoff = 1e-5)")
 plt.yscale('log')
 plt.gca().axes.xaxis.set_visible(False)
 #plt.show()
-plt.savefig("figures/" + root + "/eigenvalues")
+plt.savefig("figures/" + root + "/eigenvalues", dpi=300)
 plt.clf()
 
 x = np.arange(len(NPE))
@@ -291,7 +291,7 @@ plt.errorbar(x,NPE,yerr=NPE_nuc, ls='none', zorder=6)
 plt.axhline(y=0, color='k', linestyle='-', zorder=6)
 plt.title("Nuisance parameters with nuclear uncertainties")
 plt.gca().axes.xaxis.set_visible(False)
-plt.savefig("figures/" + root + "/NPE_nuc")
+plt.savefig("figures/" + root + "/NPE_nuc", dpi=300)
 plt.clf()
 
 plt.ylim(-4.2,4.2)
@@ -301,7 +301,7 @@ plt.errorbar(x,NPE,yerr=NPE_pdf, ls='none', zorder=6)
 plt.axhline(y=0, color='k', linestyle='-', zorder=7)
 plt.title("Nuisance parameters with PDF uncertainties")
 plt.gca().axes.xaxis.set_visible(False)
-plt.savefig("figures/" + root + "/NPE_pdf")
+plt.savefig("figures/" + root + "/NPE_pdf", dpi=300)
 plt.clf()
 
 plt.ylim(-4.2,4.2)
@@ -311,7 +311,7 @@ plt.errorbar(x,NPE,yerr=NPE_tot, ls='none', zorder=6)
 plt.axhline(y=0, color='k', linestyle='-', zorder=7)
 plt.title("Nuisance parameters with total uncertainties")
 plt.gca().axes.xaxis.set_visible(False)
-plt.savefig("figures/" + root + "/NPE_tot")
+plt.savefig("figures/" + root + "/NPE_tot", dpi=300)
 plt.clf()
 #endregion
 
@@ -332,7 +332,7 @@ plt.axhline(y=0, color='k', linestyle='-')
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
-plt.savefig("figures/" + root + "/S_contributions")
+plt.savefig("figures/" + root + "/S_contributions", dpi=300)
 plt.clf()
 
 X1_norm = np.zeros(shape=len(X1))
@@ -354,7 +354,7 @@ plt.axhline(y=0, color='k', linestyle='-')
 plt.gca().axes.xaxis.set_visible(False)
 plt.legend()
 #plt.show()
-plt.savefig("figures/" + root + "/X_contributions")
+plt.savefig("figures/" + root + "/X_contributions", dpi=300)
 plt.clf()
 #endregion
 
@@ -396,7 +396,7 @@ else:
 
 plt.legend()
 plt.title("Chi squared for the various processes, exp method")
-plt.savefig("figures/" + root + "/chi2")
+plt.savefig("figures/" + root + "/chi2", dpi=300)
 plt.clf()
 
 # t0 method
@@ -419,7 +419,7 @@ else:
 
 plt.legend()
 plt.title("Chi squared for the various processes, t0 method")
-plt.savefig("figures/" + root + "/chi2t0")
+plt.savefig("figures/" + root + "/chi2t0", dpi=300)
 plt.clf()
 
 #endregion

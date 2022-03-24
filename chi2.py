@@ -66,7 +66,7 @@ for i in range(len(table_paths)):
 chi2.dump("matrices/CHI2t0_" + root + ".dat")
 
 #######################################################################
-
+"""
 from numpy.linalg import inv
 
 print("Manual chi2 computation......")
@@ -85,3 +85,4 @@ chi2_manual = np.einsum("i,ij,j", (T-D), invC, (T-D)) / 121
 print(chi2_manual)
 
 print(chi2)
+"""
