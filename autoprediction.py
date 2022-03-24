@@ -6,7 +6,7 @@ root = sys.argv[1]
 
 C = np.load("matrices/C_" + root + ".dat", allow_pickle=True)
 S = np.load("matrices/S_" + root + ".dat", allow_pickle=True)
-invCS = inv(C+S) #np.load("matrices/CSINV_" + root + ".dat", allow_pickle=True)
+invCS = np.load("matrices/CSINV_" + root + ".dat", allow_pickle=True)
 
 D = np.load("matrices/D_" + root + ".dat", allow_pickle=True)
 T = np.load("matrices/T_" + root + ".dat", allow_pickle=True)
@@ -24,7 +24,7 @@ term_1 = np.einsum('ij,jk,kl,lm,mn->in', C, invCS, X, invCS, C, optimize='optima
 term_2 = S - np.einsum('ij,jk,kl->il', S, invCS, S, optimize='optimal')
 P = term_1 + term_2
 
-delta_T = - np.einsum('ij,jk,k->i', S, invCS, TD)
+delta_T = -1 *  np.einsum('ij,jk,k->i', S, invCS, TD)
 
 #######################################################################
 

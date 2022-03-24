@@ -64,3 +64,24 @@ for i in range(len(table_paths)):
                 chi2[i,j] = float(line.split('\t')[3])
 
 chi2.dump("matrices/CHI2t0_" + root + ".dat")
+
+#######################################################################
+
+from numpy.linalg import inv
+
+print("Manual chi2 computation......")
+T = np.load("matrices/T_" + root + ".dat", allow_pickle=True)[0:248]
+D = np.load("matrices/D_" + root + ".dat", allow_pickle=True)[0:248]
+invC = inv(np.load("matrices/C_" + root + ".dat", allow_pickle=True)[0:248, 0:248])
+
+chi2_manual = np.einsum("i,ij,j", (T-D), invC, (T-D)) / 248
+print(chi2_manual)
+
+T = np.load("matrices/T_" + root + ".dat", allow_pickle=True)[248:369]
+D = np.load("matrices/D_" + root + ".dat", allow_pickle=True)[248:369]
+invC = inv(np.load("matrices/C_" + root + ".dat", allow_pickle=True)[248:369, 248:369])
+
+chi2_manual = np.einsum("i,ij,j", (T-D), invC, (T-D)) / 121
+print(chi2_manual)
+
+print(chi2)
