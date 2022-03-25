@@ -232,7 +232,7 @@ plt.clf()
 #region autoprediction shifts
 AUTO_norm = np.zeros_like(T-D+AUTO)
 for i in range(len(T-D+AUTO)):
-    AUTO_norm[i] = (T-D+AUTO)[i] / T[i]
+    AUTO_norm[i] = (T_KFAC-D+AUTO)[i] / T[i]
 TD_norm = np.zeros_like(T-D)
 for i in range(len(TD_norm)):
     TD_norm[i] = (T-D)[i] / T[i]
@@ -244,8 +244,8 @@ x = np.arange(len(T-D+AUTO))
 #plt.ylim(-1.4,1.4)
 plt.plot(x, TD_norm, c='cyan', label='T-D', linewidth=0.35, zorder=2)
 plt.plot(x, TK_norm, c='r', label='(T*KFAC)-D', linewidth=0.35, zorder=2)
-plt.plot(x, AUTO_norm, c='b', label='(T+δT)-D', linewidth=0.35, zorder=2)
-plt.title("Autoprediction shifts compared to theory-data differences")
+plt.plot(x, AUTO_norm, c='b', label='(T*KFAC)+δT-D', linewidth=0.35, zorder=2)
+plt.title("The effect of autoprediction shifts on T-D")
 show_dataset_brackets(plt.gca())
 plt.axhline(y=0, color='k', linestyle='-', zorder=1)
 plt.gca().axes.xaxis.set_visible(False)
@@ -358,7 +358,6 @@ plt.savefig("figures/" + root + "/X_contributions", dpi=300)
 plt.clf()
 #endregion
 
-
 #region chi2
 
 if (root == "nuclear"):
@@ -423,3 +422,24 @@ plt.savefig("figures/" + root + "/chi2t0", dpi=300)
 plt.clf()
 
 #endregion
+
+AUTO_norm = np.zeros_like(AUTO)
+for i in range(len(AUTO)):
+    AUTO_norm[i] = (AUTO)[i] / T[i]
+TK_norm = np.zeros_like(T_KFAC-T)
+for i in range(len(TK_norm)):
+    TK_norm[i] = (T_KFAC - T)[i] / T[i]
+
+x = np.arange(len(T-D+AUTO))
+#plt.ylim(-1.4,1.4)
+plt.plot(x, TD_norm, c='cyan', label='T-D', linewidth=0.35, zorder=2)
+plt.plot(x, TK_norm, c='r', label='Original nuclear shifts', linewidth=0.35, zorder=2)
+plt.plot(x, AUTO_norm, c='b', label='Autopredictions', linewidth=0.35, zorder=2)
+plt.title("Autoprediction shifts compared to original nuclear shifts")
+show_dataset_brackets(plt.gca())
+plt.axhline(y=0, color='k', linestyle='-', zorder=1)
+plt.gca().axes.xaxis.set_visible(False)
+plt.legend()
+#plt.show()
+plt.savefig("figures/" + root + "/autopredictions_test", dpi=300)
+plt.clf()
